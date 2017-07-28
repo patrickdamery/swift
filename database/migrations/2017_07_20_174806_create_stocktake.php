@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateStocktake extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,20 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('stocktakes', function (Blueprint $table) {
             $table->increments('id');
+            $table->timestamp('created');
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
-            $table->string('user_level_code', 10);
-            $table->string('username', 20)->unique();
-            $table->string('email')->unique();
-            $table->string('password', 100);
-            $table->string('salt', 100);
-            $table->string('theme', 10)->default('standard');
+            $table->string('branch_code', 10);
+            $table->string('warehouse_code', 10);
+            $table->tinyInteger('state');
             $table->softDeletes();
-            $table->rememberToken();
-            $table->timestamps();
+
+            $table->index('worker_code');
+            $table->index('branch_code');
+            $table->index('warehouse_code');
+            $table->foreign('branch_code')->references('code')->on('branches');
         });
     }
 
@@ -36,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('stocktakes');
     }
 }
