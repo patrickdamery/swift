@@ -12,8 +12,7 @@ let mix = require('laravel-mix');
  */
 
 /*mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
-*/
+   .sass('resources/assets/sass/app.scss', 'public/css');*/
 mix.styles([
     'public/css/bootstrap/bootstrap.min.css',
     'public/css/font-awesome/font-awesome.min.css',
@@ -48,4 +47,14 @@ mix.styles([
     'public/js/libs/admin.min.js',
     'public/js/libs/demo.js',
     'public/js/libs/dashboard.js',
-  ], 'public/js/base.js');
+  ], 'public/js/all.js').
+  scripts([
+    'public/js/jquery/jquery.min.js',
+    'public/js/jquery/ui/jquery-ui.min.js',
+    'public/js/bootstrap/bootstrap.min.js',
+    'public/js/moment/moment.min.js',
+    'public/js/bootstrap-datepicker/bootstrap-datepicker.js',
+    'public/js/bootstrap-daterangepicker/daterangepicker.js',
+    'public/js/jquery/slimscroll/jquery.slimscroll.min.js',
+    'public/js/fastclick/fastclick.js',
+  ], 'public/js/base.js');;

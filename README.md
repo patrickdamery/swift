@@ -1,2 +1,2 @@
-# swift
-Business Admin/Accounting Software
+# Swift
+Business Accounting and Administration Software
