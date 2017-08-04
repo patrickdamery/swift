@@ -1,3 +1,9 @@
-label {
-  color: whitesmoke;
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+.top-space {
+  height: 100px
 }

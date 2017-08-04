@@ -16,5 +16,17 @@ return [
     'title' => 'Swift Initial Configuration',
     'configure-button' => 'Configure',
     'ruc' => 'RUC Number:',
-    'check-ruc' => 'Check Existence'
+    'check-ruc' => 'Verify Existence',
+    'sidebar-ruc' => 'Verify Existence of RUC',
+    'sidebar-business' => 'Company Details',
+    'sidebar-branches' => 'Company Branches',
+    'sidebar-staff' => 'Staff Details',
+    'sidebar-clients' => 'Clients Details',
+    'sidebar-warehouses' => 'Warehouses Details',
+    'sidebar-products' => 'Products Details',
+    'sidebar-accounting' => 'Accounting Details',
+    'sidebar-vehicles' => 'Vehicle Details',
+    'sidebar-launch' => 'Lanzar Swift!',
+    'steps' => 'Configuration Steps',
+    'modules' => 'Select Swift Modules'
 ];

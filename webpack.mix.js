@@ -56,5 +56,5 @@ mix.styles([
     'public/js/bootstrap-datepicker/bootstrap-datepicker.js',
     'public/js/bootstrap-daterangepicker/daterangepicker.js',
     'public/js/jquery/slimscroll/jquery.slimscroll.min.js',
-    'public/js/fastclick/fastclick.js',
+    'public/js/fastclick/fastclick.js'
   ], 'public/js/base.js');;
