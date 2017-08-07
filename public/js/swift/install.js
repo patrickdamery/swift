@@ -14,110 +14,240 @@ function Install() {
 
 Install.prototype = {
   constructor: Install,
-  set_business_data: function(e) {
-
+  set_modules_data: function(m) {
+    modules_data = m;
+    console.log(modules_data);
   },
-  get_business_data: function(e) {
-
+  get_modules_data: function() {
+    return modules_data;
   },
-  set_card_data: function(e) {
+  load_modules: function() {
+    //console.log(get_modules_data());
+    var request = $.post('/swift/install/load_modules', {
+      _token: swift_utils.swift_token() });
+    request.done(function(data) {
 
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+      }
+      //var modules = $.parseJSON(data.modules);
+      //console.log(get_modules_data());
+      //set_modules_data(data.modules);
+    });
   },
-  get_card_data: function(e) {
-
+  download_branches_data_template: function(e) {
+    window.open('/swift/install/download_branches', '_blank');
   },
-  set_modules_data: function(e) {
-
+  download_staff_data_template: function(e) {
+    window.open('/swift/install/download_staff', '_blank');
   },
-  get_modules_data: function(e) {
-
+  download_warehouses_data_template: function(e) {
+    window.open('/swift/install/download_warehouses', '_blank');
   },
-  set_stock_data: function(e) {
-
+  download_warehouse_locations_data_template: function(e) {
+    window.open('/swift/install/download_warehouse_locations', '_blank');
   },
-  get_stock_data: function(e) {
-
+  download_providers_data_template: function(e) {
+    window.open('/swift/install/download_providers', '_blank');
   },
-  set_clients_data: function(e) {
-
+  download_categories_data_template: function(e) {
+    window.open('/swift/install/download_categories', '_blank');
   },
-  get_clients_data: function(e) {
-
-  },
-  download_business_data_template: function(e) {
-
-  },
-  download_stock_data_template: function(e) {
-
+  download_measurement_units_data_template: function(e) {
+    window.open('/swift/install/download_measurement_units', '_blank');
   },
   download_clients_data_template: function(e) {
-
+    window.open('/swift/install/download_clients', '_blank');
   },
-  upload_business_data: function(e) {
-
+  download_products_data_template: function(e) {
+    window.open('/swift/install/download_products', '_blank');
   },
-  upload_card_data: function(e) {
-
+  download_accounting_data_template: function(e) {
+    window.open('/swift/install/download_accounting', '_blank');
   },
-  upload_stock_data: function(e) {
-
+  download_vehicles_data_template: function(e) {
+    window.open('/swift/install/download_vehicles', '_blank');
   },
-  upload_clients_data: function(e) {
-
-  },
-  save_and_install: function(e) {
-
-  },
-  next: function(e) {
-    // Fire appropriate step function.
-    var targets = ['#configure', '.ruc'];
-    var t = $.inArray(e.target, targets);
-    if(t > -1) {
-        this.set_page(targets[t+1]);
-    }
-  },
-  set: function(e) {
-    this.set_page(e.target);
-  },
-  set_page: function(page) {
-    $('.hideables').addClass('hide');
-    $(page+'-page').removeClass('hide');
-  },
-  start_config: function(e) {
-    $('.content-wrapper-off').addClass('content-wrapper');
-    $('.content-wrapper').removeClass('content-wrapper-off');
-    $('.main-sidebar').removeClass('hide');
-    $('#landing').addClass('hide');
-    $('#business').removeClass('hide');
-  },
-  check_ruc: function(e) {
+  check_token: function(e) {
     swift_utils.busy(e.target);
-    var ruc = $('#ruc').val();
+    var token = $('#token').val();
 
-    if(ruc == '') {
-      swift_utils.display_error(swift_language.get_sentence('blank_ruc'));
+    if(token == "") {
+      swift_utils.display_error(swift_language.get_sentence('blank_token'));
+    }
+
+    var request = $.post('/alonica/user', { alonica_token: token,
+        _token: swift_utils.swift_token() });
+    request.done(function(data) {
+
       swift_utils.free(e.target);
+      if(data.state != 'Success') {
+          swift_utils.display_error(data.error);
+        return;
+      }
+      $('.content-wrapper-off').addClass('content-wrapper');
+      $('.content-wrapper').removeClass('content-wrapper-off');
+      $('#landing').addClass('hide');
+      $('#business').removeClass('hide');
+
+      var modules = $.parseJSON(data.modules);
+      set_modules_data(modules);
+
+      if(!modules.staff) {
+        $('.staff-module').addClass('hide');
+      }
+      if(!modules.sales_stock) {
+        $('.sales-stock-module').addClass('hide');
+      }
+      if(!modules.warehouses) {
+        $('.warehouses-module').addClass('hide');
+      }
+      if(!modules.accounting) {
+        $('.accounting-module').addClass('hide');
+      }
+      if(!modules.vehicles) {
+        $('.vehicles-module').addClass('hide');
+      }
+    });
+    request.fail(function(ev) {
+      swift_utils.ajax_fail(ev);
+      swift_utils.free(e.target);
+    });
+  },
+  launch_swift: function(e) {
+
+    // Get relevant values.
+    var name = $('#business-name').val();
+    var ruc = $('#business-ruc').val();
+    var dgi_auth = $('#dgi-auth').val();
+
+    if(name == '' || ruc == '' || dgi_auth == '') {
+      swift_utils.display_error(swift_language.get_sentence('business_blank'));
       return;
     }
-    // TODO: Actually submit RUC to alonica server to check.
-    swift_utils.free(e.target);
-    // Display business modules form.
-    $('#module-selection').slideDown("slow");
-  },
-  check_business_data: function(e) {
+    swift_utils.busy(e.target);
 
+    // Get files.
+    var modules = this.get_modules_data();
+    var formData = new FormData();
+    formData.append('_token', swift_utils.swift_token());
+    formData.append('name', name);
+    formData.append('ruc', ruc);
+    formData.append('dgi_auth', dgi_auth);
+    formData.append('branches', $('#branches').prop('files')[0]);
+
+    if(modules.staff) {
+      formData.append('staff', $('#staff').prop('files')[0]);
+    }
+    if(modules.sales_stock) {
+      formData.append('clients', $('#clients').prop('files')[0]);
+      formData.append('providers', $('#providers').prop('files')[0]);
+      formData.append('categories', $('#categories').prop('files')[0]);
+      formData.append('measurement_units', $('#measurement-units').prop('files')[0]);
+      formData.append('products', $('#products').prop('files')[0]);
+    }
+    if(modules.accounting) {
+      formData.append('accounting', $('#accounting').prop('files')[0]);
+    }
+    if(modules.vehicles) {
+      formData.append('vehicles', $('#vehicles').prop('files')[0]);
+    }
+    if(modules.warehouses) {
+      formData.append('warehouses', $('#warehouses').prop('files')[0]);
+      formData.append('locations',  $('#warehouse-locations').prop('files')[0]);
+    }
+
+  	// Submit the ajax request.
+  	$.ajax({
+        type:'POST',
+        url:'/swift/install/launch_swift',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          swift_utils.free(e.target);
+        	// Check if we had any errors
+        	if(data.hasOwnProperty('error')) {
+        		swift_utils.display_error(data.error);
+        	}
+        },
+        error: function(data){
+          swift_utils.free(e.target);
+          swift_utils.display_error("Hubo un error al agregar la factura!");
+        }
+    });
   }
 }
 
 var install_swift = new Install();
-
-// Register events.
-swift_event_tracker.register_swift_event('#configure', 'click', install_swift, 'start_config');
-$(document).on('click', '#configure', function(e) {
-  swift_event_tracker.fire_event(e, '#configure');
+$(document).ready(function() {
+  install_swift.load_modules();
 });
 
-swift_event_tracker.register_swift_event('#check-ruc', 'click', install_swift, 'check_ruc');
-$(document).on('click', '#check-ruc', function(e) {
-  swift_event_tracker.fire_event(e, '#check-ruc');
+// Register events.
+swift_event_tracker.register_swift_event('#token-button', 'click', install_swift, 'check_token');
+$(document).on('click', '#token-button', function(e) {
+  swift_event_tracker.fire_event(e, '#token-button');
+});
+
+swift_event_tracker.register_swift_event('#launch-swift', 'click', install_swift, 'launch_swift');
+$(document).on('click', '#launch-swift', function(e) {
+  swift_event_tracker.fire_event(e, '#launch-swift');
+});
+
+swift_event_tracker.register_swift_event('#branches-template', 'click', install_swift, 'download_branches_data_template');
+$(document).on('click', '#branches-template', function(e) {
+  swift_event_tracker.fire_event(e, '#branches-template');
+});
+
+swift_event_tracker.register_swift_event('#staff-template', 'click', install_swift, 'download_staff_data_template');
+$(document).on('click', '#staff-template', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-template');
+});
+
+swift_event_tracker.register_swift_event('#clients-template', 'click', install_swift, 'download_clients_data_template');
+$(document).on('click', '#clients-template', function(e) {
+  swift_event_tracker.fire_event(e, '#clients-template');
+});
+
+swift_event_tracker.register_swift_event('#warehouses-template', 'click', install_swift, 'download_warehouses_data_template');
+$(document).on('click', '#warehouses-template', function(e) {
+  swift_event_tracker.fire_event(e, '#warehouses-template');
+});
+
+swift_event_tracker.register_swift_event('#warehouse-locations-template', 'click', install_swift, 'download_warehouse_locations_data_template');
+$(document).on('click', '#warehouse-locations-template', function(e) {
+  swift_event_tracker.fire_event(e, '#warehouse-locations-template');
+});
+
+swift_event_tracker.register_swift_event('#providers-template', 'click', install_swift, 'download_providers_data_template');
+$(document).on('click', '#providers-template', function(e) {
+  swift_event_tracker.fire_event(e, '#providers-template');
+});
+
+swift_event_tracker.register_swift_event('#categories-template', 'click', install_swift, 'download_categories_data_template');
+$(document).on('click', '#categories-template', function(e) {
+  swift_event_tracker.fire_event(e, '#categories-template');
+});
+
+swift_event_tracker.register_swift_event('#measurement-units-template', 'click', install_swift, 'download_measurement_units_data_template');
+$(document).on('click', '#measurement-units-template', function(e) {
+  swift_event_tracker.fire_event(e, '#measurement-units-template');
+});
+
+swift_event_tracker.register_swift_event('#products-template', 'click', install_swift, 'download_products_data_template');
+$(document).on('click', '#products-template', function(e) {
+  swift_event_tracker.fire_event(e, '#products-template');
+});
+
+swift_event_tracker.register_swift_event('#accounting-template', 'click', install_swift, 'download_accounting_data_template');
+$(document).on('click', '#accounting-template', function(e) {
+  swift_event_tracker.fire_event(e, '#accounting-template');
+});
+
+swift_event_tracker.register_swift_event('#vehicles-template', 'click', install_swift, 'download_vehicles_data_template');
+$(document).on('click', '#vehicles-template', function(e) {
+  swift_event_tracker.fire_event(e, '#vehicles-template');
 });

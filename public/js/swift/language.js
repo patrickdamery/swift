@@ -9,10 +9,10 @@ function Language(language = 'es') {
 
 Language.prototype = {
   constructor: Language,
-  setLanguage: function(language) {
+  set_language: function(language) {
     lang = language;
   },
-  getLanguage: function() {
+  get_language: function() {
     return lang;
   },
   add_sentence: function(desc, sentence) {
@@ -26,7 +26,11 @@ Language.prototype = {
 swift_language = new Language();
 
 // Add sentences.
-swift_language.add_sentence('blank_ruc', {
-                            'en': 'RUC can\'t be left blank!',
-                            'es': 'RUC no puede dejarse en blanco!'
+swift_language.add_sentence('blank_token', {
+                            'en': 'Alonica Token can\'t be left blank!',
+                            'es': 'Token de Alonica no puede dejarse en blanco!'
+                          });
+swift_language.add_sentence('business_blank', {
+                            'en': 'All fields are required!',
+                            'es': 'Todos los campos son requeridos!'
                           });

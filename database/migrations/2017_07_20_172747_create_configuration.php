@@ -14,7 +14,9 @@ class CreateConfiguration extends Migration
     public function up()
     {
         Schema::create('configuration', function (Blueprint $table) {
-            $table->string('ruc');
+            $table->string('name', 25);
+            $table->string('ruc', 50);
+            $table->string('dgi_auth', 50);
             $table->string('local_currency_code', 10);
             $table->smallInteger('quote_life');
             $table->smallInteger('reservation_life');
@@ -24,7 +26,7 @@ class CreateConfiguration extends Migration
             $table->double('points_percentage')->default(0);
             $table->float('current_version');
             $table->float('latest_version');
-            $table->string('auth_key');
+            $table->text('auth_key');
             $table->timestamp('latest_key_change');
             $table->smallInteger('key_change_counter');
             $table->string('base_url', 50);

@@ -18,12 +18,12 @@ class CreateAccounts extends Migration
             $table->string('code', 10)->unique();
             $table->string('type', 2);
             $table->string('name', 20);
-            $table->string('parent_accout', 10);
+            $table->string('parent_account', 10);
             $table->boolean('has_children')->default(false);
             $table->double('amount');
 
             $table->index('type');
-            $table->index('parent_accout');
+            $table->index('parent_account');
         });
     }
 

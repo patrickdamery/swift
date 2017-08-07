@@ -79,6 +79,18 @@ Utilities.prototype = {
       }, time);
     }
   },
+  ajax_fail: function(e) {
+    if(e.status === 404) {
+      this.display_error("No se pudo encontrar el recurso solicitado en el servidor!");
+    } else if(e.status === 500) {
+      this.display_error("Hay un problema con la configuracion del servidor, por favor contactar al administrador!");
+    } else {
+      this.display_error("No hay conexion al internet!");
+    }
+  },
+  swift_token: function(e) {
+    return $('meta[name=csrf-token]').attr('content');
+  }
  }
 
 var swift_utils = new Utilities();

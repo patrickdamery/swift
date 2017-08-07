@@ -16,9 +16,11 @@ class CreateWorkers extends Migration
         Schema::create('workers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
+            $table->string('name', 60);
             $table->string('legal_id', 20);
             $table->tinyInteger('state');
             $table->string('current_branch_code', 10);
+            $table->softDeletes();
 
             $table->index('current_branch_code');
             $table->index('legal_id');
