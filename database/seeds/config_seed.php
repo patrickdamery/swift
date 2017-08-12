@@ -12,7 +12,7 @@ class config_seed extends Seeder
     public function run()
     {
 
-      DB::table('currencies')->insert([
+      DB::table('currency')->insert([
             'code' => 'cord',
             'exchange_rate' => 1,
             'buy_rate' => 1,

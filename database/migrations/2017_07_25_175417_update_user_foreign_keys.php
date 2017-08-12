@@ -27,8 +27,8 @@ class UpdateUserForeignKeys extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('worker_code');
-            $table->dropForeign('user_level_code');
+            $table->dropForeign(['worker_code']);
+            $table->dropForeign(['user_level_code']);
         });
     }
 }

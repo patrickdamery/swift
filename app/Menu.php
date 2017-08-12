@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Currencies extends Model
+class Menu extends Model
 {
 
   /**
@@ -12,7 +12,7 @@ class Currencies extends Model
    *
    * @var string
    */
-  protected $table = 'currencies';
+  protected $table = 'menu';
 
   /**
    * The attributes that are mass assignable.
@@ -20,11 +20,11 @@ class Currencies extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'exchange_rate', 'buy_rate', 'description'
+      'code', 'type', 'data', 'parent_code', 'branch_code'
   ];
 
-   /**
-    * Disable Timestamps.
-    */
-    public $timestamps = false;
+  /**
+   * Disable Timestamps.
+   */
+  public $timestamps = false;
 }

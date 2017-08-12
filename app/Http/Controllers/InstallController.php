@@ -23,7 +23,7 @@ use App\Provider;
 use App\Vehicle;
 use App\Warehouse;
 use App\WarehouseLocation;
-use App\Categories;
+use App\Category;
 
 
 class InstallController extends Controller
@@ -509,7 +509,7 @@ class InstallController extends Controller
 
   private function upload_categories($file)
   {
-    $categories = Categories::all();
+    $categories = Category::all();
     $c = count($categories);
     $row = 1;
     if($c == 0) {
@@ -517,7 +517,7 @@ class InstallController extends Controller
         while(($data = fgetcsv($handle, ',')) !== FALSE) {
           if($row != 1) {
             // Create Categories.
-            $Categories = Categories::create(array(
+            $Categories = Category::create(array(
               'code' => $data[0],
               'description' => $data[1],
               'parent_code' => $data[2]

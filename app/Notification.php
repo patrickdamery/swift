@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Notification extends Model
 {
 
   /**
@@ -12,7 +12,7 @@ class Categories extends Model
    *
    * @var string
    */
-  protected $table = 'category';
+  protected $table = 'notifications';
 
   /**
    * The attributes that are mass assignable.
@@ -20,7 +20,7 @@ class Categories extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'description', 'parent_code'
+      'code', 'worker_code', 'created', 'reason', 'url', 'seen', 'loaded', 'data'
   ];
 
   /**

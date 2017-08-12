@@ -15,7 +15,7 @@ class CreateCashboxReceipt extends Migration
     {
         Schema::create('cashbox_receipt', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('cashbox_receipt_code', 10)->unique();
+            $table->string('code', 10)->unique();
             $table->string('cashbox_transaction_code', 15);
             $table->string('client_code', 10);
             $table->timestamp('receipt_time');
