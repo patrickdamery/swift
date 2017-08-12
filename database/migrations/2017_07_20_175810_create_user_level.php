@@ -18,6 +18,7 @@ class CreateUserLevel extends Migration
             $table->string('code', 10)->unique();
             $table->string('name', 20);
             $table->json('permissions');
+            $table->json('view');
         });
     }
 

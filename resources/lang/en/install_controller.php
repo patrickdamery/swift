@@ -37,7 +37,7 @@ return [
     'clients_id' => 'RUC/Cedula of Client',
     'clients_code' => 'Clients Code',
     'clients_name' => 'Clients Name',
-    'clients_company_code' => 'Company RUC',
+    'clients_company_code' => 'Company Code',
     'clients_phone' => 'Clients Phone',
     'clients_email' => 'Clients Email',
     'clients_address' => 'Clients Address',
@@ -67,6 +67,7 @@ return [
 
     'providers' => 'Providers Template',
     'provider_code' => 'Provider Code',
+    'provider_name' => 'Provider Name',
     'provider_phone' => 'Provider Phone',
     'provider_email' => 'Provider Email',
     'provider_ruc' => 'Provider RUC',
@@ -112,12 +113,16 @@ return [
     'account_parent_code' => 'Account Parent Code (0 if none)',
     'account_children' => 'Account has Children? (1, 0)',
     'account_amount' => 'Account Amount',
+    'account_assigned' => 'Account Assigned (1, 0)',
+    'account_assignee_type' => 'Assignee Type (Contact us for details)',
+    'account_assignee_code' => 'Assignee Code',
 
     'vehicles' => 'Vehicles Template',
     'vehicle_code' => 'Vehicle Code',
     'vehicle_make' => 'Vehicle Make',
     'vehicle_model' => 'Vehicle Model',
     'vehicle_type' => 'Vehicle Type (Contact us for options)',
+    'vehicle_efficiency' => 'Vehicle Efficiency (Km per Liter)',
     'vehicle_initial_value' => 'Vehicle Initial Value',
     'vehicle_current_value' => 'Vehicle Current Value',
     'vehicle_plate' => 'Vehicle Plate',
@@ -125,4 +130,5 @@ return [
     'vehicle_lng' => 'Vehicle Longitude',
 
     'error_line' => 'error on line number:',
+    'insert_failed' => 'Error when trying to insert data on table ',
 ];

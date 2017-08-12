@@ -12,7 +12,13 @@
 */
 
 Route::get('/', function () {
+  // Check if we have any user defined.
+  $users = \App\User::all();
+  if(count($users) > 0) {
+    return view('system');
+  } else {
     return view('install.pages.install');
+  }
 });
 
 Route::prefix('alonica')->group(function() {
@@ -20,6 +26,13 @@ Route::prefix('alonica')->group(function() {
 });
 
 Route::prefix('swift')->group(function() {
+
+  // System routes.
+  Route::prefix('system')->group(function() {
+    
+  });
+
+  // Installation Routes.
   Route::prefix('install')->group(function() {
     Route::post('load_modules', 'InstallController@load_modules');
     Route::post('launch_swift', 'InstallController@launch_swift');

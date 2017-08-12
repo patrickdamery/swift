@@ -14,15 +14,17 @@ function Install() {
 
 Install.prototype = {
   constructor: Install,
-  set_modules_data: function(m) {
-    modules_data = m;
-    console.log(modules_data);
-  },
   get_modules_data: function() {
     return modules_data;
   },
+  set_modules_data: function(m) {
+    modules_data = m;
+  },
   load_modules: function() {
-    //console.log(get_modules_data());
+
+    // Get reference of object to reference inside post request.
+    var i = this;
+    console.log(i.get_modules_data());
     var request = $.post('/swift/install/load_modules', {
       _token: swift_utils.swift_token() });
     request.done(function(data) {
@@ -30,9 +32,8 @@ Install.prototype = {
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
       }
-      //var modules = $.parseJSON(data.modules);
-      //console.log(get_modules_data());
-      //set_modules_data(data.modules);
+      i.set_modules_data(data.modules);
+      console.log(i.get_modules_data());
     });
   },
   download_branches_data_template: function(e) {
@@ -172,6 +173,7 @@ Install.prototype = {
         	if(data.hasOwnProperty('error')) {
         		swift_utils.display_error(data.error);
         	}
+          location.reload();
         },
         error: function(data){
           swift_utils.free(e.target);

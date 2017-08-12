@@ -20,6 +20,7 @@ class CreateBranch extends Migration
             $table->string('phone', 10);
             $table->text('address');
             $table->tinyInteger('type');
+            $table->string('location_code', 10);
         });
     }
 

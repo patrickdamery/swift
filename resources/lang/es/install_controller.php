@@ -37,7 +37,7 @@ return [
     'clients_id' => 'RUC/Cedula de Cliente',
     'clients_code' => 'Codigo de Cliente',
     'clients_name' => 'Nombre de Cliente',
-    'clients_company_code' => 'RUC de Empresa',
+    'clients_company_code' => 'Codigo de Empresa',
     'clients_phone' => 'Telefono de Cliente',
     'clients_email' => 'Correo de Cliente',
     'clients_address' => 'Direccion de Cliente',
@@ -67,6 +67,7 @@ return [
 
     'providers' => 'Plantilla de Proveedores',
     'provider_code' => 'Codigo de Proveedor',
+    'provider_name' => 'Nombre de Proveedor',
     'provider_phone' => 'Telefono de Proveedor',
     'provider_email' => 'Correo de Proveedor',
     'provider_ruc' => 'RUC de Proveedor',
@@ -112,12 +113,16 @@ return [
     'account_parent_code' => 'Codigo de Padre de Cuenta (0 si no hay)',
     'account_children' => 'Tiene esta Cuenta Sub Cuentas? (1, 0)',
     'account_amount' => 'Cantidad en Cuenta',
+    'account_assigned' => 'Cuenta Asignada (1, 0)',
+    'account_assignee_type' => 'Tipo de Cesionario(Contactanos por detalles)',
+    'account_assignee_code' => 'Codigo de Cesionario',
 
     'vehicles' => 'Plantilla de Vehiculos',
     'vehicle_code' => 'Codigo de Vehiculos',
     'vehicle_make' => 'Marca de Vehiculos',
     'vehicle_model' => 'Modelo de Vehiculos',
     'vehicle_type' => 'Tipo de Vehiculos (Contactanos para opciones)',
+    'vehicle_efficiency' => 'Efficiencia de Vehiculo (Km por Litro)',
     'vehicle_initial_value' => 'Valor Inicial de Vehiculo',
     'vehicle_current_value' => 'Valor Actual de Vehiculo',
     'vehicle_plate' => 'Placa de Vehiculo',
@@ -126,4 +131,5 @@ return [
 
 
     'error_line' => 'error en linea numero',
+    'insert_failed' => 'Error al insertar informacion en tabla ',
 ];

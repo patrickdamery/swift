@@ -22,6 +22,7 @@ class CreateAccounts extends Migration
             $table->boolean('has_children')->default(false);
             $table->double('amount');
 
+            $table->softDeletes();
             $table->index('type');
             $table->index('parent_account');
         });

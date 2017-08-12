@@ -197,6 +197,9 @@ class UpdateForeignKeys extends Migration
         Schema::table('warehouses', function (Blueprint $table) {
             $table->foreign('location_code')->references('code')->on('locations');
         });
+        Schema::table('providers', function (Blueprint $table) {
+            $table->foreign('account_code')->references('code')->on('accounts');
+        });
     }
 
     /**
@@ -389,6 +392,9 @@ class UpdateForeignKeys extends Migration
         });
         Schema::table('warehouses', function (Blueprint $table) {
             $table->dropForeign(['location_code']);
+        });
+        Schema::table('providers', function (Blueprint $table) {
+            $table->dropForeign(['account_code']);
         });
     }
 }

@@ -31,8 +31,8 @@ class CreateProviders extends Migration
             $table->smallInteger('order_range_days');
             $table->string('location_code', 10);
             $table->boolean('delivers')->default(false);
-            $table->string('preffered_contact_method', 20);
-            $table->string('account_code');
+            $table->string('preferred_contact_method', 20);
+            $table->string('account_code', 10);
         });
     }
 
