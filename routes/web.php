@@ -15,11 +15,25 @@ Route::get('/', function () {
   // Check if we have any user defined.
   $users = \App\User::all();
   if(count($users) > 0) {
-    return view('system');
+    if(Auth::check()) {
+      return redirect('/swift/system/main');
+    } else {
+      return redirect('/login');
+    }
   } else {
     return view('install.pages.install');
   }
 });
+
+Route::get('login', function() {
+  if(Auth::check()) {
+    return redirect('swift/system/main');
+  } else {
+    return view('login');
+  }
+});
+
+Route::post('login', 'AuthController@authenticate');
 
 Route::prefix('alonica')->group(function() {
   Route::post('user', 'AlonicaController@user');
@@ -29,7 +43,13 @@ Route::prefix('swift')->group(function() {
 
   // System routes.
   Route::prefix('system')->group(function() {
-    
+    Route::get('main', function() {
+      if(Auth::check()) {
+        return view('system');
+      } else {
+        return redirect('login');
+      }
+    });
   });
 
   // Installation Routes.

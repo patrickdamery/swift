@@ -22,7 +22,7 @@ class Worker extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'name', 'legal_id', 'state', 'current_branch_code'
+      'code', 'name', 'legal_id', 'job_title', 'state', 'current_branch_code'
   ];
 
   /**

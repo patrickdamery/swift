@@ -1,7 +1,12 @@
 <?php
+  // Get data we need to display.
   use App\Configuration;
   use App\Branch;
+  use App\User;
+  use App\Worker;
+
   $config = Configuration::find(1);
+  $worker = Worker::where('code', Auth::user()->worker_code)->first();
  ?>
 
 <!DOCTYPE html>
@@ -9,12 +14,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ Session::token() }}">
     <title>Swift</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/swift/swift.css">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/base.css">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/swift/swift.css">
 
     <!-- JS Files -->
     <script src="{{ URL::to('/') }}/js/all.js"></script>
@@ -254,41 +260,25 @@
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                <span class="hidden-xs">Alexander Pierce</span>
+                <img src="{{ URL::to('/') }}/images/default-profile.png" class="user-image" alt="User Image">
+                <span class="hidden-xs">{{ $worker->name }}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
                 <li class="user-header">
-                  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
 
                   <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
+                    {{ $worker->name }} - {{ $worker->job_title }}
                   </p>
-                </li>
-                <!-- Menu Body -->
-                <li class="user-body">
-                  <div class="row">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </div>
-                  <!-- /.row -->
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                    <a href="{{ URL::to('/') }}/profile" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="{{ URL::to('/') }}/logout" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>
@@ -311,7 +301,7 @@
             <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
-            <p>Alexander Pierce</p>
+            <p>{{ $worker->name }}</p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>
         </div>
