@@ -18,6 +18,7 @@ class CreateWorkers extends Migration
             $table->string('code', 10)->unique();
             $table->string('name', 60);
             $table->string('legal_id', 20);
+            $table->string('job_title', 20);
             $table->tinyInteger('state');
             $table->string('current_branch_code', 10);
             $table->softDeletes();

@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
-
+    'username' => 'Usuario',
+    'password' => 'Contraseña',
+    'forgot' => 'Olvide mi contraseña',
+    'signin' => 'Iniciar Session',
 ];
