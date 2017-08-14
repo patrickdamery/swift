@@ -15,7 +15,7 @@ class CreateProducts extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 10)->unique();
+            $table->string('code', 20)->unique();
             $table->string('provider_code', 10);
             $table->string('description', 50);
             $table->string('category_code', 8);
@@ -31,7 +31,7 @@ class CreateProducts extends Migration
             $table->json('alternatives');
             $table->double('volume')->default(0);
             $table->double('weight')->default(0);
-            $table->string('package_code', 10);
+            $table->string('package_code', 20);
             $table->string('package_measurement_unit_code', 10);
             $table->tinyInteger('order_by');
             $table->boolean('service')->default(false);

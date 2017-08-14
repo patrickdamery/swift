@@ -16,7 +16,7 @@ class CreateStock extends Migration
         Schema::create('stock', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
-            $table->string('product_code', 10);
+            $table->string('product_code', 20);
             $table->string('branch_code', 10);
             $table->string('warehouse_code', 10);
             $table->string('warehouse_location_code', 10);

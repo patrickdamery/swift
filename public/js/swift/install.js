@@ -188,6 +188,16 @@ $(document).ready(function() {
   install_swift.load_modules();
 });
 
+// Add sentences.
+swift_language.add_sentence('blank_token', {
+                            'en': 'Alonica Token can\'t be left blank!',
+                            'es': 'Token de Alonica no puede dejarse en blanco!'
+                          });
+swift_language.add_sentence('business_blank', {
+                            'en': 'All fields are required!',
+                            'es': 'Todos los campos son requeridos!'
+                          });
+
 // Register events.
 swift_event_tracker.register_swift_event('#token-button', 'click', install_swift, 'check_token');
 $(document).on('click', '#token-button', function(e) {

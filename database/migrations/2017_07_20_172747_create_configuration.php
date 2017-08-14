@@ -16,6 +16,7 @@ class CreateConfiguration extends Migration
         Schema::create('configuration', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 25);
+            $table->string('shortname', 6);
             $table->string('ruc', 50);
             $table->string('dgi_auth', 50);
             $table->string('local_currency_code', 10);

@@ -24,13 +24,3 @@ Language.prototype = {
 }
 
 swift_language = new Language();
-
-// Add sentences.
-swift_language.add_sentence('blank_token', {
-                            'en': 'Alonica Token can\'t be left blank!',
-                            'es': 'Token de Alonica no puede dejarse en blanco!'
-                          });
-swift_language.add_sentence('business_blank', {
-                            'en': 'All fields are required!',
-                            'es': 'Todos los campos son requeridos!'
-                          });
