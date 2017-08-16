@@ -13,6 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-        'swift/install/*'
+        'swift/install/*',
+        'refresh_token'
     ];
 }

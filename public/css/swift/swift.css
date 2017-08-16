@@ -1,5 +1,35 @@
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .sm-top-space {
-    margin-top: 10px;
+    margin-top: 15px;
   }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .md-top-space {
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .lg-top-space {
+    margin-top: 15px;
+  }
+}
+
+.swift-table {
+   min-height: 300px;
+   max-height: 600px;
+}
+
+.tab-pane {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
 }

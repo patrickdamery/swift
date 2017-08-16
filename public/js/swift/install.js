@@ -24,16 +24,13 @@ Install.prototype = {
 
     // Get reference of object to reference inside post request.
     var i = this;
-    console.log(i.get_modules_data());
     var request = $.post('/swift/install/load_modules', {
       _token: swift_utils.swift_token() });
     request.done(function(data) {
-
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
       }
       i.set_modules_data(data.modules);
-      console.log(i.get_modules_data());
     });
   },
   download_branches_data_template: function(e) {
@@ -175,9 +172,9 @@ Install.prototype = {
         	}
           location.reload();
         },
-        error: function(data){
+        error: function(ev){
           swift_utils.free(e.target);
-          swift_utils.display_error("Hubo un error al agregar la factura!");
+          swift_utils.ajax_fail(ev);
         }
     });
   }

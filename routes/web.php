@@ -25,6 +25,14 @@ Route::get('/', function () {
   }
 });
 
+Route::post('refresh_token', function() {
+  $response = array(
+    'state' => 'Success',
+    'token' => csrf_token()
+  );
+  return response()->json($response);
+});
+
 Route::get('login', function() {
   if(Auth::check()) {
     return redirect('swift/system/main');
@@ -32,6 +40,8 @@ Route::get('login', function() {
     return view('login');
   }
 });
+
+Route::get('logout', 'AuthController@logout');
 
 Route::post('login', 'AuthController@authenticate');
 
@@ -49,6 +59,15 @@ Route::prefix('swift')->group(function() {
       } else {
         return redirect('login');
       }
+    });
+    Route::post('sales', function() {
+        return view('system.pages.sales');
+    });
+    Route::post('products', function() {
+        return view('system.pages.products');
+    });
+    Route::post('orders', function() {
+        return view('system.pages.orders');
     });
   });
 

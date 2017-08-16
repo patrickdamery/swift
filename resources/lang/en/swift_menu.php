@@ -83,4 +83,10 @@ return [
     'config' => 'Configuration',
     'database' => 'Database',
 
+
+    'profile' => 'Profile',
+    'logout' => 'Logout',
+    'search' => 'Search...',
+    'online' => 'Online',
+
 ];

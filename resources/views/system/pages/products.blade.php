@@ -1,19 +1,50 @@
+<script>
+  swift_menu.new_submenu();
+  swift_menu.get_language().add_sentence('products-view-product-tab', {
+                                        'en': 'View Products',
+                                        'es': 'Ver Productos'
+                                      });
+  swift_menu.get_language().add_sentence('products-view-service-tab', {
+                                      'en': 'View Services',
+                                      'es': 'Ver Servicios'
+                                    });
+  swift_menu.get_language().add_sentence('products-view-analysis-tab', {
+                                      'en': 'View Analysis',
+                                      'es': 'Ver Analisis'
+                                    });
+
+swift_event_tracker.register_swift_event('#products-view-analysis-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#products-view-analysis-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#products-view-analysis-tab');
+});
+
+swift_event_tracker.register_swift_event('#products-view-service-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#products-view-service-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#products-view-service-tab');
+});
+
+swift_event_tracker.register_swift_event('#products-view-product-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#products-view-product-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#products-view-product-tab');
+});
+</script>
+
 <section class="content-header">
   <h1>
     @lang('products.title')
-    <small>@lang('products.view_product')</small>
+    <small class="crumb">@lang('products.view_product')</small>
   </h1>
   <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-cube"></i> @lang('products.title')</a></li>
-    <li class="active">@lang('products.view_product')</li>
+    <li><i class="fa fa-cube"></i> @lang('products.title')</li>
+    <li class="active crumb">@lang('products.view_product')</li>
   </ol>
 </section>
 <section class="content">
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#products-view-product" data-toggle="tab" aria-expanded="true">@lang('products.view_product')</a></li>
-      <li class=""><a href="#products-view-service" data-toggle="tab" aria-expanded="false">@lang('products.view_service')</a></li>
-      <li class=""><a href="#products-view-analysis" data-toggle="tab" aria-expanded="false">@lang('products.view_analysis')</a></li>
+      <li class="active"><a href="#products-view-product" id="products-view-product-tab" data-toggle="tab" aria-expanded="true">@lang('products.view_product')</a></li>
+      <li class=""><a href="#products-view-service" id="products-view-service-tab" data-toggle="tab" aria-expanded="false">@lang('products.view_service')</a></li>
+      <li class=""><a href="#products-view-analysis" id="products-view-analysis-tab" data-toggle="tab" aria-expanded="false">@lang('products.view_analysis')</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="products-view-product">
@@ -46,7 +77,7 @@
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
             <div class="box">
-              <div class="box-body table-responsive no-padding">
+              <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -89,7 +120,7 @@
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
             <div class="box">
-              <div class="box-body table-responsive no-padding">
+              <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
                     <tr>

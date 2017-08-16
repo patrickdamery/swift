@@ -151,6 +151,16 @@ class test_seed extends Seeder
       $config = \App\Configuration::find(1);
       $config->name = 'Ferreteria Prueba';
       $config->shortname = 'Prueba';
+      $modules = array(
+        'crm' => 1,
+        'staff' => 1,
+        'factory' => 1,
+        'vehicles' => 1,
+        'accounting' => 1,
+        'warehouses' => 1,
+        'sales_stock' => 1,
+      );
+      $config->modules = json_encode($modules);
       $config->save();
     }
 }

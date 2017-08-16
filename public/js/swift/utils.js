@@ -81,16 +81,49 @@ Utilities.prototype = {
   },
   ajax_fail: function(e) {
     if(e.status === 404) {
-      this.display_error("No se pudo encontrar el recurso solicitado en el servidor!");
+      this.display_error(swift_language.get_sentence('404'));
     } else if(e.status === 500) {
-      this.display_error("Hay un problema con la configuracion del servidor, por favor contactar al administrador!");
+      this.display_error(swift_language.get_sentence('500'));
     } else {
-      this.display_error("No hay conexion al internet!");
+      this.display_error(swift_language.get_sentence('no_internet'));
     }
   },
   swift_token: function(e) {
     return $('meta[name=csrf-token]').attr('content');
+  },
+  refresh_token: function() {
+    var token = $.post('/refresh_token');
+    token.done(function(data) {
+      $('meta[name=csrf-token]').attr('content', data.token);
+    });
+    token.fail(function(ev) {
+      swift_utils.ajax_fail(ev);
+    });
   }
  }
 
 var swift_utils = new Utilities();
+
+// Interval to keep csrf token updated.
+setInterval('swift_utils.refresh_token()', 3600000);
+
+
+swift_language.add_sentence('404', {
+                            'en': 'The requested resource could not be found on the server!',
+                            'es': 'No se pudo encontrar el recurso solicitado en el servidor!'
+                          });
+swift_language.add_sentence('500', {
+                            'en': 'There\'s a configuration problem on the server, please contact your system\'s administrator!',
+                            'es': 'Hay un problema con la configuracion del servidor, por favor contactar al administrador!'
+                          });
+
+swift_language.add_sentence('no_internet', {
+                            'en': 'You are not connected to the internet!',
+                            'es': 'No hay conexion al internet!'
+                          });
+
+$(function(){
+   $('.datepicker').datepicker({
+      format: 'mm-dd-yyyy'
+    });
+});

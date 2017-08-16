@@ -6,15 +6,16 @@
   use App\Worker;
 
   $config = Configuration::find(1);
+  $modules = json_decode($config->modules);
   $worker = Worker::where('code', Auth::user()->worker_code)->first();
  ?>
-
 <!DOCTYPE html>
   <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ Session::token() }}">
+    <link rel="shortcut icon" href="{{ URL::to('/') }}/images/swift.ico" type="image/x-icon">
     <title>Swift</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -24,9 +25,10 @@
 
     <!-- JS Files -->
     <script src="{{ URL::to('/') }}/js/all.js"></script>
+    <script src="{{ URL::to('/') }}/js/swift/language.js"></script>
     <script src="{{ URL::to('/') }}/js/swift/utils.js"></script>
     <script src="{{ URL::to('/') }}/js/swift/event_tracker.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/language.js"></script>
+    <script src="{{ URL::to('/') }}/js/swift/menu.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,7 +49,7 @@
       <!-- Logo -->
       <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">{{$config->shortname}}</span>
+        <span class="logo-mini">{{ $config->shortname }}</span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">{{ $config->name }}</span>
       </a>
@@ -74,7 +76,7 @@
                     <li><!-- start message -->
                       <a href="#">
                         <div class="pull-left">
-                          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           Support Team
@@ -87,7 +89,7 @@
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           AdminLTE Design Team
@@ -99,7 +101,7 @@
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           Developers
@@ -111,7 +113,7 @@
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           Sales Department
@@ -123,7 +125,7 @@
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           Reviewers
@@ -259,7 +261,7 @@
             </li>
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ URL::to('/') }}/images/default-profile.png" class="user-image" alt="User Image">
                 <span class="hidden-xs">{{ $worker->name }}</span>
               </a>
@@ -275,10 +277,10 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="{{ URL::to('/') }}/profile" class="btn btn-default btn-flat">Profile</a>
+                    <a href="{{ URL::to('/') }}/profile" class="btn btn-default btn-flat">@lang('swift_menu.profile')</a>
                   </div>
                   <div class="pull-right">
-                    <a href="{{ URL::to('/') }}/logout" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="{{ URL::to('/') }}/logout" class="btn btn-default btn-flat">@lang('swift_menu.logout')</a>
                   </div>
                 </li>
               </ul>
@@ -298,17 +300,17 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+            <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle">
           </div>
           <div class="pull-left info">
             <p>{{ $worker->name }}</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            <a href="#"><i class="fa fa-circle text-success"></i> @lang('swift_menu.online')</a>
           </div>
         </div>
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">
           <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
+            <input type="text" name="q" class="form-control" placeholder="@lang('swift_menu.search')">
             <span class="input-group-btn">
                   <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                   </button>
@@ -324,115 +326,150 @@
               <i class="fa fa-dashboard"></i> <span>@lang('swift_menu.dashboard')</span>
             </a>
           </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-shopping-cart"></i>
-              <span>@lang('swift_menu.sales')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#sales"><i class="fa fa-money"></i> @lang('swift_menu.sales')</a></li>
-              <li class="treeview">
-                <a href=""><i class="fa fa-cubes"></i> @lang('swift_menu.orders')</a>
-                <ul class="treeview-menu">
-                  <li><a href="#make_order"><i class="fa fa-cube"></i> @lang('swift_menu.make_order')</a></li>
-                  <li><a href="#view_order"><i class="fa fa-search"></i> @lang('swift_menu.view_order')</a></li>
-                  <li><a href="#load_order"><i class="fa fa-truck"></i> @lang('swift_menu.load_order')</a></li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a href=""><i class="fa fa-group"></i> @lang('swift_menu.clients')</a>
-                <ul class="treeview-menu">
-                  <li><a href="#view_client"><i class="fa fa-user"></i> @lang('swift_menu.view_client')</a></li>
-                  <li><a href="#client_credit"><i class="fa fa-book"></i> @lang('swift_menu.credit_client')</a></li>
-                  <li><a href="#client_debt"><i class="fa fa-money"></i> @lang('swift_menu.debt_client')</a></li>
-                  <li><a href="#client_purchases"><i class="fa fa-shopping-cart"></i> @lang('swift_menu.purchases_client')</a></li>
-                  <li><a href="#client_discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts_client')</a></li>
-                </ul>
-              </li>
-              <li><a href="#discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts')</a></li>
-              <li><a href="#sales_analysis"><i class="fa fa-line-chart"></i> @lang('swift_menu.sales_analysis')</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-cubes"></i>
-              <span>@lang('swift_menu.products')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#products"><i class="fa fa-cube"></i> @lang('swift_menu.view_products')</a></li>
-              <li><a href="#providers"><i class="fa fa-industry"></i> @lang('swift_menu.view_providers')</a></li>
-              <li><a href="#categories"><i class="fa fa-list"></i> @lang('swift_menu.view_categories')</a></li>
-              <li><a href="#measurement_units"><i class="fa fa-list"></i> @lang('swift_menu.measurement_units')</a></li>
-              <li><a href="#purchases"><i class="fa fa-list"></i> @lang('swift_menu.view_purchases')</a></li>
-              <li><a href="#local_purchase"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
-              <li class="treeview">
-                <a href=""><i class="fa fa-ship"></i> @lang('swift_menu.international_purchase')</a>
-                <ul class="treeview-menu">
-                  <li><a href="#importation_order"><i class="fa fa-envelope"></i> @lang('swift_menu.importation_order')</a></li>
-                  <li><a href="#importation_costs"><i class="fa fa-money"></i> @lang('swift_menu.importation_costs')</a></li>
-                  <li><a href="#importation_bill"><i class="fa fa-file-text-o"></i> @lang('swift_menu.importation_bill')</a></li>
-                </ul>
-              </li>
-              <li><a href="#suggestions"><i class="fa fa-sitemap"></i> @lang('swift_menu.purchase_suggestion')</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-building"></i>
-              <span>@lang('swift_menu.warehouses')</span>
-            </a>
-            <ul class="treeview-menu">
-            <li><a href="#warehouse"><i class="fa fa-building"></i> @lang('swift_menu.view_warehouse')</a></li>
-            <li><a href="#location"><i class="fa fa-table"></i> @lang('swift_menu.view_location')</a></li>
-            <li><a href="#receive_products"><i class="fa fa-plus"></i> @lang('swift_menu.receive_products')</a></li>
-            <li><a href="#dispatch_products"><i class="fa fa-minus"></i> @lang('swift_menu.dispatch_products')</a></li>
-              <li class="treeview">
-                <a href=""><i class="fa fa-list"></i> @lang('swift_menu.stock')</a>
-                <ul class="treeview-menu">
-                  <li><a href="#product_stock"><i class="fa fa-cube"></i> @lang('swift_menu.product_stock')</a></li>
-                  <li><a href="#stocktake"><i class="fa fa-list"></i> @lang('swift_menu.stock_take')</a></li>
-                  <li><a href="#stocktake_result"><i class="fa fa-file-text-o"></i> @lang('swift_menu.stock_take_result')</a></li>
-                </ul>
-              </li>
-              <li><a href="#stock_movement"><i class="fa fa-arrows-h"></i> @lang('swift_menu.stock_movement')</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-users"></i>
-              <span>@lang('swift_menu.staff')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
-              <li><a href="#staff_config"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
-              <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
-              <li><a href="#staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
-              <li><a href="#staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-truck"></i>
-              <span>@lang('swift_menu.vehicles')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#view_vehicles"><i class="fa fa-car"></i> @lang('swift_menu.view_vehicles')</a></li>
-              <li><a href="#view_trips"><i class="fa fa-map"></i> @lang('swift_menu.view_trips')</a></li>
-              <li><a href="#routes"><i class="fa fa-map-signs"></i> @lang('swift_menu.routes')</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-book"></i>
-              <span>@lang('swift_menu.accountancy')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#bank_accounts"><i class="fa fa-bank"></i> @lang('swift_menu.bank_accounts')</a></li>
-              <li><a href="#currency"><i class="fa fa-money"></i> @lang('swift_menu.currency')</a></li>
-              <li><a href="#accounts"><i class="fa fa-square"></i> @lang('swift_menu.accounts')</a></li>
-              <li><a href="#journal"><i class="fa fa-book"></i> @lang('swift_menu.journal')</a></li>
-            </ul>
-          </li>
+          @if($modules->sales_stock == 1)
+            <script>
+              var option = {
+                'sales': '/swift/system/sales'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#sales', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#sales', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#sales');
+              });
+
+              option = {
+                'orders': '/swift/system/orders'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#orders', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#orders', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#orders');
+              });
+            </script>
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-shopping-cart"></i>
+                <span>@lang('swift_menu.sales')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#sales" id="sales"><i class="fa fa-money"></i> @lang('swift_menu.sales')</a></li>
+                <li><a href="orders" id="orders"><i class="fa fa-cubes"></i> @lang('swift_menu.orders')</a></li>
+                <li class="treeview">
+                  <a href=""><i class="fa fa-group"></i> @lang('swift_menu.clients')</a>
+                  <ul class="treeview-menu">
+                    <li><a href="#view_client"><i class="fa fa-user"></i> @lang('swift_menu.view_client')</a></li>
+                    <li><a href="#client_credit"><i class="fa fa-book"></i> @lang('swift_menu.credit_client')</a></li>
+                    <li><a href="#client_debt"><i class="fa fa-money"></i> @lang('swift_menu.debt_client')</a></li>
+                    <li><a href="#client_purchases"><i class="fa fa-shopping-cart"></i> @lang('swift_menu.purchases_client')</a></li>
+                    <li><a href="#client_discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts_client')</a></li>
+                  </ul>
+                </li>
+                <li><a href="#discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts')</a></li>
+                <li><a href="#sales_analysis"><i class="fa fa-line-chart"></i> @lang('swift_menu.sales_analysis')</a></li>
+              </ul>
+            </li>
+            <script>
+              var option = {
+                'products': '/swift/system/products'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#products', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#products', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#products');
+              });
+            </script>
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-cubes"></i>
+                <span>@lang('swift_menu.products')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#products" id="products"><i class="fa fa-cube"></i> @lang('swift_menu.view_products')</a></li>
+                <li><a href="#providers"><i class="fa fa-industry"></i> @lang('swift_menu.view_providers')</a></li>
+                <li><a href="#categories"><i class="fa fa-list"></i> @lang('swift_menu.view_categories')</a></li>
+                <li><a href="#measurement_units"><i class="fa fa-list"></i> @lang('swift_menu.measurement_units')</a></li>
+                <li><a href="#purchases"><i class="fa fa-list"></i> @lang('swift_menu.view_purchases')</a></li>
+                <li><a href="#local_purchase"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
+                <li class="treeview">
+                  <a href=""><i class="fa fa-ship"></i> @lang('swift_menu.international_purchase')</a>
+                  <ul class="treeview-menu">
+                    <li><a href="#importation_order"><i class="fa fa-envelope"></i> @lang('swift_menu.importation_order')</a></li>
+                    <li><a href="#importation_costs"><i class="fa fa-money"></i> @lang('swift_menu.importation_costs')</a></li>
+                    <li><a href="#importation_bill"><i class="fa fa-file-text-o"></i> @lang('swift_menu.importation_bill')</a></li>
+                  </ul>
+                </li>
+                <li><a href="#suggestions"><i class="fa fa-sitemap"></i> @lang('swift_menu.purchase_suggestion')</a></li>
+              </ul>
+            </li>
+          @endif
+          @if($modules->warehouses == 1)
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-building"></i>
+                <span>@lang('swift_menu.warehouses')</span>
+              </a>
+              <ul class="treeview-menu">
+              <li><a href="#warehouse"><i class="fa fa-building"></i> @lang('swift_menu.view_warehouse')</a></li>
+              <li><a href="#location"><i class="fa fa-table"></i> @lang('swift_menu.view_location')</a></li>
+              <li><a href="#receive_products"><i class="fa fa-plus"></i> @lang('swift_menu.receive_products')</a></li>
+              <li><a href="#dispatch_products"><i class="fa fa-minus"></i> @lang('swift_menu.dispatch_products')</a></li>
+                <li class="treeview">
+                  <a href=""><i class="fa fa-list"></i> @lang('swift_menu.stock')</a>
+                  <ul class="treeview-menu">
+                    <li><a href="#product_stock"><i class="fa fa-cube"></i> @lang('swift_menu.product_stock')</a></li>
+                    <li><a href="#stocktake"><i class="fa fa-list"></i> @lang('swift_menu.stock_take')</a></li>
+                    <li><a href="#stocktake_result"><i class="fa fa-file-text-o"></i> @lang('swift_menu.stock_take_result')</a></li>
+                  </ul>
+                </li>
+                <li><a href="#stock_movement"><i class="fa fa-arrows-h"></i> @lang('swift_menu.stock_movement')</a></li>
+              </ul>
+            </li>
+          @endif
+          @if($modules->staff == 1)
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-users"></i>
+                <span>@lang('swift_menu.staff')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
+                <li><a href="#staff_config"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
+                <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
+                <li><a href="#staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
+                <li><a href="#staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
+              </ul>
+            </li>
+          @endif
+          @if($modules->vehicles == 1)
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-truck"></i>
+                <span>@lang('swift_menu.vehicles')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#view_vehicles"><i class="fa fa-car"></i> @lang('swift_menu.view_vehicles')</a></li>
+                <li><a href="#view_trips"><i class="fa fa-map"></i> @lang('swift_menu.view_trips')</a></li>
+                <li><a href="#routes"><i class="fa fa-map-signs"></i> @lang('swift_menu.routes')</a></li>
+              </ul>
+            </li>
+          @endif
+          @if($modules->accounting == 1)
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-book"></i>
+                <span>@lang('swift_menu.accountancy')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#bank_accounts"><i class="fa fa-bank"></i> @lang('swift_menu.bank_accounts')</a></li>
+                <li><a href="#currency"><i class="fa fa-money"></i> @lang('swift_menu.currency')</a></li>
+                <li><a href="#accounts"><i class="fa fa-square"></i> @lang('swift_menu.accounts')</a></li>
+                <li><a href="#journal"><i class="fa fa-book"></i> @lang('swift_menu.journal')</a></li>
+              </ul>
+            </li>
+          @endif
           <li class="treeview">
             <a href="">
               <i class="fa fa-cogs"></i>
@@ -447,12 +484,11 @@
           </li>
         </ul>
       </section>
-      <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      @include('system.pages.products')
+    <div class="content-wrapper" id="main-content">
+      @include('system.pages.sales')
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

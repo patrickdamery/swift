@@ -83,4 +83,9 @@ return [
     'config' => 'Configuracion',
     'database' => 'Base de Datos',
 
+    'profile' => 'Perfil',
+    'logout' => 'Cerrar Session',
+    'search' => 'Buscar...',
+    'online' => 'En linea',
+
 ];

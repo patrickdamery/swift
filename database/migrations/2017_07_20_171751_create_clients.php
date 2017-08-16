@@ -28,6 +28,8 @@ class CreateClients extends Migration
             $table->smallInteger('credit_days');
             $table->double('credit_limit');
             $table->double('points');
+            $table->string('website', 50);
+            $table->text('auth_key');
             $table->string('discount_group_code', 10);
             $table->string('location_code', 10);
             $table->string('account_code', 10);

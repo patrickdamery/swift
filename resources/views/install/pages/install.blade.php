@@ -283,8 +283,8 @@
     <!-- JS Files -->
     <script src="{{ URL::to('/') }}/js/base.js"></script>
     <script src="{{ URL::to('/') }}/js/swift/event_tracker.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/utils.js"></script>
     <script src="{{ URL::to('/') }}/js/swift/language.js"></script>
+    <script src="{{ URL::to('/') }}/js/swift/utils.js"></script>
     <script src="{{ URL::to('/') }}/js/swift/install.js"></script>
   </body>
 </html>

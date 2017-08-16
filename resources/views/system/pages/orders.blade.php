@@ -8,71 +8,64 @@
  ?>
 <script>
   swift_menu.new_submenu();
-  swift_menu.get_language().add_sentence('sales-make-sale-tab', {
-                                        'en': 'Make Sale',
-                                        'es': 'Realizar Venta'
+  swift_menu.get_language().add_sentence('orders-make-order-tab', {
+                                        'en': 'Make Order',
+                                        'es': 'Realizar Pedido'
                                       });
-  swift_menu.get_language().add_sentence('sales-make-reservation-tab', {
-                                      'en': 'Make Reservation',
-                                      'es': 'Realizar Reservacion'
+  swift_menu.get_language().add_sentence('orders-view-order-tab', {
+                                      'en': 'View Order',
+                                      'es': 'Ver Pedido'
                                     });
-  swift_menu.get_language().add_sentence('sales-make-subscription-tab', {
-                                      'en': 'Sell Subscription',
-                                      'es': 'Venta de Subscripcion'
+  swift_menu.get_language().add_sentence('orders-load-order-tab', {
+                                      'en': 'Load Order',
+                                      'es': 'Cargar Pedido'
                                     });
 
-swift_event_tracker.register_swift_event('#sales-make-sale-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#sales-make-sale-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#sales-make-sale-tab');
+swift_event_tracker.register_swift_event('#orders-make-order-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#orders-make-order-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#orders-make-order-tab');
 });
 
-swift_event_tracker.register_swift_event('#sales-make-reservation-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#sales-make-reservation-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#sales-make-reservation-tab');
+swift_event_tracker.register_swift_event('#orders-view-order-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#orders-view-order-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#orders-view-order-tab');
 });
 
-swift_event_tracker.register_swift_event('#sales-make-subscription-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#sales-make-subscription-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#sales-make-subscription-tab');
+swift_event_tracker.register_swift_event('#orders-load-order-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#orders-load-order-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#orders-load-order-tab');
 });
 </script>
 <section class="content-header">
   <h1>
-    @lang('sales.title')
-    <small class="crumb">@lang('sales.make_sale')</small>
+    @lang('orders.title')
+    <small class="crumb">@lang('orders.make_order')</small>
   </h1>
   <ol class="breadcrumb">
-    <li><i class="fa fa-money"></i> @lang('sales.title')</li>
-    <li class="active crumb">@lang('sales.make_sale')</li>
+    <li><i class="fa fa-cube"></i> @lang('orders.title')</li>
+    <li class="active crumb">@lang('orders.make_order')</li>
   </ol>
 </section>
 <section class="content">
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#sales-make-sale" id="sales-make-sale-tab" data-toggle="tab" aria-expanded="true">@lang('sales.make_sale')</a></li>
-      <li class=""><a href="#sales-make-reservation" id="sales-make-reservation-tab" data-toggle="tab" aria-expanded="false">@lang('sales.make_reservation')</a></li>
-      <li class=""><a href="#sales-make-subscription" id="sales-make-subscription-tab" data-toggle="tab" aria-expanded="false">@lang('sales.make_subscription_sale')</a></li>
+      <li class="active"><a href="#orders-make-order" id="orders-make-order-tab" data-toggle="tab" aria-expanded="true">@lang('orders.make_order')</a></li>
+      <li class=""><a href="#orders-view-order" id="orders-view-order-tab" data-toggle="tab" aria-expanded="false">@lang('orders.view_order')</a></li>
+      <li class=""><a href="#orders-load-order" id="orders-load-order-tab" data-toggle="tab" aria-expanded="false">@lang('orders.load_order')</a></li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane active" id="sales-make-sale">
+      <div class="tab-pane active" id="orders-make-order">
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="sales-client" class="control-label">@lang('sales.client')</label>
-              <input type="text" class="form-control" id="sales-client">
+              <label for="orders-client" class="control-label">@lang('orders.client')</label>
+              <input type="text" class="form-control" id="orders-client">
             </div>
           </div>
           <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="sales-points" class="control-label">@lang('sales.points')</label>
-              <input type="text" class="form-control" id="sales-points">
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="sales-pay-points">
-                <i class="fa fa-asterisk"></i> @lang('sales.pay_points')
-              </button>
+              <label for="orders-credit" class="control-label">@lang('orders.available_credit')</label>
+              <input type="text" class="form-control" id="orders-credit">
             </div>
           </div>
         </div>
@@ -81,31 +74,8 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
             <div class="row form-inline">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:35px;">
                 <div class="form-group">
-                  <label for="sales-code" class="control-label">@lang('sales.code')</label>
-                  <input type="text" class="form-control" id="sales-code">
-                </div>
-              </div>
-            </div>
-            <div class="row form-inline center-block" style="padding-top:15px;">
-              <div class="col-lg-7 col-md-12 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <button type="button" class="btn btn-info" id="sales-print-quotation">
-                    <i class="fa fa-print"></i> @lang('sales.print_quotation')
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-5 col-md-12 col-sm-6 col-xs-12 md-top-space">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="sales-load-quotation">
-                    <i class="fa fa-download"></i> @lang('sales.load_quotation')
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 sm-top-space md-top-space lg-top-space">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="sales-send-cashbox">
-                    <i class="fa fa-send"></i> @lang('sales.send_cashbox')
-                  </button>
+                  <label for="orders-code" class="control-label">@lang('orders.code')</label>
+                  <input type="text" class="form-control" id="orders-code">
                 </div>
               </div>
             </div>
@@ -116,12 +86,12 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('sales.code')</th>
-                      <th>@lang('sales.description')</th>
-                      <th>@lang('sales.quantity')</th>
-                      <th>@lang('sales.price')</th>
-                      <th>@lang('sales.discount')</th>
-                      <th>@lang('sales.total')</th>
+                      <th>@lang('orders.code')</th>
+                      <th>@lang('orders.description')</th>
+                      <th>@lang('orders.quantity')</th>
+                      <th>@lang('orders.price')</th>
+                      <th>@lang('orders.discount')</th>
+                      <th>@lang('orders.total')</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -139,13 +109,8 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="sales-pay">
-                    <i class="fa fa-money"></i> @lang('sales.pay')
-                  </button>
-                </div>
-                <div class="form-group">
-                  <button type="button" class="btn btn-info" class="sales-credit-sale">
-                    <i class="fa fa-book"></i> @lang('sales.credit_sale')
+                  <button type="button" class="btn btn-success" class="orders-send">
+                    <i class="fa fa-send"></i> @lang('orders.send')
                   </button>
                 </div>
               </div>
@@ -153,45 +118,40 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
                 <div class="row pull-right">
                   <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
                     <div class="form-group">
-                      <label for="sales-subtotal" class="control-label">@lang('sales.subtotal')</label>
-                      <input type="text" class="form-control" id="sales-subtotal">
+                      <label for="orders-subtotal" class="control-label">@lang('orders.subtotal')</label>
+                      <input type="text" class="form-control" id="orders-subtotal">
                     </div>
                   </div>
                 </div>
                 <div class="row pull-right">
                   <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
                     <div class="form-group">
-                      <label for="sales-discount" class="control-label">@lang('sales.discount')</label>
-                      <input type="text" class="form-control" id="sales-discount">
+                      <label for="orders-discount" class="control-label">@lang('orders.discount')</label>
+                      <input type="text" class="form-control" id="orders-discount">
                     </div>
                   </div>
                 </div>
                 <div class="row pull-right">
                   <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
                     <div class="form-group">
-                      <label for="sales-tax" class="control-label">@lang('sales.tax')</label>
-                      <input type="text" class="form-control" id="sales-tax">
+                      <label for="orders-tax" class="control-label">@lang('orders.tax')</label>
+                      <input type="text" class="form-control" id="orders-tax">
                     </div>
                   </div>
                 </div>
                 <div class="row pull-right">
                   <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
                     <div class="form-group">
-                      <label for="sales-total" class="control-label">@lang('sales.total')</label>
-                      <input type="text" class="form-control" id="sales-total">
+                      <label for="orders-total" class="control-label">@lang('orders.total')</label>
+                      <input type="text" class="form-control" id="orders-total">
                     </div>
                   </div>
                 </div>
               </div>
               <div class="hidden-lg hidden-md hidden-sm col-xs-12">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="sales-pay">
-                    <i class="fa fa-money"></i> @lang('sales.pay')
-                  </button>
-                </div>
-                <div class="form-group">
-                  <button type="button" class="btn btn-info" class="sales-credit-sale">
-                    <i class="fa fa-book"></i> @lang('sales.credit_sale')
+                  <button type="button" class="btn btn-success" class="orders-send">
+                    <i class="fa fa-send"></i> @lang('orders.send')
                   </button>
                 </div>
               </div>
@@ -199,11 +159,11 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
           </div>
         </div>
       </div>
-      <div class="tab-pane" id="sales-make-reservation">
+      <div class="tab-pane" id="orders-view-order">
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="reservation-client" class="control-label">@lang('sales.client')</label>
+              <label for="reservation-client" class="control-label">@lang('orders.client')</label>
               <input type="text" class="form-control" id="reservation-client">
             </div>
           </div>
@@ -213,7 +173,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
             <div class="row form-inline">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:35px;">
                 <div class="form-group">
-                  <label for="reservation-code" class="control-label">@lang('sales.code')</label>
+                  <label for="reservation-code" class="control-label">@lang('orders.code')</label>
                   <input type="text" class="form-control" id="reservation-code">
                 </div>
               </div>
@@ -222,7 +182,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
               <div class="col-lg-7 col-md-12 col-sm-6 col-xs-12">
                 <div class="form-group">
                   <button type="button" class="btn btn-info" id="reservation-print-reservation">
-                    <i class="fa fa-print"></i> @lang('sales.print_reservation')
+                    <i class="fa fa-print"></i> @lang('orders.print_reservation')
                   </button>
                 </div>
               </div>
@@ -270,12 +230,12 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="reservation-pay">
+                  <button type="button" class="btn btn-success" id="reservation-pay">
                     <i class="fa fa-money"></i> @lang('sales.pay')
                   </button>
                 </div>
                 <div class="form-group">
-                  <button type="button" class="btn btn-info" class="reservation-credit-sale">
+                  <button type="button" class="btn btn-info" id="reservation-credit-sale">
                     <i class="fa fa-book"></i> @lang('sales.credit_sale')
                   </button>
                 </div>
@@ -324,12 +284,12 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
               </div>
               <div class="hidden-lg hidden-md hidden-sm col-xs-12">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="reservation-pay">
+                  <button type="button" class="btn btn-success" id="reservation-pay">
                     <i class="fa fa-money"></i> @lang('sales.pay')
                   </button>
                 </div>
                 <div class="form-group">
-                  <button type="button" class="btn btn-info" class="reservation-credit-sale">
+                  <button type="button" class="btn btn-info" id="reservation-credit-sale">
                     <i class="fa fa-book"></i> @lang('sales.credit_sale')
                   </button>
                 </div>
@@ -338,7 +298,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
           </div>
         </div>
       </div>
-      <div class="tab-pane" id="sales-make-subscription">
+      <div class="tab-pane" id="orders-load-order">
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
             <div class="form-group">
@@ -434,7 +394,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="subscription-subscribe">
+                  <button type="button" class="btn btn-success" id="subscription-pay">
                     <i class="fa fa-plus-square-o"></i> @lang('sales.subscribe')
                   </button>
                 </div>
@@ -475,7 +435,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
               </div>
               <div class="hidden-lg hidden-md hidden-sm col-xs-12">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" class="subscription-subscribe">
+                  <button type="button" class="btn btn-success" id="subscription-pay">
                     <i class="fa fa-plus-square-o"></i> @lang('sales.subscribe')
                   </button>
                 </div>

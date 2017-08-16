@@ -190,27 +190,27 @@ class InstallController extends Controller
           }
 
           $num = count($data);
-          if($num != 7) {
+          if($num != 8) {
             return array(
               'state' => 'Error',
               'error' => \Lang::get('install_controller.error_line').' '.$row
             );
           }
-          if($data[0] == '' || $data[1] == '' || $data[2] == '') {
+          if($data[0] == '' || $data[1] == '' || $data[2] == '' || $data[3]) {
             return array(
               'state' => 'Error',
               'error' => \Lang::get('install_controller.error_line').' '.$row
             );
           }
-          if($data[4] != '') {
-            if(($data[5] == '') || $data[6] == '') {
+          if($data[5] != '') {
+            if(($data[6] == '') || $data[7] == '') {
               return array(
                 'state' => 'Error',
                 'error' => \Lang::get('install_controller.error_line').' '.$row
               );
             }
           }
-          if(!is_numeric($data[3])) {
+          if(!is_numeric($data[4])) {
             return array(
               'state' => 'Error',
               'error' => \Lang::get('install_controller.error_line').' '.$row
@@ -277,14 +277,15 @@ class InstallController extends Controller
               'code' => $data[0],
               'name' => $data[1],
               'legal_id' => $data[2],
+              'job_title' => $data[3],
               'state' => 1,
-              'current_branch_code' => $data[3]
+              'current_branch_code' => $data[4]
             ));
 
             // If user is not blank then create a user for worker.
-            if($data[4] != '') {
+            if($data[5] != '') {
               $user = array(
-                $worker->code, $data[4], $data[5], $data[6]
+                $worker->code, $data[5], $data[6], $data[7]
               );
               $result = $this->insert_user($user, 1);
               if($result['state'] != 'Success') {
@@ -371,6 +372,8 @@ class InstallController extends Controller
               'credit_days' => $data[10],
               'credit_limit' => $data[11],
               'points' => 0,
+              'website' => '',
+              'auth_key' => '',
               'discount_group_code' => '0',
               'location_code' => $result['location_code'],
               'account_code' => '0'
@@ -1343,11 +1346,11 @@ class InstallController extends Controller
     );
 
     $columns = array(\Lang::get('install_controller.staff_code'), \Lang::get('install_controller.staff_name'),
-      \Lang::get('install_controller.staff_legal_id'), \Lang::get('install_controller.staff_branch_code'),
-      \Lang::get('install_controller.staff_username'), \Lang::get('install_controller.staff_email'),
-      \Lang::get('install_controller.staff_password'));
+      \Lang::get('install_controller.staff_legal_id'), \Lang::get('install_controller.staff_job_title'),
+      \Lang::get('install_controller.staff_branch_code'), \Lang::get('install_controller.staff_username'),
+      \Lang::get('install_controller.staff_email'), \Lang::get('install_controller.staff_password'));
     $row_sample = array(1, 'nombre', '888555550000B', '1', 'usuario', 'correo@correo.com', 'abc123');
-    $row2_sample = array(2, 'nombre 2', '888555550000C', '1', '', '', '');
+    $row2_sample = array(2, 'nombre 2', '888555550000C', 'puesto', '1', '', '', '');
     $callback = function() use ($row_sample, $row2_sample, $columns)
     {
         $file = fopen('php://output', 'w');
