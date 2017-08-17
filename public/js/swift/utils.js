@@ -121,9 +121,3 @@ swift_language.add_sentence('no_internet', {
                             'en': 'You are not connected to the internet!',
                             'es': 'No hay conexion al internet!'
                           });
-
-$(function(){
-   $('.datepicker').datepicker({
-      format: 'mm-dd-yyyy'
-    });
-});

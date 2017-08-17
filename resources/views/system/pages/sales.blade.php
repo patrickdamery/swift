@@ -7,6 +7,11 @@
   $modules = json_decode($config->modules);
  ?>
 <script>
+$(function(){
+ $('.datepicker').datepicker({
+        format: 'mm-dd-yyyy'
+      });
+  });
   swift_menu.new_submenu();
   swift_menu.get_language().add_sentence('sales-make-sale-tab', {
                                         'en': 'Make Sale',
@@ -133,7 +138,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4 col-md-3 col-sm-2 xs-hidden">
+          <div class="col-lg-4 col-md-3 col-sm-2 hidden-xs">
           </div>
           <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
             <div class="row">
@@ -264,7 +269,7 @@ $(document).on('click', '#sales-make-subscription-tab', function(e) {
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4 col-md-3 col-sm-2 xs-hidden">
+          <div class="col-lg-4 col-md-3 col-sm-2 hidden-xs">
           </div>
           <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
             <div class="row">

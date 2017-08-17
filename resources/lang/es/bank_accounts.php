@@ -1,0 +1,35 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used by the paginator library to build
+    | the simple pagination links. You are free to change them to anything
+    | you want to customize your views to better match your application.
+    |
+    */
+
+    'title' => 'Cuentas de Banco',
+    'view_account' => 'Ver Cuentas',
+    'number' => 'Numero',
+    'date_range' => 'Rango de Fechas',
+    'search' => 'Buscar',
+    'make_transaction' => 'Realizar Transaccion',
+    'create' => 'Crear Cuenta',
+    'account_reports' => 'Reporte de Cuentas',
+    'date' => 'Fecha',
+    'description' => 'Descripcion',
+    'debit' => 'Debito',
+    'credit' => 'Credito',
+    'value' => 'Valor',
+    'report_type' => 'Tipo de Reporte',
+    'summary' => 'Resumen',
+    'detail' => 'Detalle',
+    'generate' => 'Generar',
+    'print' => 'Imprimir',
+    'type' => 'Tipo',
+];

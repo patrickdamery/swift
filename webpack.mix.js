@@ -15,6 +15,7 @@ let mix = require('laravel-mix');
    .sass('resources/assets/sass/app.scss', 'public/css');*/
 mix.styles([
     'public/css/bootstrap/bootstrap.min.css',
+    'public/css/bootstrap/bootstrap-theme.min.css',
     'public/css/font-awesome/font-awesome.min.css',
     'public/css/ionicons/ionicons.min.css',
     'public/css/font-awesome/font-awesome.min.css',
@@ -22,7 +23,7 @@ mix.styles([
     'public/css/theme/skins/_all-skins.min.css',
     'public/css/libs/admin.css',
     'public/css/bootstrap-datepicker/bootstrap-datepicker.min.css',
-    'public/css/bootstrap-daterangepicker/daterangepicker.min.css',
+    'public/css/bootstrap-daterangepicker/daterangepicker.css',
     'public/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
     'public/css/jvectormap/jquery-jvectormap-1.2.2.css',
     'public/css/morris/morris.css',

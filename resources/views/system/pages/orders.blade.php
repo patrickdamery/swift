@@ -58,14 +58,23 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="orders-client" class="control-label">@lang('orders.client')</label>
-              <input type="text" class="form-control" id="orders-client">
+              <label for="orders-make-client" class="control-label">@lang('orders.client')</label>
+              <input type="text" class="form-control" id="orders-make-client">
             </div>
           </div>
-          <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="orders-credit" class="control-label">@lang('orders.available_credit')</label>
               <input type="text" class="form-control" id="orders-credit">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="orders-type" class="control-label">@lang('orders.type')</label>
+              <select class="form-control" id="orders-type">
+                <option value="credit">@lang('orders.credit')</option>
+                <option value="cash">@lang('orders.cash')</option>
+              </select>
             </div>
           </div>
         </div>
@@ -163,8 +172,22 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="reservation-client" class="control-label">@lang('orders.client')</label>
-              <input type="text" class="form-control" id="reservation-client">
+              <label for="view-orders-client" class="control-label">@lang('orders.view_client')</label>
+              <input type="text" class="form-control" id="view-orders-client">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="view-orders" class="control-label">@lang('orders.view_orders')</label>
+              <select class="form-control" id="view-orders">
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="load-orders">
+                <i class="fa fa-download"></i> @lang('orders.load_orders')
+              </button>
             </div>
           </div>
         </div>
@@ -173,30 +196,28 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
             <div class="row form-inline">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:35px;">
                 <div class="form-group">
-                  <label for="reservation-code" class="control-label">@lang('orders.code')</label>
-                  <input type="text" class="form-control" id="reservation-code">
+                  <label for="order-state" class="control-label">@lang('orders.state')</label>
+                  <select class="form-control" id="order-state">
+                    <option value="queued">@lang('orders.queued')</option>
+                    <option value="loading">@lang('orders.loading')</option>
+                    <option value="enroute">@lang('orders.enroute')</option>
+                    <option value="delivered">@lang('orders.delivered')</option>
+                  </select>
                 </div>
               </div>
             </div>
             <div class="row form-inline center-block" style="padding-top:15px;">
               <div class="col-lg-7 col-md-12 col-sm-6 col-xs-12">
                 <div class="form-group">
-                  <button type="button" class="btn btn-info" id="reservation-print-reservation">
-                    <i class="fa fa-print"></i> @lang('orders.print_reservation')
+                  <button type="button" class="btn btn-info" id="view-order-print">
+                    <i class="fa fa-print"></i> @lang('orders.print')
                   </button>
                 </div>
               </div>
               <div class="col-lg-5 col-md-12 col-sm-6 col-xs-12 md-top-space">
                 <div class="form-group">
-                  <button type="button" class="btn btn-success" id="reservation-load-reservation">
-                    <i class="fa fa-download"></i> @lang('sales.load_reservation')
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 sm-top-space md-top-space lg-top-space">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="reservation-send-cashbox">
-                    <i class="fa fa-send"></i> @lang('sales.send_cashbox')
+                  <button type="button" class="btn btn-success" id="order-sale">
+                    <i class="fa fa-money"></i> @lang('orders.sale')
                   </button>
                 </div>
               </div>
@@ -208,91 +229,14 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('sales.code')</th>
-                      <th>@lang('sales.description')</th>
-                      <th>@lang('sales.quantity')</th>
-                      <th>@lang('sales.price')</th>
-                      <th>@lang('sales.discount')</th>
-                      <th>@lang('sales.total')</th>
+                      <th>@lang('orders.code')</th>
+                      <th>@lang('orders.description')</th>
+                      <th>@lang('orders.quantity')</th>
                     </tr>
                   </thead>
                   <tbody>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-3 col-sm-2 xs-hidden">
-          </div>
-          <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="reservation-pay">
-                    <i class="fa fa-money"></i> @lang('sales.pay')
-                  </button>
-                </div>
-                <div class="form-group">
-                  <button type="button" class="btn btn-info" id="reservation-credit-sale">
-                    <i class="fa fa-book"></i> @lang('sales.credit_sale')
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-inline">
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="reservation-subtotal" class="control-label">@lang('sales.subtotal')</label>
-                      <input type="text" class="form-control" id="reservation-subtotal">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="reservation-discount" class="control-label">@lang('sales.discount')</label>
-                      <input type="text" class="form-control" id="reservation-discount">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="reservation-tax" class="control-label">@lang('sales.tax')</label>
-                      <input type="text" class="form-control" id="reservation-tax">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="reservation-total" class="control-label">@lang('sales.total')</label>
-                      <input type="text" class="form-control" id="reservation-total">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="reservation-total" class="control-label">@lang('sales.deposit')</label>
-                      <input type="text" class="form-control" id="reservation-deposit">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="reservation-pay">
-                    <i class="fa fa-money"></i> @lang('sales.pay')
-                  </button>
-                </div>
-                <div class="form-group">
-                  <button type="button" class="btn btn-info" id="reservation-credit-sale">
-                    <i class="fa fa-book"></i> @lang('sales.credit_sale')
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -302,56 +246,15 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
             <div class="form-group">
-              <label for="subscription-client" class="control-label">@lang('sales.client')</label>
-              <input type="text" class="form-control" id="subscription-client">
+              <label for="load-order-code" class="control-label">@lang('orders.order_code')</label>
+              <input type="text" class="form-control" id="load-order-code">
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-7 col-xs-12">
             <div class="form-group">
-              <label for="subscription-interval" class="control-label">@lang('sales.billing_interval')</label>
-              <select id="subscription-interval" class="form-control">
-                <option value="weekly">@lang('sales.weekly')</option>
-                <option value="biweekly">@lang('sales.biweekly')</option>
-                <option value="monthly">@lang('sales.monthly')</option>
-                <option value="bimester">@lang('sales.bimester')</option>
-                <option value="trimester">@lang('sales.trimester')</option>
-                <option value="semester">@lang('sales.semester')</option>
-                <option value="annualy">@lang('sales.annually')</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 col-sm-7 col-xs-12 sm-top-space">
-            <div class="form-group">
-              <label for="subscription-interval-type" class="control-label">@lang('sales.interval_type')</label>
-              <select id="subscription-interval-type" class="form-control">
-                <option value="every">@lang('sales.every')</option>
-                <option value="over">@lang('sales.over')</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
-            <div class="form-group">
-              <label for="subscription-start-date" class="control-label">@lang('sales.start_date')</label>
-              <div class="input-group date">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control datepicker" id="subscription-start-date">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-7 col-xs-12">
-            <div class="form-group">
-              <label for="subscription-interval-number" class="control-label">@lang('sales.interval_number')</label>
-              <input type="number" class="form-control" id="subscription-start-number">
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 col-sm-7 col-xs-12 sm-top-space">
-            <div class="form-group">
-              <label for="subscription-contract" class="control-label">@lang('sales.contract')</label>
-              <input type="text" class="form-control" id="subscription-contract">
+              <button type="button" class="btn btn-success" id="load-orders-load">
+                <i class="fa fa-download"></i> @lang('orders.load_orders')
+              </button>
             </div>
           </div>
         </div>
@@ -360,8 +263,48 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
             <div class="row form-inline">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:35px;">
                 <div class="form-group">
-                  <label for="subscription-code" class="control-label">@lang('sales.code')</label>
-                  <input type="text" class="form-control" id="subscription-code">
+                  <label for="load-orders-code" class="control-label">@lang('orders.code')</label>
+                  <input type="text" class="form-control" id="load-orders-code">
+                </div>
+              </div>
+            </div>
+            <div class="row form-inline" style="padding-top15px">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:35px;">
+                <div class="form-group">
+                  <label for="load-orders-driver" class="control-label">@lang('orders.driver')</label>
+                  <select class="form-control" id="load-orders-driver">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-inline">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <label for="load-orders-vehicle" class="control-label">@lang('orders.vehicle')</label>
+                  <select class="form-control" id="load-orders-vehicle">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-inline">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <label for="load-orders-state" class="control-label">@lang('orders.state')</label>
+                  <select class="form-control" id="load-orders-state">
+                    <option value="queued">@lang('orders.queued')</option>
+                    <option value="loading">@lang('orders.loading')</option>
+                    <option value="enroute">@lang('orders.enroute')</option>
+                    <option value="delivered">@lang('orders.delivered')</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-inline">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <button type="button" class="btn btn-info" id="load-orders-save">
+                    <i class="fa fa-save"></i> @lang('orders.save')
+                  </button>
                 </div>
               </div>
             </div>
@@ -372,73 +315,15 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('sales.code')</th>
-                      <th>@lang('sales.description')</th>
-                      <th>@lang('sales.quantity')</th>
-                      <th>@lang('sales.price')</th>
-                      <th>@lang('sales.discount')</th>
-                      <th>@lang('sales.total')</th>
+                      <th>@lang('orders.code')</th>
+                      <th>@lang('orders.description')</th>
+                      <th>@lang('orders.quantity')</th>
+                      <th>@lang('orders.scanned')</th>
                     </tr>
                   </thead>
                   <tbody>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-3 col-sm-2 xs-hidden">
-          </div>
-          <div class="col-lg-8 col-md-9 col-sm-10 col-xs-12">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="subscription-pay">
-                    <i class="fa fa-plus-square-o"></i> @lang('sales.subscribe')
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-inline">
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="subscription-subtotal" class="control-label">@lang('sales.subtotal')</label>
-                      <input type="text" class="form-control" id="subscription-subtotal">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="subscription-discount" class="control-label">@lang('sales.discount')</label>
-                      <input type="text" class="form-control" id="subscription-discount">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="subscription-tax" class="control-label">@lang('sales.tax')</label>
-                      <input type="text" class="form-control" id="subscription-tax">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pull-right">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 lg-top-space">
-                    <div class="form-group">
-                      <label for="subscription-total" class="control-label">@lang('sales.total')</label>
-                      <input type="text" class="form-control" id="subscription-total">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="subscription-pay">
-                    <i class="fa fa-plus-square-o"></i> @lang('sales.subscribe')
-                  </button>
-                </div>
               </div>
             </div>
           </div>

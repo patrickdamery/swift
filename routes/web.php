@@ -69,6 +69,18 @@ Route::prefix('swift')->group(function() {
     Route::post('orders', function() {
         return view('system.pages.orders');
     });
+    Route::post('bank_accounts', function() {
+        return view('system.pages.bank_accounts');
+    });
+    Route::post('currency', function() {
+        return view('system.pages.currency');
+    });
+    Route::post('accounts', function() {
+        return view('system.pages.accounts');
+    });
+    Route::post('journal', function() {
+        return view('system.pages.journal');
+    });
   });
 
   // Installation Routes.
