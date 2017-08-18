@@ -278,7 +278,7 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
               </div>
             </div>
             <div class="row form-inline">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lg-top-space md-top-space sm-top-space">
                 <div class="form-group">
                   <label for="load-orders-vehicle" class="control-label">@lang('orders.vehicle')</label>
                   <select class="form-control" id="load-orders-vehicle">
@@ -287,7 +287,7 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
               </div>
             </div>
             <div class="row form-inline">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lg-top-space md-top-space sm-top-space">
                 <div class="form-group">
                   <label for="load-orders-state" class="control-label">@lang('orders.state')</label>
                   <select class="form-control" id="load-orders-state">
@@ -300,7 +300,7 @@ $(document).on('click', '#orders-load-order-tab', function(e) {
               </div>
             </div>
             <div class="row form-inline">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lg-top-space md-top-space sm-top-space">
                 <div class="form-group">
                   <button type="button" class="btn btn-info" id="load-orders-save">
                     <i class="fa fa-save"></i> @lang('orders.save')

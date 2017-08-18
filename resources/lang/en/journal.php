@@ -30,4 +30,5 @@ return [
     'account_name' => 'Account Name',
     'debit' => 'Debit',
     'credit' => 'Credit',
+    'trial-balance' => 'Trial Balance',
 ];

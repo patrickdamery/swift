@@ -63,11 +63,20 @@ Route::prefix('swift')->group(function() {
     Route::post('sales', function() {
         return view('system.pages.sales');
     });
-    Route::post('products', function() {
-        return view('system.pages.products');
-    });
     Route::post('orders', function() {
         return view('system.pages.orders');
+    });
+    Route::post('clients', function() {
+        return view('system.pages.clients');
+    });
+    Route::post('discounts', function() {
+        return view('system.pages.discounts');
+    });
+    Route::post('sales_analytics', function() {
+        return view('system.pages.sales_analytics');
+    });
+    Route::post('products', function() {
+        return view('system.pages.products');
     });
     Route::post('bank_accounts', function() {
         return view('system.pages.bank_accounts');

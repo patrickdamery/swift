@@ -30,4 +30,5 @@ return [
     'account_name' => 'Nombre de Cuenta',
     'debit' => 'Debito',
     'credit' => 'Credito',
+    'trial-balance' => 'Balanza de Comprobacion',
 ];

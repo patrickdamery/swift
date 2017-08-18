@@ -77,6 +77,7 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
                 <option value="balance-sheet">@lang('journal.balance_sheet')</option>
                 <option value="statement-equity">@lang('journal.statement_equity')</option>
                 <option value="statement-cash-flow">@lang('journal.statement_cash_flow')</option>
+                <option value="trial-balance">@lang('journal.trial-balance')</option>
               </select>
             </div>
           </div>

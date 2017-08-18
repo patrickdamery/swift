@@ -347,6 +347,36 @@
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#orders');
               });
+
+              option = {
+                'clients': '/swift/system/clients'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#clients', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#clients', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#clients');
+              });
+
+              option = {
+                'discounts': '/swift/system/discounts'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#discounts', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#discounts', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#discounts');
+              });
+
+              option = {
+                'sales_analytics': '/swift/system/sales_analytics'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#sales_analytics', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#sales_analytics', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#sales_analytics');
+              });
             </script>
             <li class="treeview">
               <a href="">
@@ -355,19 +385,10 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="#sales" id="sales"><i class="fa fa-money"></i> @lang('swift_menu.sales')</a></li>
-                <li><a href="orders" id="orders"><i class="fa fa-cubes"></i> @lang('swift_menu.orders')</a></li>
-                <li class="treeview">
-                  <a href=""><i class="fa fa-group"></i> @lang('swift_menu.clients')</a>
-                  <ul class="treeview-menu">
-                    <li><a href="#view_client"><i class="fa fa-user"></i> @lang('swift_menu.view_client')</a></li>
-                    <li><a href="#client_credit"><i class="fa fa-book"></i> @lang('swift_menu.credit_client')</a></li>
-                    <li><a href="#client_debt"><i class="fa fa-money"></i> @lang('swift_menu.debt_client')</a></li>
-                    <li><a href="#client_purchases"><i class="fa fa-shopping-cart"></i> @lang('swift_menu.purchases_client')</a></li>
-                    <li><a href="#client_discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts_client')</a></li>
-                  </ul>
-                </li>
-                <li><a href="#discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts')</a></li>
-                <li><a href="#sales_analysis"><i class="fa fa-line-chart"></i> @lang('swift_menu.sales_analysis')</a></li>
+                <li><a href="#orders" id="orders"><i class="fa fa-cubes"></i> @lang('swift_menu.orders')</a></li>
+                <li><a href="#clients" id="clients"><i class="fa fa-group"></i> @lang('swift_menu.clients')</a></li>
+                <li><a href="#discounts" id="discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts')</a></li>
+                <li><a href="#sales_analytics" id="sales_analytics"><i class="fa fa-line-chart"></i> @lang('swift_menu.sales_analysis')</a></li>
               </ul>
             </li>
             <script>
@@ -529,7 +550,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="main-content">
-      @include('system.pages.journal')
+      @include('system.pages.sales_analytics')
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

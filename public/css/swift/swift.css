@@ -1,3 +1,9 @@
+@media only screen and (max-width: 767px) {
+  .xs-top-space {
+    margin-top: 15px;
+  }
+}
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .sm-top-space {
     margin-top: 15px;
@@ -13,6 +19,10 @@
 @media only screen and (min-width: 1200px) {
   .lg-top-space {
     margin-top: 15px;
+  }
+
+  .map {
+    height: 450px;
   }
 }
 
@@ -32,4 +42,15 @@
     float: left;
     width: 100%;
     margin-bottom: 0;
+}
+
+.map {
+  min-height: 250px;
+  width: 100%;
+}
+
+.selected-filters {
+  width: 250px;
+  height: 150px;
+  overflow-y: scroll;
 }
