@@ -40,9 +40,9 @@ $(document).on('click', '#sales-analytics-tab', function(e) {
     <div class="tab-content">
       <div class="tab-pane active" id="discounts-view-discounts">
         <div class="row form-inline">
-          <div class="col-lg-12 col-md-12 col-sm-12-col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="form-group">
-              <label for="journal-date-range" class="control-label">@lang('sales_analytics.date_range')</label>
+              <label for="sales-analytics-date-range" class="control-label">@lang('sales_analytics.date_range')</label>
               <div class="input-group date">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
@@ -104,7 +104,7 @@ $(document).on('click', '#sales-analytics-tab', function(e) {
                 <option value="product">@lang('sales_analytics.product')</option>
                 <option value="salesman">@lang('sales_analytics.salesman')</option>
                 <option value="client">@lang('sales_analytics.client')</option>
-                <option value="client">@lang('sales_analytics.branch')</option>
+                <option value="branch">@lang('sales_analytics.branch')</option>
               </select>
             </div>
           </div>
@@ -114,9 +114,9 @@ $(document).on('click', '#sales-analytics-tab', function(e) {
             <div class="form-group">
               <label for="sales-analytics-chart" class="control-label">@lang('sales_analytics.chart')</label>
               <select class="form-control" id="sales-analytics-chart">
-                <option value="provider">@lang('sales_analytics.line_chart')</option>
-                <option value="product">@lang('sales_analytics.bar_chart')</option>
-                <option value="salesman">@lang('sales_analytics.pie_chart')</option>
+                <option value="line_chart">@lang('sales_analytics.line_chart')</option>
+                <option value="bar_chart">@lang('sales_analytics.bar_chart')</option>
+                <option value="pie_chart">@lang('sales_analytics.pie_chart')</option>
               </select>
             </div>
           </div>

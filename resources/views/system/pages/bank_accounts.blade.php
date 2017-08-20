@@ -20,6 +20,11 @@ $(function(){
                                       'en': 'Account Reports',
                                       'es': 'Reportes de Cuentas'
                                     });
+  swift_menu.get_language().add_sentence('bank-accounts-pos-tab', {
+                                      'en': 'POS',
+                                      'es': 'POS'
+                                    });
+
 
 swift_event_tracker.register_swift_event('#bank-accounts-view-accounts-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#bank-accounts-view-accounts-tab', function(e) {
@@ -29,6 +34,11 @@ $(document).on('click', '#bank-accounts-view-accounts-tab', function(e) {
 swift_event_tracker.register_swift_event('#bank-accounts-reports-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#bank-accounts-reports-tab', function(e) {
   swift_event_tracker.fire_event(e, '#bank-accounts-reports-tab');
+});
+
+swift_event_tracker.register_swift_event('#bank-accounts-pos-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#bank-accounts-pos-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#bank-accounts-pos-tab');
 });
 </script>
 
@@ -47,6 +57,7 @@ $(document).on('click', '#bank-accounts-reports-tab', function(e) {
     <ul class="nav nav-tabs">
       <li class="active"><a href="#bank-accounts-view-accounts" id="bank-accounts-view-accounts-tab" data-toggle="tab" aria-expanded="true">@lang('bank_accounts.view_account')</a></li>
       <li class=""><a href="#bank-accounts-reports" id="bank-accounts-reports-tab" data-toggle="tab" aria-expanded="false">@lang('bank_accounts.account_reports')</a></li>
+      <li class=""><a href="#bank-accounts-pos" id="bank-accounts-pos-tab" data-toggle="tab" aria-expanded="false">@lang('bank_accounts.pos')</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="bank-accounts-view-accounts">
@@ -178,6 +189,40 @@ $(document).on('click', '#bank-accounts-reports-tab', function(e) {
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="bank-accounts-pos">
+        <div class="row" style="padding-top:15px;">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+            <div class="box">
+              <div class="box-body table-responsive no-padding swift-table">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>@lang('bank_accounts.code')</th>
+                      <th>@lang('bank_accounts.name')</th>
+                      <th>@lang('bank_accounts.bank_commission')</th>
+                      <th>@lang('bank_accounts.government_commission')</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row form-inline">
+          <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <button type="button" class="btn btn-success" id="bank-accounts-pos-create">
+                <i class="fa fa-plus"></i> @lang('bank_accounts.create_pos')
+              </button>
             </div>
           </div>
         </div>

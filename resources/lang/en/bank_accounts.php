@@ -32,4 +32,10 @@ return [
     'generate' => 'Generate',
     'print' => 'Print',
     'type' => 'Type',
+    'pos' => 'POS',
+    'create_pos' => 'Create POS',
+    'code' => 'Code',
+    'name' => 'Name',
+    'bank_commission' => 'Bank Commission',
+    'government_commission' => 'Government Commission',
 ];

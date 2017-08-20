@@ -32,4 +32,12 @@ return [
     'generate' => 'Generar',
     'print' => 'Imprimir',
     'type' => 'Tipo',
+    'pos' => 'POS',
+    'create_pos' => 'Crear POS',
+    'code' => 'Codigo',
+    'name' => 'Nombre',
+    'bank_commission' => 'Comision Bancaria',
+    'government_commission' => 'Comision Gubernamental',
+
+
 ];

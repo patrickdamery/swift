@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UtilityBill extends Model
+class WorkerLongTermLoan extends Model
 {
 
   use SoftDeletes;
@@ -15,7 +15,7 @@ class UtilityBill extends Model
    *
    * @var string
    */
-  protected $table = 'utility_bills';
+  protected $table = 'worker_long_term_loans';
 
   /**
    * The attributes that are mass assignable.

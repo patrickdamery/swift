@@ -20,7 +20,7 @@ class POS extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'bank_account_code', 'bank_commission', 'government_commission'
+      'code', 'bank_account_code', 'name', 'bank_commission', 'government_commission'
   ];
 
   /**

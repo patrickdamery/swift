@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-class AIOrder extends Model
+class AssetDecay extends Model
 {
 
   /**

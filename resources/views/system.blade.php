@@ -401,6 +401,33 @@
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#products');
               });
+              option = {
+                'providers': '/swift/system/providers'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#providers', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#providers', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#providers');
+              });
+              option = {
+                'categories': '/swift/system/categories'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#categories', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#categories', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#categories');
+              });
+              option = {
+                'purchases': '/swift/system/purchases'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#purchases', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#purchases', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#purchases');
+              });
             </script>
             <li class="treeview">
               <a href="">
@@ -409,11 +436,11 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="#products" id="products"><i class="fa fa-cube"></i> @lang('swift_menu.view_products')</a></li>
-                <li><a href="#providers"><i class="fa fa-industry"></i> @lang('swift_menu.view_providers')</a></li>
-                <li><a href="#categories"><i class="fa fa-list"></i> @lang('swift_menu.view_categories')</a></li>
-                <li><a href="#measurement_units"><i class="fa fa-list"></i> @lang('swift_menu.measurement_units')</a></li>
-                <li><a href="#purchases"><i class="fa fa-list"></i> @lang('swift_menu.view_purchases')</a></li>
-                <li><a href="#local_purchase"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
+                <li><a href="#providers" id="providers"><i class="fa fa-industry"></i> @lang('swift_menu.view_providers')</a></li>
+                <li><a href="#categories" id="categories"><i class="fa fa-list"></i> @lang('swift_menu.view_categories')</a></li>
+                <li><a href="#measurement_units" id="measurement_units"><i class="fa fa-list"></i> @lang('swift_menu.measurement_units')</a></li>
+                <li><a href="#purchases" id="purchases"><i class="fa fa-shopping-cart"></i> @lang('swift_menu.view_purchases')</a></li>
+                <li><a href="#local_purchase" id="local_purchase"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
                 <li class="treeview">
                   <a href=""><i class="fa fa-ship"></i> @lang('swift_menu.international_purchase')</a>
                   <ul class="treeview-menu">
@@ -450,13 +477,24 @@
             </li>
           @endif
           @if($modules->staff == 1)
+            <script>
+              var option = {
+                'staff': '/swift/system/staff'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#staff', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#staff', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#staff');
+              });
+            </script>
             <li class="treeview">
               <a href="">
                 <i class="fa fa-users"></i>
                 <span>@lang('swift_menu.staff')</span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="#staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
+                <li><a href="#staff" id="staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
                 <li><a href="#staff_config"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
                 <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
                 <li><a href="#staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
@@ -465,15 +503,46 @@
             </li>
           @endif
           @if($modules->vehicles == 1)
+            <script>
+              var option = {
+                'vehicles': '/swift/system/vehicles'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#vehicles', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#vehicles', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#vehicles');
+              });
+
+              option = {
+                'journeys': '/swift/system/journeys'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#journeys', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#journeys', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#journeys');
+              });
+
+              option = {
+                'routes': '/swift/system/routes'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#routes', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#routes', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#routes');
+              });
+            </script>
             <li class="treeview">
               <a href="">
                 <i class="fa fa-truck"></i>
                 <span>@lang('swift_menu.vehicles')</span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="#view_vehicles"><i class="fa fa-car"></i> @lang('swift_menu.view_vehicles')</a></li>
-                <li><a href="#view_trips"><i class="fa fa-map"></i> @lang('swift_menu.view_trips')</a></li>
-                <li><a href="#routes"><i class="fa fa-map-signs"></i> @lang('swift_menu.routes')</a></li>
+                <li><a href="#view_vehicles" id="vehicles"><i class="fa fa-car"></i> @lang('swift_menu.view_vehicles')</a></li>
+                <li><a href="#view_trips" id="journeys"><i class="fa fa-map"></i> @lang('swift_menu.view_trips')</a></li>
+                <li><a href="#routes" id="routes"><i class="fa fa-map-signs"></i> @lang('swift_menu.routes')</a></li>
               </ul>
             </li>
           @endif
@@ -550,7 +619,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="main-content">
-      @include('system.pages.sales_analytics')
+      @include('system.pages.providers')
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

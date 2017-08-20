@@ -78,6 +78,27 @@ Route::prefix('swift')->group(function() {
     Route::post('products', function() {
         return view('system.pages.products');
     });
+    Route::post('providers', function() {
+        return view('system.pages.providers');
+    });
+    Route::post('categories', function() {
+        return view('system.pages.categories');
+    });
+    Route::post('purchases', function() {
+        return view('system.pages.purchases');
+    });
+    Route::post('staff', function() {
+        return view('system.pages.staff');
+    });
+    Route::post('vehicles', function() {
+        return view('system.pages.vehicles');
+    });
+    Route::post('journeys', function() {
+        return view('system.pages.journeys');
+    });
+    Route::post('routes', function() {
+        return view('system.pages.routes');
+    });
     Route::post('bank_accounts', function() {
         return view('system.pages.bank_accounts');
     });
