@@ -8,7 +8,7 @@
 <script>
 $(function(){
  $('.daterangepicker-sel').daterangepicker({
-        format: 'mm-dd-yyyy'
+        format: 'dd-mm-yyyy'
       });
   });
   swift_menu.new_submenu();

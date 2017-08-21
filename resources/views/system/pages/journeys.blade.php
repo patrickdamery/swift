@@ -8,7 +8,7 @@
  <script>
  $(function(){
   $('.daterangepicker-sel').daterangepicker({
-         format: 'mm-dd-yyyy'
+         format: 'dd-mm-yyyy'
        });
    });
 </script>

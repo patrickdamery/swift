@@ -13,9 +13,20 @@ return [
     |
     */
 
-    'title' => 'Categorias',
-    'view_categories' => 'Ver Categorias',
-    'code' => 'Codigo',
-    'search' => 'Buscar',
-    'create' => 'Crear',
+    'title' => 'Order Suggestion',
+    'make_suggestion' => 'Make Suggestion',
+    'provider' => 'Provider',
+    'range' => 'Days Range Data',
+    'term' => 'Days Order Term',
+    'suggest' => 'Generate Suggestion',
+    'auto' => 'Auto Order',
+    'yes' => 'Yes',
+    'no' => 'No',
+    'save' => 'Save',
+    'code' => 'Code',
+    'description' => 'Description',
+    'cost' => 'Cost',
+    'existence' => 'Existence',
+    'order' => 'Order',
+    'print' => 'Print',
 ];

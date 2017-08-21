@@ -13,8 +13,9 @@ return [
     |
     */
 
-    'username' => 'Username',
-    'password' => 'Password',
-    'forgot' => 'I forgot my password',
-    'signin' => 'Sign In',
+    'title' => 'Categories',
+    'view_categories' => 'View Categories',
+    'code' => 'Code',
+    'search' => 'Search',
+    'create' => 'Create',
 ];

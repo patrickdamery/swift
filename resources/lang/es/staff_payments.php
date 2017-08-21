@@ -13,9 +13,8 @@ return [
     |
     */
 
-    'title' => 'Categorias',
-    'view_categories' => 'Ver Categorias',
-    'code' => 'Codigo',
-    'search' => 'Buscar',
-    'create' => 'Crear',
+    'username' => 'Username',
+    'password' => 'Password',
+    'forgot' => 'I forgot my password',
+    'signin' => 'Sign In',
 ];

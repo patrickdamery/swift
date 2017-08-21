@@ -84,11 +84,23 @@ Route::prefix('swift')->group(function() {
     Route::post('categories', function() {
         return view('system.pages.categories');
     });
+    Route::post('measurement_units', function() {
+        return view('system.pages.measurement_units');
+    });
     Route::post('purchases', function() {
         return view('system.pages.purchases');
     });
+    Route::post('local_purchases', function() {
+        return view('system.pages.local_purchases');
+    });
+    Route::post('suggestions', function() {
+        return view('system.pages.suggestions');
+    });
     Route::post('staff', function() {
         return view('system.pages.staff');
+    });
+    Route::post('staff_payments', function() {
+        return view('system.pages.staff_payments');
     });
     Route::post('vehicles', function() {
         return view('system.pages.vehicles');

@@ -420,6 +420,15 @@
                 swift_event_tracker.fire_event(e, '#categories');
               });
               option = {
+                'measurement_units': '/swift/system/measurement_units'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#measurement_units', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#measurement_units', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#measurement_units');
+              });
+              option = {
                 'purchases': '/swift/system/purchases'
               };
               swift_menu.register_menu_option(option);
@@ -427,6 +436,24 @@
               $(document).on('click', '#purchases', function(e) {
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#purchases');
+              });
+              option = {
+                'local_purchases': '/swift/system/local_purchases'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#local_purchases', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#local_purchases', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#local_purchases');
+              });
+              option = {
+                'suggestions': '/swift/system/suggestions'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#suggestions', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#suggestions', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#suggestions');
               });
             </script>
             <li class="treeview">
@@ -440,7 +467,7 @@
                 <li><a href="#categories" id="categories"><i class="fa fa-list"></i> @lang('swift_menu.view_categories')</a></li>
                 <li><a href="#measurement_units" id="measurement_units"><i class="fa fa-list"></i> @lang('swift_menu.measurement_units')</a></li>
                 <li><a href="#purchases" id="purchases"><i class="fa fa-shopping-cart"></i> @lang('swift_menu.view_purchases')</a></li>
-                <li><a href="#local_purchase" id="local_purchase"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
+                <li><a href="#local_purchases" id="local_purchases"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
                 <li class="treeview">
                   <a href=""><i class="fa fa-ship"></i> @lang('swift_menu.international_purchase')</a>
                   <ul class="treeview-menu">
@@ -449,7 +476,7 @@
                     <li><a href="#importation_bill"><i class="fa fa-file-text-o"></i> @lang('swift_menu.importation_bill')</a></li>
                   </ul>
                 </li>
-                <li><a href="#suggestions"><i class="fa fa-sitemap"></i> @lang('swift_menu.purchase_suggestion')</a></li>
+                <li><a href="#suggestions" id="suggestions"><i class="fa fa-sitemap"></i> @lang('swift_menu.purchase_suggestion')</a></li>
               </ul>
             </li>
           @endif
@@ -487,6 +514,15 @@
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#staff');
               });
+              option = {
+                'staff_payments': '/swift/system/staff_payments'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#staff_payments', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#staff_payments', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#staff_payments');
+              });
             </script>
             <li class="treeview">
               <a href="">
@@ -497,7 +533,7 @@
                 <li><a href="#staff" id="staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
                 <li><a href="#staff_config"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
                 <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
-                <li><a href="#staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
+                <li><a href="#staff_payments" id="staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
                 <li><a href="#staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
               </ul>
             </li>

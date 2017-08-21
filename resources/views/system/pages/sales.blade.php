@@ -9,7 +9,7 @@
 <script>
 $(function(){
  $('.datepicker').datepicker({
-        format: 'mm-dd-yyyy'
+        format: 'dd-mm-yyyy'
       });
   });
   swift_menu.new_submenu();

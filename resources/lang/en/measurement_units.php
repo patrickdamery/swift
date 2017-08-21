@@ -13,9 +13,11 @@ return [
     |
     */
 
-    'title' => 'Categorias',
-    'view_categories' => 'Ver Categorias',
-    'code' => 'Codigo',
-    'search' => 'Buscar',
-    'create' => 'Crear',
+    'title' => 'Measurement Units',
+    'view_units' => 'View Measurement Units',
+    'units' => 'Units',
+    'create'  => 'Create',
+    'to' => 'Convert To',
+    'factor' => 'Conversion Factor',
+    'create_conversion' => 'Create Convertion',
 ];
