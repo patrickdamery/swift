@@ -60,6 +60,7 @@ Route::prefix('swift')->group(function() {
         return redirect('login');
       }
     });
+    // Sales Module Views.
     Route::post('sales', function() {
         return view('system.pages.sales');
     });
@@ -75,6 +76,8 @@ Route::prefix('swift')->group(function() {
     Route::post('sales_analytics', function() {
         return view('system.pages.sales_analytics');
     });
+
+    // Products Module Views.
     Route::post('products', function() {
         return view('system.pages.products');
     });
@@ -96,12 +99,36 @@ Route::prefix('swift')->group(function() {
     Route::post('suggestions', function() {
         return view('system.pages.suggestions');
     });
+
+    // warehouse Module Views.
+    Route::post('warehouse', function() {
+        return view('system.pages.warehouse');
+    });
+    Route::post('stock', function() {
+        return view('system.pages.stock');
+    });
+    Route::post('stock_movement', function() {
+        return view('system.pages.stock_movement');
+    });
+    Route::post('product_existance', function() {
+        return view('system.pages.product_existance');
+    });
+
+    // Staff Module Views.
     Route::post('staff', function() {
         return view('system.pages.staff');
+    });
+    Route::post('staff_configuration', function() {
+        return view('system.pages.staff_configuration');
     });
     Route::post('staff_payments', function() {
         return view('system.pages.staff_payments');
     });
+    Route::post('staff_assistance', function() {
+        return view('system.pages.staff_assistance');
+    });
+
+    // Vehicles Module Views.
     Route::post('vehicles', function() {
         return view('system.pages.vehicles');
     });
@@ -111,6 +138,8 @@ Route::prefix('swift')->group(function() {
     Route::post('routes', function() {
         return view('system.pages.routes');
     });
+
+    // Accounting Module Views.
     Route::post('bank_accounts', function() {
         return view('system.pages.bank_accounts');
     });

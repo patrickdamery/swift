@@ -22,7 +22,7 @@ return [
     'email' => 'Correo',
     'ruc' => 'RUC',
     'contributor_type' => 'Tipo de Contribuidor',
-    'small_contributor' => 'Pequeño Contribuidor',
+    'small_contributor' => 'Cuota Fija',
     'collects_VAT' => 'Recolector IVA',
     'big_contributor' => 'Gran Contribuidor',
     'type' => 'Tipo de Proveedor',

@@ -8,15 +8,7 @@
                                       'en': 'View Services',
                                       'es': 'Ver Servicios'
                                     });
-  swift_menu.get_language().add_sentence('products-view-analysis-tab', {
-                                      'en': 'View Analysis',
-                                      'es': 'Ver Analisis'
-                                    });
 
-swift_event_tracker.register_swift_event('#products-view-analysis-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#products-view-analysis-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#products-view-analysis-tab');
-});
 
 swift_event_tracker.register_swift_event('#products-view-service-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#products-view-service-tab', function(e) {
@@ -44,7 +36,6 @@ $(document).on('click', '#products-view-product-tab', function(e) {
     <ul class="nav nav-tabs">
       <li class="active"><a href="#products-view-product" id="products-view-product-tab" data-toggle="tab" aria-expanded="true">@lang('products.view_product')</a></li>
       <li class=""><a href="#products-view-service" id="products-view-service-tab" data-toggle="tab" aria-expanded="false">@lang('products.view_service')</a></li>
-      <li class=""><a href="#products-view-analysis" id="products-view-analysis-tab" data-toggle="tab" aria-expanded="false">@lang('products.view_analysis')</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="products-view-product">
@@ -52,7 +43,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="products-product-code" class="control-label">@lang('products.product_code')</label>
-              <input type="email" class="form-control" id="products-product-code">
+              <input type="text" class="form-control" id="products-product-code">
             </div>
           </div>
           <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
@@ -106,7 +97,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
           <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="products-service-code" class="control-label">@lang('products.service_code')</label>
-              <input type="email" class="form-control" id="products-service-code">
+              <input type="text" class="form-control" id="products-service-code">
             </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
@@ -138,9 +129,6 @@ $(document).on('click', '#products-view-product-tab', function(e) {
             </div>
           </div>
         </div>
-      </div>
-      <div class="tab-pane" id="products-view-analysis">
-
       </div>
       <!-- /.tab-pane -->
     </div>

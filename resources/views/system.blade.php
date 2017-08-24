@@ -481,25 +481,48 @@
             </li>
           @endif
           @if($modules->warehouses == 1)
+            <script>
+              var option = {
+                'warehouse': '/swift/system/warehouse'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#warehouse', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#warehouse', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#warehouse');
+              });
+
+              option = {
+                'stock': '/swift/system/stock'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#stock', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#stock', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#stock');
+              });
+
+              option = {
+                'stock_movement': '/swift/system/stock_movement'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#stock_movement', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#stock_movement', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#stock_movement');
+              });
+            </script>
             <li class="treeview">
               <a href="">
                 <i class="fa fa-building"></i>
                 <span>@lang('swift_menu.warehouses')</span>
               </a>
               <ul class="treeview-menu">
-              <li><a href="#warehouse"><i class="fa fa-building"></i> @lang('swift_menu.view_warehouse')</a></li>
-              <li><a href="#location"><i class="fa fa-table"></i> @lang('swift_menu.view_location')</a></li>
-              <li><a href="#receive_products"><i class="fa fa-plus"></i> @lang('swift_menu.receive_products')</a></li>
-              <li><a href="#dispatch_products"><i class="fa fa-minus"></i> @lang('swift_menu.dispatch_products')</a></li>
-                <li class="treeview">
-                  <a href=""><i class="fa fa-list"></i> @lang('swift_menu.stock')</a>
-                  <ul class="treeview-menu">
-                    <li><a href="#product_stock"><i class="fa fa-cube"></i> @lang('swift_menu.product_stock')</a></li>
-                    <li><a href="#stocktake"><i class="fa fa-list"></i> @lang('swift_menu.stock_take')</a></li>
-                    <li><a href="#stocktake_result"><i class="fa fa-file-text-o"></i> @lang('swift_menu.stock_take_result')</a></li>
-                  </ul>
-                </li>
-                <li><a href="#stock_movement"><i class="fa fa-arrows-h"></i> @lang('swift_menu.stock_movement')</a></li>
+                <li><a href="#warehouse" id="warehouse"><i class="fa fa-building"></i> @lang('swift_menu.view_warehouse')</a></li>
+                <li><a href="#receive_products"><i class="fa fa-plus"></i> @lang('swift_menu.receive_products')</a></li>
+                <li><a href="#dispatch_products"><i class="fa fa-minus"></i> @lang('swift_menu.dispatch_products')</a></li>
+                <li><a href="#stock" id="stock"><i class="fa fa-list"></i> @lang('swift_menu.stock')</a></li>
+                <li><a href="#stock_movement" id="stock_movement"><i class="fa fa-arrows-h"></i> @lang('swift_menu.stock_movement')</a></li>
               </ul>
             </li>
           @endif
@@ -515,6 +538,15 @@
                 swift_event_tracker.fire_event(e, '#staff');
               });
               option = {
+                'staff_configuration': '/swift/system/staff_configuration'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#staff_configuration', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#staff_configuration', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#staff_configuration');
+              });
+              option = {
                 'staff_payments': '/swift/system/staff_payments'
               };
               swift_menu.register_menu_option(option);
@@ -522,6 +554,15 @@
               $(document).on('click', '#staff_payments', function(e) {
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#staff_payments');
+              });
+              option = {
+                'staff_assistance': '/swift/system/staff_assistance'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#staff_assistance', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#staff_assistance', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#staff_assistance');
               });
             </script>
             <li class="treeview">
@@ -531,10 +572,10 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="#staff" id="staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
-                <li><a href="#staff_config"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
+                <li><a href="#staff_config" id="staff_configuration"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
                 <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
                 <li><a href="#staff_payments" id="staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
-                <li><a href="#staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
+                <li><a href="#staff_assistance" id="staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
               </ul>
             </li>
           @endif
