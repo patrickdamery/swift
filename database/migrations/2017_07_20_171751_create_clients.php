@@ -21,7 +21,6 @@ class CreateClients extends Migration
             $table->string('company_code', 10);
             $table->string('phone', 10);
             $table->string('email', 20);
-            $table->text('address');
             $table->string('ocupation', 30);
             $table->tinyInteger('type');
             $table->boolean('has_credit')->default(false);

@@ -32,4 +32,5 @@ return [
     'difference' => 'Diferencia',
     'state' => 'Estado',
     'save' => 'Guardar',
+    'search' => 'Buscar',
 ];

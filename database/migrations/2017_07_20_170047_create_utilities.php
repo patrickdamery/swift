@@ -18,7 +18,7 @@ class CreateUtilities extends Migration
             $table->string('code', 10)->unique();
             $table->string('provider_code', 10);
             $table->string('branch_code', 10);
-            $table->string('nombre', 15);
+            $table->string('name', 15);
             $table->string('interval', 8);
             $table->double('average');
             $table->double('taxes');

@@ -20,7 +20,7 @@ class Utility extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'provider_code', 'branch_code', 'nombre', 'interval', 'average',
+      'code', 'provider_code', 'branch_code', 'name', 'interval', 'average',
       'taxes', 'account_code'
   ];
 

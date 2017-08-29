@@ -38,7 +38,7 @@ $(document).on('click', '#sales-analytics-tab', function(e) {
       <li class="active"><a href="#sales-analytics" id="sales-analytics-tab" data-toggle="tab" aria-expanded="true">@lang('sales_analytics.view_analytics')</a></li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane active" id="discounts-view-discounts">
+      <div class="tab-pane active" id="sales-analytics">
         <div class="row form-inline">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="form-group">

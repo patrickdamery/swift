@@ -21,6 +21,7 @@ return [
     'make_order' => 'Realizar Pedido',
     'view_order' => 'Ver Pedido',
     'load_order' => 'Cargar Pedido',
+    'cashbox' => 'Caja',
     'clients' => 'Clientes',
     'view_client' => 'Ver Cliente',
     'credit_client' => 'Credito de Cliente',

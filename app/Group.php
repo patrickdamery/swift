@@ -23,6 +23,18 @@ class Group extends Model
   protected $fillable = [
       'code', 'name', 'type', 'members'
   ];
+  /**
+   *  Type Definition:
+   *  0 = Not Asigned
+   *  1 = Branch
+   *  2 = Worker
+   *  3 = Client
+   *  4 = Vehicles
+   *  5 = Views
+   *  6 = ChatGroup
+   *  7 = Discounts
+   *  8 = Commissions
+   */
 
   /**
    * Disable Timestamps.

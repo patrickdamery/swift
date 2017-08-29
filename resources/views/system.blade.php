@@ -321,9 +321,20 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">@lang('swift_menu.main_menu')</li>
+          <script>
+            var option = {
+              'profile': '/swift/system/profile'
+            };
+            swift_menu.register_menu_option(option);
+            swift_event_tracker.register_swift_event('#profile', 'click', swift_menu, 'select_menu_option');
+            $(document).on('click', '#profile', function(e) {
+              e.preventDefault();
+              swift_event_tracker.fire_event(e, '#profile');
+            });
+          </script>
           <li>
-            <a href="#dashboard">
-              <i class="fa fa-dashboard"></i> <span>@lang('swift_menu.dashboard')</span>
+            <a href="#profile" id="profile">
+              <i class="fa fa-user"></i> <span>@lang('swift_menu.profile')</span>
             </a>
           </li>
           @if($modules->sales_stock == 1)
@@ -346,6 +357,16 @@
               $(document).on('click', '#orders', function(e) {
                 e.preventDefault();
                 swift_event_tracker.fire_event(e, '#orders');
+              });
+
+              option = {
+                'cashbox': '/swift/system/cashbox'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#cashbox', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#cashbox', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#cashbox');
               });
 
               option = {
@@ -386,6 +407,7 @@
               <ul class="treeview-menu">
                 <li><a href="#sales" id="sales"><i class="fa fa-money"></i> @lang('swift_menu.sales')</a></li>
                 <li><a href="#orders" id="orders"><i class="fa fa-cubes"></i> @lang('swift_menu.orders')</a></li>
+                <li><a href="#cashbox" id="cashbox"><i class="fa fa-money"></i> @lang('swift_menu.cashbox')</a></li>
                 <li><a href="#clients" id="clients"><i class="fa fa-group"></i> @lang('swift_menu.clients')</a></li>
                 <li><a href="#discounts" id="discounts"><i class="fa fa-tag"></i> @lang('swift_menu.discounts')</a></li>
                 <li><a href="#sales_analytics" id="sales_analytics"><i class="fa fa-line-chart"></i> @lang('swift_menu.sales_analysis')</a></li>
@@ -547,6 +569,15 @@
                 swift_event_tracker.fire_event(e, '#staff_configuration');
               });
               option = {
+                'staff_analytics': '/swift/system/staff_analytics'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#staff_analytics', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#staff_analytics', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#staff_analytics');
+              });
+              option = {
                 'staff_payments': '/swift/system/staff_payments'
               };
               swift_menu.register_menu_option(option);
@@ -573,7 +604,7 @@
               <ul class="treeview-menu">
                 <li><a href="#staff" id="staff"><i class="fa fa-user"></i> @lang('swift_menu.view_staff')</a></li>
                 <li><a href="#staff_config" id="staff_configuration"><i class="fa fa-cogs"></i> @lang('swift_menu.staff_config')</a></li>
-                <li><a href="#staff_analysis"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
+                <li><a href="#staff_analytics" id="staff_analytics"><i class="fa fa-pie-chart"></i> @lang('swift_menu.staff_analysis')</a></li>
                 <li><a href="#staff_payments" id="staff_payments"><i class="fa fa-money"></i> @lang('swift_menu.staff_payments')</a></li>
                 <li><a href="#staff_assistance" id="staff_assistance"><i class="fa fa-calendar-check-o"></i> @lang('swift_menu.staff_assistance')</a></li>
               </ul>
@@ -678,13 +709,24 @@
               </ul>
             </li>
           @endif
+          <script>
+            var option = {
+              'branch': '/swift/system/branch'
+            };
+            swift_menu.register_menu_option(option);
+            swift_event_tracker.register_swift_event('#branch', 'click', swift_menu, 'select_menu_option');
+            $(document).on('click', '#branch', function(e) {
+              e.preventDefault();
+              swift_event_tracker.fire_event(e, '#branch');
+            });
+          </script>
           <li class="treeview">
             <a href="">
               <i class="fa fa-cogs"></i>
               <span>@lang('swift_menu.general_config')</span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="#branches"><i class="fa fa-building"></i> @lang('swift_menu.branches')</a></li>
+              <li><a href="#branch" id="branch"><i class="fa fa-building"></i> @lang('swift_menu.branches')</a></li>
               <li><a href="#groups"><i class="fa fa-users"></i> @lang('swift_menu.groups')</a></li>
               <li><a href="#configuration"><i class="fa fa-cogs"></i> @lang('swift_menu.config')</a></li>
               <li><a href="#database"><i class="fa fa-database"></i> @lang('swift_menu.database')</a></li>
@@ -696,7 +738,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="main-content">
-      @include('system.pages.providers')
+      @include('system.pages.staff_assistance')
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

@@ -18,6 +18,7 @@ class test_seed extends Seeder
         $branch_location = \App\Location::create(array(
           'code' => '1',
           'description' => 'provider location',
+          'address' => 'provider address',
           'latitude' => '17',
           'longitude' => '54'
         ));
@@ -25,6 +26,7 @@ class test_seed extends Seeder
         $branch_location = \App\Location::create(array(
           'code' => $location->code+1,
           'description' => 'provider location',
+          'address' => 'Direccion Sucursal 1',
           'latitude' => '17',
           'longitude' => '54'
         ));
@@ -33,7 +35,6 @@ class test_seed extends Seeder
           'code' => '1',
           'name' => 'Sucursal 1',
           'phone' => '1234-5464',
-          'address' => 'Direccion Sucursal 1',
           'type' => 1,
           'location_code' => $branch_location->code
       ]);
@@ -63,6 +64,7 @@ class test_seed extends Seeder
         $provider_location = \App\Location::create(array(
           'code' => '1',
           'description' => 'provider location',
+          'address' => 'provider address',
           'latitude' => '17',
           'longitude' => '54'
         ));
@@ -70,6 +72,7 @@ class test_seed extends Seeder
         $provider_location = \App\Location::create(array(
           'code' => $location->code+1,
           'description' => 'provider location',
+          'address' => 'provider address',
           'latitude' => '17',
           'longitude' => '54'
         ));

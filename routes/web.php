@@ -60,12 +60,18 @@ Route::prefix('swift')->group(function() {
         return redirect('login');
       }
     });
+    Route::post('profile', function() {
+        return view('system.pages.profile');
+    });
     // Sales Module Views.
     Route::post('sales', function() {
         return view('system.pages.sales');
     });
     Route::post('orders', function() {
         return view('system.pages.orders');
+    });
+    Route::post('cashbox', function() {
+        return view('system.pages.cashbox');
     });
     Route::post('clients', function() {
         return view('system.pages.clients');
@@ -121,6 +127,9 @@ Route::prefix('swift')->group(function() {
     Route::post('staff_configuration', function() {
         return view('system.pages.staff_configuration');
     });
+    Route::post('staff_analytics', function() {
+        return view('system.pages.staff_analytics');
+    });
     Route::post('staff_payments', function() {
         return view('system.pages.staff_payments');
     });
@@ -151,6 +160,11 @@ Route::prefix('swift')->group(function() {
     });
     Route::post('journal', function() {
         return view('system.pages.journal');
+    });
+
+    // Configuration Views.
+    Route::post('branch', function() {
+        return view('system.pages.branch');
     });
   });
 

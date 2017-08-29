@@ -86,6 +86,7 @@ class init_seed extends Seeder
       DB::table('locations')->insert([
         'code' => '0',
         'description' => 'No Asignado',
+        'address' => 'No Asignado',
         'latitude' => 0,
         'longitude' => 0
       ]);

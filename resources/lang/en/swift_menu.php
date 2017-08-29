@@ -21,6 +21,7 @@ return [
     'make_order' => 'Make Order',
     'view_order' => 'View Order',
     'load_order' => 'Load Order',
+    'cashbox' => 'Cashbox',
     'clients' => 'Clients',
     'view_client' => 'View Client',
     'credit_client' => 'Client Credit',

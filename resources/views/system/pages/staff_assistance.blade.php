@@ -45,94 +45,59 @@ $(document).on('click', '#staff-assistance-entries-tab', function(e) {
 <section class="content">
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#staff-assistance-schedule" id="staff-assistance-schedule-tab" data-toggle="tab" aria-expanded="true">@lang('staff_assistance.view_staff')</a></li>
-      <li><a href="#staff-assistance-entries" id="staff-assistance-entries-tab" data-toggle="tab" aria-expanded="true">@lang('staff_assistance.group_payments')</a></li>
+      <li class="active"><a href="#staff-assistance-schedule" id="staff-assistance-schedule-tab" data-toggle="tab" aria-expanded="true">@lang('staff_assistance.view_schedule')</a></li>
+      <li><a href="#staff-assistance-entries" id="staff-assistance-entries-tab" data-toggle="tab" aria-expanded="true">@lang('staff_assistance.view_entries')</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="staff-assistance-schedule">
         <div class="row form-inline">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="staff-assistance-staff-code" class="control-label">@lang('staff_assistance.code')</label>
-              <input type="text" class="form-control" id="staff-assistance-staff-code">
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-            <div class="form-group">
-              <label for="staff-assistance-staff-branch" class="control-label">@lang('staff_assistance.branch')</label>
-              <select class="form-control" id="staff-assistance-staff-branch">
-                @foreach(\App\Branch::all() as $branch)
-                  <option value="{{ $branch->code }}">{{ $branch->name }}</option>
+              <label for="staff-assistance-schedule" class="control-label">@lang('staff_assistance.schedule')</label>
+              <select class="form-control" id="staff-assistance-schedule">
+                @foreach(\App\Schedule::all() as $schedule)
+                  <option value="{{ $schedule->code }}">{{ $schedule->description }}</option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <button type="button" class="btn btn-success" id="staff-assistance-staff-search">
-                <i class="fa fa-search"></i> @lang('staff_assistance.search')
+              <button type="button" class="btn btn-success" id="staff-assistance-create">
+                <i class="fa fa-plus"></i> @lang('staff_assistance.create')
               </button>
             </div>
           </div>
         </div>
         <div class="row" style="padding-top:15px;">
-        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 center-block" style="padding-top:15px;">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block" style="padding-top:15px;">
             <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">@lang('staff_assistance.income')</h3>
-              </div>
               <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('staff_assistance.date')</th>
-                      <th>@lang('staff_assistance.hours')</th>
-                      <th>@lang('staff_assistance.salary')</th>
-                      <th>@lang('staff_assistance.commission')</th>
-                      <th>@lang('staff_assistance.total')</th>
+                      <th>@lang('staff_assistance.time')</th>
+                      <th>@lang('staff_assistance.monday')</th>
+                      <th>@lang('staff_assistance.tuesday')</th>
+                      <th>@lang('staff_assistance.wednesday')</th>
+                      <th>@lang('staff_assistance.thursday')</th>
+                      <th>@lang('staff_assistance.friday')</th>
+                      <th>@lang('staff_assistance.saturday')</th>
+                      <th>@lang('staff_assistance.sunday')</th>
                     </tr>
                   </thead>
                   <tbody>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 center-block" style="padding-top:15px;">
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">@lang('staff_assistance.loans')</h3>
-              </div>
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('staff_assistance.date')</th>
-                      <th>@lang('staff_assistance.description')</th>
-                      <th>@lang('staff_assistance.loan')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div class="form-group">
-              <button type="button" class="btn btn-success" id="staff-assistance-staff-add">
-                <i class="fa fa-plus"></i> @lang('staff_assistance.add_hours')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="staff-assistance-staff-loan">
-                <i class="fa fa-minus"></i> @lang('staff_assistance.loan')
+              <button type="button" class="btn btn-info" id="staff-assistance-print">
+                <i class="fa fa-print"></i> @lang('staff_assistance.print')
               </button>
             </div>
           </div>
@@ -140,14 +105,21 @@ $(document).on('click', '#staff-assistance-entries-tab', function(e) {
       </div>
       <div class="tab-pane" id="staff-assistance-entries">
         <div class="row form-inline">
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="staff-assistance-group-branch" class="control-label">@lang('staff_assistance.branch')</label>
-              <select class="form-control" id="staff-assistance-group-branch">
-                @foreach(\App\Branch::all() as $branch)
-                  <option value="{{ $branch->code }}">{{ $branch->name }}</option>
-                @endforeach
-              </select>
+              <label for="staff-assistance-worker" class="control-label">@lang('staff_assistance.worker')</label>
+              <input type="text" class="form-control" id="staff-assistance-worker">
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="staff-assistance-date-range" class="control-label">@lang('staff_assistance.date_range')</label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control daterangepicker-sel" id="staff-assistance-date-range">
+              </div>
             </div>
           </div>
         </div>
@@ -158,14 +130,10 @@ $(document).on('click', '#staff-assistance-entries-tab', function(e) {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('staff_assistance.select')</th>
-                      <th>@lang('staff_assistance.worker')</th>
-                      <th>@lang('staff_assistance.salary')</th>
-                      <th>@lang('staff_assistance.loan')</th>
-                      <th>@lang('staff_assistance.commission')</th>
-                      <th>@lang('staff_assistance.bonus')</th>
-                      <th>@lang('staff_assistance.holidays')</th>
-                      <th>@lang('staff_assistance.antiquity')</th>
+                      <th>@lang('staff_assistance.date')</th>
+                      <th>@lang('staff_assistance.hour')</th>
+                      <th>@lang('staff_assistance.type')</th>
+                      <th>@lang('staff_assistance.state')</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -178,8 +146,8 @@ $(document).on('click', '#staff-assistance-entries-tab', function(e) {
         <div class="row form-inline">
           <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="form-group">
-              <button type="button" class="btn btn-success" id="staff-assistance-group-pay">
-                <i class="fa fa-money"></i> @lang('staff_assistance.pay')
+              <button type="button" class="btn btn-info" id="staff-assistance-group-print">
+                <i class="fa fa-print"></i> @lang('staff_assistance.print')
               </button>
             </div>
           </div>
@@ -187,13 +155,6 @@ $(document).on('click', '#staff-assistance-entries-tab', function(e) {
             <div class="form-group">
               <button type="button" class="btn btn-info" id="staff-assistance-group-download">
                 <i class="fa fa-download"></i> @lang('staff_assistance.download')
-              </button>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="staff-assistance-group-print">
-                <i class="fa fa-print"></i> @lang('staff_assistance.print')
               </button>
             </div>
           </div>
