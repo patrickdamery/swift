@@ -35,6 +35,7 @@ $factory->define(App\Worker::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'legal_id' => $faker->creditCardNumber,
         'job_title' => 'Vendedor',
+        'phone' => $faker->phoneNumber,
         'state' => 1,
         'current_branch_code' => '1',
     ];

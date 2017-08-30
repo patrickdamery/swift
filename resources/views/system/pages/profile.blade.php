@@ -1,437 +1,253 @@
+<?php
+  // Get data we need to display.
+  use App\Configuration;
+  use App\Branch;
+  use App\User;
+  use App\Worker;
 
-    <section class="content-header">
-      <h1>
-        User Profile
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">User profile</li>
-      </ol>
-    </section>
+  $config = Configuration::find(1);
+  $modules = json_decode($config->modules);
+  $worker = Worker::where('code', Auth::user()->worker_code)->first();
+ ?>
+<script>
+$(function(){
+  $('.daterangepicker-sel').daterangepicker({
+         format: 'dd-mm-yyyy'
+  });
+  $(".knob").knob();
+});
+swift_menu.new_submenu();
+swift_menu.get_language().add_sentence('profile-commission-tab', {
+                                      'en': 'View Commissions',
+                                      'es': 'Ver Comisiones',
+                                    });
+swift_menu.get_language().add_sentence('profile-schedule-tab', {
+                                      'en': 'View Schedule',
+                                      'es': 'Ver Horario',
+                                    });
+swift_menu.get_language().add_sentence('profile-calendar-tab', {
+                                      'en': 'View Calendar',
+                                      'es': 'Ver Calendario',
+                                    });
+swift_event_tracker.register_swift_event('#profile-commission-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#profile-commission-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#profile-commission-tab');
+});
+swift_event_tracker.register_swift_event('#profile-schedule-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#profile-schedule-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#profile-schedule-tab');
+});
+swift_event_tracker.register_swift_event('#profile-calendar-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#profile-calendar-tab', function(e) {
+  swift_event_tracker.fire_event(e, '#profile-calendar-tab');
+  calendar();
+});
+function calendar() {
 
-    <!-- Main content -->
-    <section class="content">
+		$('.calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,basicWeek,basicDay'
+			},
+			defaultDate: '2017-05-12',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: [
+				{
+					title: 'All Day Event',
+					start: '2017-05-01'
+				},
+				{
+					title: 'Long Event',
+					start: '2017-05-07',
+					end: '2017-05-10'
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: '2017-05-09T16:00:00'
+				},
+				{
+					id: 999,
+					title: 'Repeating Event',
+					start: '2017-05-16T16:00:00'
+				},
+				{
+					title: 'Conference',
+					start: '2017-05-11',
+					end: '2017-05-13'
+				},
+				{
+					title: 'Meeting',
+					start: '2017-05-12T10:30:00',
+					end: '2017-05-12T12:30:00'
+				},
+				{
+					title: 'Lunch',
+					start: '2017-05-12T12:00:00'
+				},
+				{
+					title: 'Meeting',
+					start: '2017-05-12T14:30:00'
+				},
+				{
+					title: 'Happy Hour',
+					start: '2017-05-12T17:30:00'
+				},
+				{
+					title: 'Dinner',
+					start: '2017-05-12T20:00:00'
+				},
+				{
+					title: 'Birthday Party',
+					start: '2017-05-13T07:00:00'
+				},
+				{
+					title: 'Click for Google',
+					url: 'http://google.com/',
+					start: '2017-05-28'
+				}
+			]
+		});
 
-      <div class="row">
-        <div class="col-md-3">
-
-          <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="{{ URL::to('/') }}/images/default-profile.png" alt="User profile picture">
-
-              <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-              <p class="text-muted text-center">Software Engineer</p>
-
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Followers</b> <a class="pull-right">1,322</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Following</b> <a class="pull-right">543</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Friends</b> <a class="pull-right">13,287</a>
-                </li>
-              </ul>
-
-              <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-
-          <!-- About Me Box -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">About Me</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-              <p class="text-muted">Malibu, California</p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-              <p>
-                <span class="label label-danger">UI Design</span>
-                <span class="label label-success">Coding</span>
-                <span class="label label-info">Javascript</span>
-                <span class="label label-warning">PHP</span>
-                <span class="label label-primary">Node.js</span>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+	}
+</script>
+<section class="content-header">
+  <h1>
+    @lang('profile.title')
+    <small class="crumb">@lang('measurement_units.view_units')</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><i class="fa fa-user"></i> @lang('profile.title')</li>
+    <li class="active crumb">@lang('profile.view_profile')</li>
+  </ol>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+      <div class="box box-primary">
+        <div class="box-body box-profile">
+          <img class="profile-user-img img-responsive img-circle" src="{{ URL::to('/') }}/images/default-profile.png" alt="User profile picture">
+          <h3 class="profile-username text-center">{{ $worker->name }}</h3>
+          <p class="text-muted text-center">{{ $worker->job_title }}</p>
+          <p class="text-muted text-center">{{ $worker->phone }}</p>
+          <p class="text-muted text-center">{{ $worker->legal_id }}</p>
         </div>
-        <!-- /.col -->
-        <div class="col-md-9">
-          <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-              <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
-              <li><a href="#settings" data-toggle="tab">Settings</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="active tab-pane" id="activity">
-                <!-- Post -->
-                <div class="post">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                          <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                    <span class="description">Shared publicly - 7:30 PM today</span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                  </p>
-                  <ul class="list-inline">
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                    </li>
-                    <li class="pull-right">
-                      <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
-                        (5)</a></li>
-                  </ul>
-
-                  <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                </div>
-                <!-- /.post -->
-
-                <!-- Post -->
-                <div class="post clearfix">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
-                        <span class="username">
-                          <a href="#">Sarah Ross</a>
-                          <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                    <span class="description">Sent you a message - 3 days ago</span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                  </p>
-
-                  <form class="form-horizontal">
-                    <div class="form-group margin-bottom-none">
-                      <div class="col-sm-9">
-                        <input class="form-control input-sm" placeholder="Response">
-                      </div>
-                      <div class="col-sm-3">
-                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <!-- /.post -->
-
-                <!-- Post -->
-                <div class="post">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
-                        <span class="username">
-                          <a href="#">Adam Jones</a>
-                          <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                    <span class="description">Posted 5 photos - 5 days ago</span>
-                  </div>
-                  <!-- /.user-block -->
-                  <div class="row margin-bottom">
-                    <div class="col-sm-6">
-                      <img class="img-responsive" src="../../dist/img/photo1.png" alt="Photo">
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-6">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <img class="img-responsive" src="../../dist/img/photo2.png" alt="Photo">
-                          <br>
-                          <img class="img-responsive" src="../../dist/img/photo3.jpg" alt="Photo">
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-6">
-                          <img class="img-responsive" src="../../dist/img/photo4.jpg" alt="Photo">
-                          <br>
-                          <img class="img-responsive" src="../../dist/img/photo1.png" alt="Photo">
-                        </div>
-                        <!-- /.col -->
-                      </div>
-                      <!-- /.row -->
-                    </div>
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
-
-                  <ul class="list-inline">
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                    </li>
-                    <li class="pull-right">
-                      <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
-                        (5)</a></li>
-                  </ul>
-
-                  <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                </div>
-                <!-- /.post -->
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="timeline">
-                <!-- The timeline -->
-                <ul class="timeline timeline-inverse">
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-red">
-                          10 Feb. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-envelope bg-blue"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                      <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                      <div class="timeline-body">
-                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                        quora plaxo ideeli hulu weebly balihoo...
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">Read more</a>
-                        <a class="btn btn-danger btn-xs">Delete</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-comments bg-yellow"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                      <div class="timeline-body">
-                        Take me to your leader!
-                        Switzerland is small and neutral!
-                        We are more like Germany, ambitious and misunderstood!
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-green">
-                          3 Jan. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-camera bg-purple"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                      <div class="timeline-body">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.tab-pane -->
-
-              <div class="tab-pane" id="settings">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-
-    <div><div class="row docs-premium-template">
-                    <div class="col-sm-12 col-md-6">
-                <div class="box box-solid">
-                    <div class="box-body">
-                        <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
-                            PREMIUM TEMPLATE
-                        </h4>
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="https://wrapbootstrap.com/theme/inspinia-responsive-admin-theme-WB0R5L90S?ref=almasaeed2010">
-                                    <img src="https://d85wutc1n854v.cloudfront.net/live/products/600x375/WB0R5L90S.png?v=1.7" alt="INSPINIA" class="media-object" style="width: 150px;height: auto;border-radius: 4px;box-shadow: 0 1px 3px rgba(0,0,0,.15);">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <div class="clearfix">
-                                    <p class="pull-right">
-                                        <a href="https://wrapbootstrap.com/theme/inspinia-responsive-admin-theme-WB0R5L90S?ref=almasaeed2010" class="btn btn-success btn-sm">
-                                            LEARN MORE
-                                        </a>
-                                    </p>
-
-                                    <h4 style="margin-top: 0">INSPINIA ─ $30</h4>
-
-                                    <p>INSPINIA IN+ - WebApp Admin Theme</p>
-                                    <p style="margin-bottom: 0">
-                                        <i class="fa fa-shopping-cart margin-r5"></i> 41k+ purchases
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#profile-commission" id="profile-commission-tab" data-toggle="tab">@lang('profile.commissions')</a></li>
+          <li><a href="#profile-schedule" id="profile-schedule-tab" data-toggle="tab">@lang('profile.schedule')</a></li>
+          <li><a href="#profile-calendar" id="profile-calendar-tab" data-toggle="tab">@lang('profile.calendar')</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="active tab-pane" id="profile-commission">
+            <div class="row form-inline">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="profile-branch" class="control-label">@lang('profile.branch')</label>
+                  <select class="form-control" id="profile-branch" disabled>
+                    @foreach(\App\Branch::all() as $branch)
+                      <option value="{{ $branch->code }}">{{ $branch->name }}</option>
+                    @endforeach
+                  </select>
                 </div>
-            </div>
-              <div class="col-sm-12 col-md-6">
-                <div class="box box-solid">
-                  <div class="box-body">
-                    <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
-                            PREMIUM TEMPLATE
-                    </h4>
-                    <div class="media">
-                      <div class="media-left">
-                        <a href="https://www.creative-tim.com/product/material-dashboard-pro-angular2?affiliate_id=97705">
-                          <img src="/uploads/images/free_templates/creative-tim-material-angular.png" alt="Material Dashboard Pro" class="media-object" style="width: 150px;height: auto;border-radius: 4px;box-shadow: 0 1px 3px rgba(0,0,0,.15);">
-                        </a>
-                      </div>
-                      <div class="media-body">
-                        <div class="clearfix">
-                          <p class="pull-right">
-                            <a href="https://www.creative-tim.com/product/material-dashboard-pro-angular2?affiliate_id=97705" class="btn btn-success btn-sm">
-                                      LEARN MORE
-                            </a>
-                          </p>
-
-                          <h4 style="margin-top: 0">Material Dashboard Pro ─ $59</h4>
-
-                          <p>Angular 2 Premium Material Bootstrap Admin with a fresh, new design inspired by Google's Material Design</p>
-                          <p style="margin-bottom: 0">
-                            <i class="fa fa-shopping-cart margin-r5"></i> 311+ purchases
-                          </p>
-                        </div>
-                      </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="profile-date-range" class="control-label">@lang('profile.date_range')</label>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
                     </div>
+                    <input type="text" class="form-control daterangepicker-sel" id="profile-date-range">
                   </div>
                 </div>
               </div>
             </div>
+            <div class="row form-inline lg-top-space md-top-space sm-top-space">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="profile-rank" class="control-label">@lang('profile.rank')</label>
+                  <input type="text" class="form-control" id="profile-rank" disabled>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="profile-total-sales" class="control-label">@lang('profile.total_sales')</label>
+                  <input type="text" class="form-control" id="profile-total-sales" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="row lg-top-space md-top-space sm-top-space text-center">
+              <h3>Metas Commissiones</h3>
+            </div>
+            <div class="row lg-top-space md-top-space sm-top-space text-center">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <input id="profile-commission-1" type="text" value="30" class="knob" data-width="90" data-height="90" data-fgcolor="#3c8dbc" readonly>
+                <div class="knob-label">Meta Hilco</div>
+                <div class="knob-label">Comision Hilco: C$ 500</div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <input id="profile-commission-2" type="text" value="60" class="knob" data-width="90" data-height="90" data-fgcolor="#3c8dbc" readonly>
+                <div class="knob-label">Meta Truper</div>
+                <div class="knob-label">Comision Truper: C$ 300</div>
+              </div>
+            </div>
+            <div class="row lg-top-space md-top-space sm-top-space xs-top-space text-center">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <input id="profile-commission-1" type="text" value="47.5" class="knob" data-width="90" data-height="90" data-fgcolor="#3c8dbc" readonly>
+                <div class="knob-label">Meta Perneria</div>
+                <div class="knob-label">Comision Perneria: C$ 600</div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <input id="profile-commission-2" type="text" value="100" class="knob" data-width="90" data-height="90" data-fgcolor="#3c8dbc" readonly>
+                <div class="knob-label">Comision Ventas Generales</div>
+                <div class="knob-label">Comision Ventas: C$ 800</div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="profile-schedule">
+            <div class="row" style="padding-top:15px;">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block" style="padding-top:15px;">
+                <div class="box">
+                  <div class="box-body table-responsive no-padding swift-table">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>@lang('profile.time')</th>
+                          <th>@lang('profile.monday')</th>
+                          <th>@lang('profile.tuesday')</th>
+                          <th>@lang('profile.wednesday')</th>
+                          <th>@lang('profile.thursday')</th>
+                          <th>@lang('profile.friday')</th>
+                          <th>@lang('profile.saturday')</th>
+                          <th>@lang('profile.sunday')</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="profile-calendar">
+            <div class="row center-block">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="calendar" style="min-width:300px;min-height:300px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+<div>
+</div>
 </section>

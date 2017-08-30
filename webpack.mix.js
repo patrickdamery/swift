@@ -8,7 +8,7 @@ let mix = require('laravel-mix');
  | Mix provides a clean, fluent API for defining some Webpack build steps
  | for your Laravel application. By default, we are compiling the Sass
  | file for the application as well as bundling up all the JS files.
- |
+ |f
  */
 
 /*mix.js('resources/assets/js/app.js', 'public/js')
@@ -28,6 +28,8 @@ mix.styles([
     'public/css/jvectormap/jquery-jvectormap-1.2.2.css',
     'public/css/morris/morris.css',
     'public/css/fonts/fonts.css',
+    'public/css/fullcalendar/fullcalendar.min.css',
+    //'public/css/fullcalendar/fullcalendar.print.min.css'
   ], 'public/css/base.css').
   scripts([
     'public/js/jquery/jquery.min.js',
@@ -45,8 +47,9 @@ mix.styles([
     'public/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
     'public/js/jquery/slimscroll/jquery.slimscroll.min.js',
     'public/js/fastclick/fastclick.js',
+    'public/js/fullcalendar/fullcalendar.min.js',
     'public/js/libs/admin.min.js',
-    'public/js/libs/demo.js',
+    //'public/js/libs/demo.js',
     'public/js/libs/dashboard.js',
   ], 'public/js/all.js').
   scripts([

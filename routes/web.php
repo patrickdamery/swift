@@ -110,6 +110,12 @@ Route::prefix('swift')->group(function() {
     Route::post('warehouse', function() {
         return view('system.pages.warehouse');
     });
+    Route::post('receive_products', function() {
+        return view('system.pages.receive_products');
+    });
+    Route::post('dispatch_products', function() {
+        return view('system.pages.dispatch_products');
+    });
     Route::post('stock', function() {
         return view('system.pages.stock');
     });
@@ -165,6 +171,12 @@ Route::prefix('swift')->group(function() {
     // Configuration Views.
     Route::post('branch', function() {
         return view('system.pages.branch');
+    });
+    Route::post('group', function() {
+        return view('system.pages.group');
+    });
+    Route::post('configuration', function() {
+        return view('system.pages.configuration');
     });
   });
 

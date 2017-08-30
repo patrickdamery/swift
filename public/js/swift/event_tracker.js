@@ -3,28 +3,35 @@
   a plugin needs to override an event.
 */
 function Event_Tracker() {
-  swift_events = [];
-  plugin_events = [];
+  swift_events = {};
+  plugin_events = {};
 }
 
 Event_Tracker.prototype={
   constructor: Event_Tracker,
+  get_swift_events: function() {
+    return swift_events;
+  },
+  get_plugin_events: function() {
+    return plugin_events;
+  },
   register_swift_event: function(c, e, o = window.self, f) {
-    swift_events.push({
+
+    swift_events[c] = {
       c: c,
       e: e,
       o: o,
       f: f
-    });
+    };
   },
   register_plugin_event: function(c, e, o = window.self, f, b = true) {
-    plugin_events.push({
+    plugin_events[c] = {
       c: c,
       e: e,
       o: o,
       f: f,
       b: b
-    });
+    };
   },
   fire_event: function(e, c) {
     var block = false;

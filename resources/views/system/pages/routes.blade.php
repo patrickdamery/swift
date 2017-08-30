@@ -111,8 +111,6 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXap_tqT_ErXCLLlmvc2RQFem
           </div>
         </div>
       </div>
-      <!-- /.tab-pane -->
     </div>
-    <!-- /.tab-content -->
   </div>
 </section>
