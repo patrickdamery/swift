@@ -5,17 +5,35 @@
   .selected-filters {
     width: 100%!important;
   }
+  .contact-menu {
+    max-height: 445px;
+  }
+  .direct-chat-messages {
+    height: 350px;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .sm-top-space {
     margin-top: 15px;
   }
+  .contact-menu {
+    max-height: 800px;
+  }
+  .direct-chat-messages {
+    height: 750px;
+  }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .md-top-space {
     margin-top: 15px;
+  }
+  .contact-menu {
+    max-height: 800px;
+  }
+  .direct-chat-messages {
+    height: 750px;
   }
 }
 
@@ -26,6 +44,12 @@
 
   .map {
     height: 450px;
+  }
+  .contact-menu {
+    max-height: 800px;
+  }
+  .direct-chat-messages {
+    height: 750px;
   }
 }
 
@@ -76,4 +100,58 @@
 
 .time {
   border-left: 1px solid black;
+}
+
+.control-sidebar-bg, .control-sidebar {
+  width: 310px!important;
+  right: -310px!important;
+}
+
+.control-sidebar-open {
+  right: 0px!important;
+}
+
+.contact-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.contact-block {
+  height: 50px;
+  margin-bottom: 10px;
+  padding-top: 5px;
+}
+.contact-block:hover {
+  background: rgba(56, 63, 66, 0.52);
+}
+.contact-block > a > h4 {
+  padding: 0;
+  margin: 0 0 0 45px;
+  color: #777777;
+  font-size: 15px;
+  position: relative;
+}
+
+.contact-block > a > p {
+  margin: 0 0 0 45px;
+  font-size: 12px;
+  color: #888888;
+}
+
+.contact-block > a > h4 > small {
+  float: right;
+}
+
+.received {
+  color: #4fc3f7;
+}
+.img-contact {
+  margin: auto 10px auto auto;
+  width: 40px;
+  height: 40px;
+}
+.contacts-search{
+  padding-bottom: 15px;
 }

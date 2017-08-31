@@ -62,83 +62,6 @@
 
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
-            <!-- Messages: style can be found in dropdown.less-->
-            <li class="dropdown messages-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 4 messages</li>
-                <li>
-                  <!-- inner menu: contains the actual data -->
-                  <ul class="menu">
-                    <li><!-- start message -->
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          Support Team
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <!-- end message -->
-                    <li>
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          AdminLTE Design Team
-                          <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          Developers
-                          <small><i class="fa fa-clock-o"></i> Today</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          Sales Department
-                          <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          Reviewers
-                          <small><i class="fa fa-clock-o"></i> 2 days</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
             <!-- Notifications: style can be found in dropdown.less -->
             <li class="dropdown notifications-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -209,7 +132,10 @@
             </li>
             <!-- Control Sidebar Toggle Button -->
             <li>
-              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              <a href="#" data-toggle="control-sidebar">
+                <i class="fa fa-envelope-o"></i>
+                <span class="label label-success">4</span>
+              </a>
             </li>
           </ul>
         </div>
@@ -700,70 +626,348 @@
 
     <aside class="control-sidebar control-sidebar-dark">
       <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-        <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li class="active"><a href="#control-sidebar-contacts-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+        <li><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-envelope-o"></i></a></li>
         <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane" id="control-sidebar-home-tab">
-          <h3 class="control-sidebar-heading">Recent Activity</h3>
-          <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <div class="tab-pane active" id="control-sidebar-contacts-tab">
+          <div class="contacts-search">
+            <input type="text" placeholder="@lang('swift_menu.search')" class="form-control">
+          </div>
+          <ul class="contact-menu">
+            <li class="contact-block"><!-- start message -->
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Informatica <span class="label label-success">2</span>
+                  <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                </h4>
+                <p>Ya se resolvio el problema de la impresora.</p>
+              </a>
+            </li>
+            <!-- end message -->
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Jose Ramos <span class="label label-success">1</span>
+                  <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Swift Support
+                  <small><i class="fa fa-clock-o"></i> Hoy</small>
+                </h4>
+                <p><span class="received"><i class="fa fa-check"></i></span>  Ok, ahora si entiendo!</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Contabilidad <span class="label label-success">1</span>
+                  <small><i class="fa fa-clock-o"></i> Ayer</small>
+                </h4>
+                <p>Ya se genero el cheque.</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Maria Jose
+                  <small><i class="fa fa-clock-o"></i> 2 days</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+            <li class="contact-block"><!-- start message -->
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Informatica
+                  <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                </h4>
+                <p>Ya se resolvio el problema de la impresora.</p>
+              </a>
+            </li>
+            <!-- end message -->
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Jose Ramos
+                  <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Swift Support
+                  <small><i class="fa fa-clock-o"></i> Hoy</small>
+                </h4>
+                <p><span class="received"><i class="fa fa-check"></i></span>  Ok, ahora si entiendo!</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Contabilidad
+                  <small><i class="fa fa-clock-o"></i> Ayer</small>
+                </h4>
+                <p>Ya se genero el cheque.</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Maria Jose
+                  <small><i class="fa fa-clock-o"></i> 2 days</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+            <li class="contact-block"><!-- start message -->
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Informatica
+                  <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                </h4>
+                <p>Ya se resolvio el problema de la impresora.</p>
+              </a>
+            </li>
+            <!-- end message -->
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Jose Ramos
+                  <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Swift Support
+                  <small><i class="fa fa-clock-o"></i> Hoy</small>
+                </h4>
+                <p><span class="received"><i class="fa fa-check"></i></span>  Ok, ahora si entiendo!</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Contabilidad
+                  <small><i class="fa fa-clock-o"></i> Ayer</small>
+                </h4>
+                <p>Ya se genero el cheque.</p>
+              </a>
+            </li>
+            <li class="contact-block">
+              <a href="#">
+                <div class="pull-left">
+                  <img src="{{ URL::to('/') }}/images/default-profile.png" class="img-circle img-contact" alt="User Image">
+                </div>
+                <h4>
+                  Maria Jose
+                  <small><i class="fa fa-clock-o"></i> 2 days</small>
+                </h4>
+                <p>Ok</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-pane" id="control-sidebar-chat-tab">
+          <div class="direct-chat-messages">
+            <!-- Message. Default to the left -->
+            <div class="direct-chat-msg">
+              <div class="direct-chat-info clearfix">
+                <span class="direct-chat-name pull-left">Swift Support</span>
+                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+              </div>
+              <!-- /.direct-chat-info -->
+              <img class="direct-chat-img" src="{{ URL::to('/') }}/images/default-profile.png" alt="Message User Image"><!-- /.direct-chat-img -->
+              <div class="direct-chat-text">
+                Para realizar una venta de primero abris el menu, despues seleccionas el menu Ventas.
+                Una vez ahi te van a salir las opciones que tenes disponible, si te sale la opcion Ventas
+                seleccionala, de ahi llenas la informacion de la factura y le das pagar y ya. Algo mas en que
+                te podamos ayudar?
+              </div>
+              <!-- /.direct-chat-text -->
+            </div>
+            <!-- /.direct-chat-msg -->
+
+            <!-- Message to the right -->
+            <div class="direct-chat-msg right">
+              <div class="direct-chat-info clearfix">
+                <span class="direct-chat-name pull-right">{{ $worker->name }}</span>
+                <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+              </div>
+              <!-- /.direct-chat-info -->
+              <img class="direct-chat-img" src="{{ URL::to('/') }}/images/default-profile.png" alt="Message User Image"><!-- /.direct-chat-img -->
+              <div class="direct-chat-text">
+                Ok, ahora si entiendo!
+              </div>
+              <!-- /.direct-chat-text -->
+            </div>
+            <!-- /.direct-chat-msg -->
+          </div>
+          <div>
+            <div class="input-group">
+              <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                  </span>
+            </div>
+          </div>
         </div>
         <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
         <div class="tab-pane" id="control-sidebar-settings-tab">
-          <form method="post">
-            <h3 class="control-sidebar-heading">General Settings</h3>
+          <h4 class="control-sidebar-heading">Temas</h4>
+          <ul class="list-unstyled clearfix">
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span>
+                  <span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222d32"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Azul</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix">
+                  <span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span>
+                  <span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Negro</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span>
+                  <span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222d32"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Morado</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span>
+                  <span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222d32"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Verde</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span>
+                  <span class="bg-red" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222d32"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Rojo</p>
+            </li>
+            <li style="float:left; width: 33.33333%; padding: 5px;">
+              <a href="javascript:void(0)" data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span>
+                  <span class="bg-yellow" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                </div>
+                <div>
+                  <span style="display:block; width: 20%; float: left; height: 40px; background: #222d32"></span>
+                  <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
+                </div>
+              </a>
+              <p class="text-center no-margin">Amarillo</p>
+            </li>
+          </ul>
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
 
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Report panel usage
-                <input type="checkbox" class="pull-right" checked>
-              </label>
-
-              <p>
-                Some information about this general settings option
-              </p>
-            </div>
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Allow mail redirect
-                <input type="checkbox" class="pull-right" checked>
-              </label>
-
-              <p>
-                Other sets of options are available
-              </p>
-            </div>
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Expose author name in posts
-                <input type="checkbox" class="pull-right" checked>
-              </label>
-
-              <p>
-                Allow the user to show his name in blog posts
-              </p>
-            </div>
-            <h3 class="control-sidebar-heading">Chat Settings</h3>
-
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Show me as online
-                <input type="checkbox" class="pull-right" checked>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Turn off notifications
-                <input type="checkbox" class="pull-right">
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="control-sidebar-subheading">
-                Delete chat history
-                <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-              </label>
-            </div>
-          </form>
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
         </div>
       </div>
     </aside>

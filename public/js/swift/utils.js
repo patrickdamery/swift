@@ -121,3 +121,40 @@ swift_language.add_sentence('no_internet', {
                             'en': 'You are not connected to the internet!',
                             'es': 'No hay conexion al internet!'
                           });
+
+/**
+ * List of all the available skins
+ *
+ * @type Array
+ */
+var mySkins = [
+  'skin-blue',
+  'skin-black',
+  'skin-red',
+  'skin-yellow',
+  'skin-purple',
+  'skin-green',
+]
+
+// Add the change skin listener
+$(document).on('click', '[data-skin]', function (e) {
+  if ($(this).hasClass('knob'))
+    return
+  e.preventDefault()
+  changeSkin($(this).data('skin'))
+});
+
+/**
+ * Replaces the old skin with the new skin
+ * @param String cls the new skin class
+ * @returns Boolean false to prevent link's default action
+ */
+function changeSkin(cls) {
+  $.each(mySkins, function (i) {
+    $('body').removeClass(mySkins[i])
+  })
+
+  $('body').addClass(cls)
+  store('skin', cls)
+  return false
+}
