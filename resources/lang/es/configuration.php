@@ -25,7 +25,7 @@ return [
     'withdraw_on_dispatch' => 'Retirar al Despachar',
     'quote_life' => 'Tiempo de Validez Cotizacion',
     'reservation_life' => 'Tiempo de Validez Reservacion',
-    'points_percentage' => 'Porcentage de Puntos',
+    'points_percentage' => 'Porcentaje de Puntos',
     'points_enabled' => 'Activar Sistema de Puntos',
     'yes' => 'Si',
     'no' => 'No',

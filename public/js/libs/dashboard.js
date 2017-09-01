@@ -4,7 +4,7 @@
  * Description:
  *      This is a demo file used only for the main dashboard (index.html)
  **/
-
+/*
 $(function () {
 
   'use strict';
@@ -44,9 +44,9 @@ $(function () {
   }, function (start, end) {
     window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
   });
-
+*/
   /* jQueryKnob */
-  $('.knob').knob();
+/*  $('.knob').knob();
 
   // jvectormap data
   var visitorsData = {
@@ -123,10 +123,10 @@ $(function () {
   $('#chat-box').slimScroll({
     height: '250px'
   });
-
+*/
   /* Morris.js Charts */
   // Sales chart
-  var area = new Morris.Area({
+/*  var area = new Morris.Area({
     element   : 'revenue-chart',
     resize    : true,
     data      : [
@@ -196,9 +196,9 @@ $(function () {
     donut.redraw();
     line.redraw();
   });
-
+*/
   /* The todo list plugin */
-  $('.todo-list').todoList({
+/*  $('.todo-list').todoList({
     onCheck  : function () {
       window.console.log($(this), 'The element has been checked');
     },
@@ -208,3 +208,4 @@ $(function () {
   });
 
 });
+*/

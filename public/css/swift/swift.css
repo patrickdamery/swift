@@ -88,7 +88,7 @@
   overflow: scroll;
 }
 
-.day, .time {
+/*.day, .time {
   min-width: 80px;
   float:left;
   min-height: 1000px;
@@ -101,7 +101,7 @@
 .time {
   border-left: 1px solid black;
 }
-
+*/
 .control-sidebar-bg, .control-sidebar {
   width: 310px!important;
   right: -310px!important;
