@@ -88,5 +88,17 @@ return [
     'logout' => 'Cerrar Session',
     'search' => 'Buscar...',
     'online' => 'En linea',
-
+    'type_message' => 'Escribir Mensaje...',
+    'send' => 'Enviar',
+    'themes' => 'Temas',
+    'blue' => 'Azul',
+    'black' => 'Negro',
+    'purple' => 'Morado',
+    'green' => 'Verde',
+    'red' => 'Rojo',
+    'yellow' => 'Amarillo',
+    'chat_settings' => 'Configuracion de Chat',
+    'show_online' => 'Mostrarse En Linea',
+    'off_notifications' => 'Deshabilitar Notificaciones',
+    'delete_chat' => 'Eliminar Chat',
 ];

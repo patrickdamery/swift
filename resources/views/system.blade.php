@@ -104,6 +104,13 @@
                 <li class="footer"><a href="#">View all</a></li>
               </ul>
             </li>
+            <!-- Control Sidebar Toggle Button -->
+            <li>
+              <a href="#" data-toggle="control-sidebar">
+                <i class="fa fa-envelope-o"></i>
+                <span class="label label-success">4</span>
+              </a>
+            </li>
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -129,13 +136,6 @@
                   </div>
                 </li>
               </ul>
-            </li>
-            <!-- Control Sidebar Toggle Button -->
-            <li>
-              <a href="#" data-toggle="control-sidebar">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
             </li>
           </ul>
         </div>
@@ -858,16 +858,15 @@
           </div>
           <div>
             <div class="input-group">
-              <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+              <input type="text" name="message" placeholder="@lang('swift_menu.type_message')" class="form-control">
                   <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                    <button type="submit" class="btn btn-primary btn-flat">@lang('swift_menu.send')</button>
                   </span>
             </div>
           </div>
         </div>
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
         <div class="tab-pane" id="control-sidebar-settings-tab">
-          <h4 class="control-sidebar-heading">Temas</h4>
+          <h4 class="control-sidebar-heading">@lang('swift_menu.themes')</h4>
           <ul class="list-unstyled clearfix">
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -880,7 +879,7 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Azul</p>
+              <p class="text-center no-margin">@lang('swift_menu.blue')</p>
             </li>
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -893,7 +892,7 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Negro</p>
+              <p class="text-center no-margin">@lang('swift_menu.black')</p>
             </li>
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -906,7 +905,7 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Morado</p>
+              <p class="text-center no-margin">@lang('swift_menu.purple')</p>
             </li>
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -919,7 +918,7 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Verde</p>
+              <p class="text-center no-margin">@lang('swift_menu.green')</p>
             </li>
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -932,7 +931,7 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Rojo</p>
+              <p class="text-center no-margin">@lang('swift_menu.red')</p>
             </li>
             <li style="float:left; width: 33.33333%; padding: 5px;">
               <a href="javascript:void(0)" data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
@@ -945,27 +944,27 @@
                   <span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7"></span>
                 </div>
               </a>
-              <p class="text-center no-margin">Amarillo</p>
+              <p class="text-center no-margin">@lang('swift_menu.yellow')</p>
             </li>
           </ul>
-          <h3 class="control-sidebar-heading">Chat Settings</h3>
+          <h3 class="control-sidebar-heading">@lang('swift_menu.chat_settings')</h3>
 
           <div class="form-group">
             <label class="control-sidebar-subheading">
-              Show me as online
+              @lang('swift_menu.show_online')
               <input type="checkbox" class="pull-right" checked>
             </label>
           </div>
           <div class="form-group">
             <label class="control-sidebar-subheading">
-              Turn off notifications
+              @lang('swift_menu.off_notifications')
               <input type="checkbox" class="pull-right">
             </label>
           </div>
           <div class="form-group">
             <label class="control-sidebar-subheading">
-              Delete chat history
-              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+              @lang('swift_menu.delete_chat')
+              <a href="" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
             </label>
           </div>
         </div>

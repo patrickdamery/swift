@@ -89,5 +89,18 @@ return [
     'logout' => 'Logout',
     'search' => 'Search...',
     'online' => 'Online',
+    'type_message' => 'Type Message...',
+    'send' => 'Send',
+    'themes' => 'Themes',
+    'blue' => 'Blue',
+    'black' => 'Black',
+    'purple' => 'Purple',
+    'green' => 'Green',
+    'red' => 'Red',
+    'yellow' => 'Yellow',
+    'chat_settings' => 'Chat Settings',
+    'show_online' => 'Show Online',
+    'off_notifications' => 'Turn Notifications Off',
+    'delete_chat' => 'Delete Chat',
 
 ];
