@@ -16,7 +16,6 @@ Event_Tracker.prototype={
     return plugin_events;
   },
   register_swift_event: function(c, e, o = window.self, f) {
-
     swift_events[c] = {
       c: c,
       e: e,

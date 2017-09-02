@@ -1,4 +1,4 @@
-<?php
+@php
   // Get data we need to display.
   use App\Configuration;
   use App\Branch;
@@ -8,7 +8,7 @@
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
   $worker = Worker::where('code', Auth::user()->worker_code)->first();
- ?>
+@endphp
 <!DOCTYPE html>
   <html>
   <head>
@@ -127,9 +127,20 @@
                   </p>
                 </li>
                 <!-- Menu Footer-->
+                <script>
+                  var option = {
+                    'profile-top': '/swift/system/profile'
+                  };
+                  swift_menu.register_menu_option(option);
+                  swift_event_tracker.register_swift_event('#profile-top', 'click', swift_menu, 'select_menu_option');
+                  $(document).on('click', '#profile-top', function(e) {
+                    e.preventDefault();
+                    swift_event_tracker.fire_event(e, '#profile-top');
+                  });
+                </script>
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="{{ URL::to('/') }}/profile" class="btn btn-default btn-flat">@lang('swift_menu.profile')</a>
+                    <a href="#profile" id="profile-top" class="btn btn-default btn-flat">@lang('swift_menu.profile')</a>
                   </div>
                   <div class="pull-right">
                     <a href="{{ URL::to('/') }}/logout" class="btn btn-default btn-flat">@lang('swift_menu.logout')</a>
@@ -169,18 +180,6 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">@lang('swift_menu.main_menu')</li>
-          <script>
-            var option = {
-              'profile': '/swift/system/profile'
-            };
-            swift_menu.register_menu_option(option);
-            swift_event_tracker.register_swift_event('#profile', 'click', swift_menu, 'select_menu_option');
-            $(document).on('click', '#profile', function(e) {
-              e.preventDefault();
-              swift_event_tracker.fire_event(e, '#profile');
-            });
-          </script>
-          <li><a href="#profile" id="profile"><i class="fa fa-user"></i> @lang('swift_menu.profile')</a></li>
           @if($modules->sales_stock == 1)
             <script>
               var option = {
@@ -617,7 +616,7 @@
       </section>
     </aside>
     <div class="content-wrapper" id="main-content">
-      @include('system.pages.profile')
+      @include('system.modules.general.profile')
     </div>
     <footer class="main-footer">
       <strong>Copyright &copy; {{ date('Y') }} <a href="http://alonica.net">Alonica S.A</a>.</strong> All rights

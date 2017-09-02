@@ -39,4 +39,7 @@ return [
     'description' => 'Description',
     'credit' => 'Credit',
     'debit' => 'Debit',
+    'all' => 'All',
+    'ledger' => 'Ledger',
+    'download' => 'Download',
 ];

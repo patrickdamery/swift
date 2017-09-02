@@ -51,6 +51,11 @@ Route::prefix('alonica')->group(function() {
 
 Route::prefix('swift')->group(function() {
 
+  // Accounting Routes.
+  Route::prefix('accounting')->group(function() {
+    Route::post('create_account', 'AccountController@create_account');
+  });
+
   // System routes.
   Route::prefix('system')->group(function() {
     Route::get('main', function() {
@@ -61,122 +66,122 @@ Route::prefix('swift')->group(function() {
       }
     });
     Route::post('profile', function() {
-        return view('system.pages.profile');
+        return view('system.modules.general.profile');
     });
     // Sales Module Views.
     Route::post('sales', function() {
-        return view('system.pages.sales');
-    });
-    Route::post('orders', function() {
-        return view('system.pages.orders');
+        return view('system.modules.sale_product.sales');
     });
     Route::post('cashbox', function() {
-        return view('system.pages.cashbox');
+        return view('system.modules.sale_product.cashbox');
     });
     Route::post('clients', function() {
-        return view('system.pages.clients');
+        return view('system.modules.sale_product.clients');
     });
     Route::post('discounts', function() {
-        return view('system.pages.discounts');
+        return view('system.modules.sale_product.discounts');
     });
     Route::post('sales_analytics', function() {
-        return view('system.pages.sales_analytics');
+        return view('system.modules.sale_product.sales_analytics');
     });
 
     // Products Module Views.
     Route::post('products', function() {
-        return view('system.pages.products');
+        return view('system.modules.sale_product.products');
     });
     Route::post('providers', function() {
-        return view('system.pages.providers');
+        return view('system.modules.sale_product.providers');
     });
     Route::post('categories', function() {
-        return view('system.pages.categories');
+        return view('system.modules.sale_product.categories');
     });
     Route::post('measurement_units', function() {
-        return view('system.pages.measurement_units');
+        return view('system.modules.sale_product.measurement_units');
     });
     Route::post('purchases', function() {
-        return view('system.pages.purchases');
+        return view('system.modules.sale_product.purchases');
     });
     Route::post('local_purchases', function() {
-        return view('system.pages.local_purchases');
-    });
-    Route::post('suggestions', function() {
-        return view('system.pages.suggestions');
-    });
-
-    // warehouse Module Views.
-    Route::post('warehouse', function() {
-        return view('system.pages.warehouse');
-    });
-    Route::post('receive_products', function() {
-        return view('system.pages.receive_products');
-    });
-    Route::post('dispatch_products', function() {
-        return view('system.pages.dispatch_products');
-    });
-    Route::post('stock', function() {
-        return view('system.pages.stock');
-    });
-    Route::post('stock_movement', function() {
-        return view('system.pages.stock_movement');
+        return view('system.modules.sale_product.local_purchases');
     });
     Route::post('product_existance', function() {
-        return view('system.pages.product_existance');
+        return view('system.modules.sale_product.product_existance');
+    });
+    Route::post('suggestions', function() {
+        return view('system.modules.sale_product.suggestions');
+    });
+
+    // Warehouse Module Views.
+    Route::post('warehouse', function() {
+        return view('system.modules.warehouse.warehouse');
+    });
+    Route::post('receive_products', function() {
+        return view('system.modules.warehouse.receive_products');
+    });
+    Route::post('dispatch_products', function() {
+        return view('system.modules.warehouse.dispatch_products');
+    });
+    Route::post('stock', function() {
+        return view('system.modules.warehouse.stock');
+    });
+    Route::post('stock_movement', function() {
+        return view('system.modules.warehouse.stock_movement');
+    });
+    Route::post('orders', function() {
+        return view('system.modules.warehouse.orders');
     });
 
     // Staff Module Views.
     Route::post('staff', function() {
-        return view('system.pages.staff');
+        return view('system.modules.staff.staff');
     });
     Route::post('staff_configuration', function() {
-        return view('system.pages.staff_configuration');
+        return view('system.modules.staff.staff_configuration');
     });
     Route::post('staff_analytics', function() {
-        return view('system.pages.staff_analytics');
+        return view('system.modules.staff.staff_analytics');
     });
     Route::post('staff_payments', function() {
-        return view('system.pages.staff_payments');
+        return view('system.modules.staff.staff_payments');
     });
     Route::post('staff_assistance', function() {
-        return view('system.pages.staff_assistance');
+        return view('system.modules.staff.staff_assistance');
     });
 
     // Vehicles Module Views.
     Route::post('vehicles', function() {
-        return view('system.pages.vehicles');
+        return view('system.modules.vehicle.vehicles');
     });
     Route::post('journeys', function() {
-        return view('system.pages.journeys');
+        return view('system.modules.vehicle.journeys');
     });
     Route::post('routes', function() {
-        return view('system.pages.routes');
+        return view('system.modules.vehicle.routes');
     });
 
     // Accounting Module Views.
     Route::post('bank_accounts', function() {
-        return view('system.pages.bank_accounts');
+        return view('system.modules.accounting.bank_accounts');
     });
     Route::post('currency', function() {
-        return view('system.pages.currency');
+        return view('system.modules.accounting.currency');
     });
     Route::post('accounts', function() {
-        return view('system.pages.accounts');
+        return view('system.modules.accounting.accounts');
     });
     Route::post('journal', function() {
-        return view('system.pages.journal');
+        return view('system.modules.accounting.journal');
     });
 
     // Configuration Views.
     Route::post('branch', function() {
-        return view('system.pages.branch');
+        return view('system.modules.configuration.branch');
     });
     Route::post('group', function() {
-        return view('system.pages.group');
+        return view('system.modules.configuration.group');
     });
     Route::post('configuration', function() {
-        return view('system.pages.configuration');
+        return view('system.modules.configuration.configuration');
     });
   });
 

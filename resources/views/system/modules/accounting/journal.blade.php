@@ -26,25 +26,25 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
 
 <section class="content-header">
   <h1>
-    @lang('journal.title')
-    <small class="crumb">@lang('journal.view_entries')</small>
+    @lang('accounting/journal.title')
+    <small class="crumb">@lang('accounting/journal.view_entries')</small>
   </h1>
   <ol class="breadcrumb">
-    <li><i class="fa fa-money"></i> @lang('journal.title')</li>
-    <li class="active crumb">@lang('journal.view_entries')</li>
+    <li><i class="fa fa-money"></i> @lang('accounting/journal.title')</li>
+    <li class="active crumb">@lang('accounting/journal.view_entries')</li>
   </ol>
 </section>
 <section class="content">
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#journal-view-entries" id="journal-view-entries-tab" data-toggle="tab" aria-expanded="true">@lang('journal.view_entries')</a></li>
+      <li class="active"><a href="#journal-view-entries" id="journal-view-entries-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.view_entries')</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="journal-view-entries">
         <div class="row form-inline">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="journal-date-range" class="control-label">@lang('journal.date_range')</label>
+              <label for="journal-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
               <div class="input-group date">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
@@ -56,14 +56,14 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="form-group">
               <button type="button" class="btn btn-success" id="journal-search">
-                <i class="fa fa-search"></i> @lang('journal.search')
+                <i class="fa fa-search"></i> @lang('accounting/journal.search')
               </button>
             </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-info" id="journal-download">
-                <i class="fa fa-file-excel-o"></i> @lang('journal.descargar')
+                <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
               </button>
             </div>
           </div>
@@ -71,27 +71,27 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
         <div class="row form-inline">
           <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12 lg-top-space md-top-space sm-top-space">
             <div class="form-group">
-              <label for="journal-report-type" class="control-label">@lang('journal.report_type')</label>
+              <label for="journal-report-type" class="control-label">@lang('accounting/journal.report_type')</label>
               <select class="form-control" id="journal-report-type">
-                <option value="income-statement">@lang('journal.income_statement')</option>
-                <option value="balance-sheet">@lang('journal.balance_sheet')</option>
-                <option value="statement-equity">@lang('journal.statement_equity')</option>
-                <option value="statement-cash-flow">@lang('journal.statement_cash_flow')</option>
-                <option value="trial-balance">@lang('journal.trial-balance')</option>
+                <option value="income-statement">@lang('accounting/journal.income_statement')</option>
+                <option value="balance-sheet">@lang('accounting/journal.balance_sheet')</option>
+                <option value="statement-equity">@lang('accounting/journal.statement_equity')</option>
+                <option value="statement-cash-flow">@lang('accounting/journal.statement_cash_flow')</option>
+                <option value="trial-balance">@lang('accounting/journal.trial-balance')</option>
               </select>
             </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 lg-top-space md-top-space sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-success" id="journal-generate">
-                <i class="fa fa-cogs"></i> @lang('journal.generate')
+                <i class="fa fa-cogs"></i> @lang('accounting/journal.generate')
               </button>
             </div>
           </div>
           <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 lg-top-space md-top-space sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-info" id="journal-print">
-                <i class="fa fa-print"></i> @lang('journal.print')
+                <i class="fa fa-print"></i> @lang('accounting/journal.print')
               </button>
             </div>
           </div>
@@ -103,10 +103,10 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>@lang('journal.date')</th>
-                      <th>@lang('journal.account_name')</th>
-                      <th>@lang('journal.debit')</th>
-                      <th>@lang('journal.credit')</th>
+                      <th>@lang('accounting/journal.date')</th>
+                      <th>@lang('accounting/journal.account_name')</th>
+                      <th>@lang('accounting/journal.debit')</th>
+                      <th>@lang('accounting/journal.credit')</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -123,7 +123,7 @@ $(document).on('click', '#journal-view-entries-tab', function(e) {
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-info" id="journal-create-entry">
-                <i class="fa fa-edit"></i> @lang('journal.create_entry')
+                <i class="fa fa-edit"></i> @lang('accounting/journal.create_entry')
               </button>
             </div>
           </div>

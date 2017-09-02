@@ -35,8 +35,11 @@ return [
     'detail' => 'Detallado',
     'generate' => 'Generar',
     'print' => 'Imprimir',
-    'value' => 'Valor',
+    'value' => 'Saldo',
     'description' => 'Descripcion',
     'credit' => 'Credito',
     'debit' => 'Debito',
+    'all' => 'Todos',
+    'ledger' => 'Libro Mayor',
+    'download' => 'Descargar',
 ];
