@@ -31,7 +31,7 @@ $(function(){
 
   // Check if we have already loaded the accounts JS file.
   if(typeof accounts_js === 'undefined') {
-    $.getScript('{{ URL::to('/') }}/js/swift/accounting/accounts.js')
+    $.getScript('{{ URL::to('/') }}/js/swift/accounting/accounts.js');
   }
 });
 </script>

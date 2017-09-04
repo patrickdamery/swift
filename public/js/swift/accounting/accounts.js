@@ -1,10 +1,7 @@
 /*
   Accounts Object.
 */
-function Account() {
-  view_account = {};
-  report_account = {};
-}
+function Account() {}
 
 Account.prototype = {
   constructor: Account,
@@ -24,6 +21,8 @@ Account.prototype = {
     return true;
   },
   create_account: function(e) {
+    // TODO: Accounts should include currency code.
+
     // Make target busy and get relevant data.
     swift_utils.busy(e.target);
     var account_data = {
@@ -40,12 +39,21 @@ Account.prototype = {
       var request = $.post('/swift/accounting/create_account', { account: account_data, _token: swift_utils.swift_token() });
       request.done(function(data) {
         swift_utils.free(e.target);
-        if(data['state'] != 'Success') {
+        if(data.state != 'Success') {
           swift_utils.display_error(data.error);
           return;
         }
+
+        // Clear modal and hide it.
+        $('#create-account-code').val('');
+        $('#create-account-name').val('');
+        $('#create-account-type').val('as');
+        $('#create-account-children').val('1');
+        $('#create-account-parent').val('');
+        $('#create-account-amount').val('');
         $('#create-account').modal('hide');
-        swift_utils.display_success(data['message']);
+
+        swift_utils.display_success(data.message);
       });
       request.fail(function(ev) {
         swift_utils.free(e.target);
@@ -140,7 +148,7 @@ Account.prototype = {
 
 var accounts_js = new Account();
 
-// Define Modal Event Listeners.
+// Define Event Listeners.
 swift_event_tracker.register_swift_event(
   '#create-account-create',
   'click',

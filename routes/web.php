@@ -53,6 +53,13 @@ Route::prefix('swift')->group(function() {
 
   // Accounting Routes.
   Route::prefix('accounting')->group(function() {
+
+    // Currency Routes.
+    Route::post('create_currency', 'CurrencyController@create_currency');
+    Route::post('currency_table', 'CurrencyController@currency_table');
+    Route::post('save_local_currency', 'CurrencyController@save_local_currency');
+
+    // Accounts Routes.
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');
     Route::post('create_account', 'AccountController@create_account');
     Route::post('load_accounts', 'AccountController@load_accounts');

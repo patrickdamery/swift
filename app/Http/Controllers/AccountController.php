@@ -137,7 +137,7 @@ class AccountController extends Controller
 
     // Check if type is defined.
     $accounts = array();
-    $search_type = ($request->has('type') && Input::get('type') != 'all')? true : false;
+    $search_type = ($request->has('type') && Input::get('type') != 'all') ? true : false;
 
     if($search_type) {
       $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')

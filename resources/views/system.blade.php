@@ -619,7 +619,7 @@
       </section>
     </aside>
     <div class="content-wrapper" id="main-content">
-      @include('system.modules.accounting.accounts')
+      @include('system.modules.accounting.currency')
     </div>
     <footer class="main-footer">
       <strong>Copyright &copy; {{ date('Y') }} <a href="http://alonica.net">Alonica S.A</a>.</strong> All rights
