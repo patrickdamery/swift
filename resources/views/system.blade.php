@@ -10,7 +10,7 @@
   $worker = Worker::where('code', Auth::user()->worker_code)->first();
 @endphp
 <!DOCTYPE html>
-  <html>
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +22,7 @@
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/base.css">
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/swift/swift.css">
+    <link rel="stylesheet" href="{{ URL::to('/') }}/css/swift/print/a4.css">
 
     <!-- JS Files -->
     <script src="{{ URL::to('/') }}/js/all.js"></script>
@@ -38,6 +39,8 @@
     <![endif]-->
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
+  <div class="print_area">
+  </div>
   <div class="wrapper">
     <div>
       <div class="wrapper">
@@ -616,7 +619,7 @@
       </section>
     </aside>
     <div class="content-wrapper" id="main-content">
-      @include('system.modules.general.profile')
+      @include('system.modules.accounting.accounts')
     </div>
     <footer class="main-footer">
       <strong>Copyright &copy; {{ date('Y') }} <a href="http://alonica.net">Alonica S.A</a>.</strong> All rights

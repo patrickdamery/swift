@@ -26,7 +26,7 @@ class AuthController extends Controller
               )
           );
       if($validator->fails()) {
-          return redirect('/login')->with('message', \Lang::get('auth_controller.login_error'));
+          return redirect('/login')->with('message', \Lang::get('controllers/auth_controller.login_error'));
       }
 
       // Extract user salt.

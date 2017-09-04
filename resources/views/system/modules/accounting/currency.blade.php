@@ -31,6 +31,10 @@ $(document).on('click', '#currency-view-time-variation-tab', function(e) {
   swift_event_tracker.fire_event(e, '#currency-view-time-variation-tab');
 });
 
+// Check if we have already loaded the accounts JS file.
+if(typeof currency_js === 'undefined') {
+  $.getScript('{{ URL::to('/') }}/js/swift/accounting/currency.js')
+}
 </script>
 
 <section class="content-header">
@@ -93,7 +97,7 @@ $(document).on('click', '#currency-view-time-variation-tab', function(e) {
                     </tr>
                   </thead>
                   <tbody>
-
+                    @include('system.components.accounting.currency_table')
                   </tbody>
                 </table>
               </div>

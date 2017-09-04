@@ -15,6 +15,20 @@ $(function(){
                                       'es': 'Libro Mayor'
                                     });
 
+  // Define Feedback Messages.
+  swift_language.add_sentence('create_account_blank_code', {
+                              'en': 'Account Code can\'t be left blank!',
+                              'es': 'Codigo de Cuenta no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('create_account_blank_name', {
+                              'en': 'Account Name can\'t be left blank!',
+                              'es': 'Nombre de Cuenta no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('create_account_amount_error', {
+                              'en': 'Amount in Account can\'t be blank and must be a numeric value!',
+                              'es': 'Saldo de Cuenta no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
+
   // Check if we have already loaded the accounts JS file.
   if(typeof accounts_js === 'undefined') {
     $.getScript('{{ URL::to('/') }}/js/swift/accounting/accounts.js')
@@ -72,6 +86,9 @@ $(function(){
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
             <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">@lang('accounting/accounts.accounts')</h3>
+              </div>
               <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
@@ -83,8 +100,8 @@ $(function(){
                       <th>@lang('accounting/accounts.value')</th>
                     </tr>
                   </thead>
-                  <tbody>
-
+                  <tbody id="accounts-body">
+                    @include('system.components.accounting.accounts_table_body')
                   </tbody>
                 </table>
               </div>
@@ -94,35 +111,42 @@ $(function(){
       </div>
       <div class="tab-pane" id="accounts-ledger">
         <div class="row form-inline">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="account-report-code" class="control-label">@lang('accounting/accounts.code')</label>
-              <input class="form-control" id="account-report-code">
+              <label for="account-ledger-code" class="control-label">@lang('accounting/accounts.code')</label>
+              <input class="form-control" id="account-ledger-code">
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="account-report-date-range" class="control-label">@lang('accounting/accounts.date_range')</label>
+              <label for="account-ledger-date-range" class="control-label">@lang('accounting/accounts.date_range')</label>
               <div class="input-group date">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control daterangepicker-sel" id="account-report-date-range">
+                <input type="text" class="form-control daterangepicker-sel" id="account-ledger-date-range">
               </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-success" id="account-ledger-search">
+                <i class="fa fa-search"></i> @lang('accounting/accounts.search')
+              </button>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 lg-top-space md-top-space sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="accounts-download">
-                <i class="fa fa-download"></i> @lang('accounting/accounts.download')
+              <button type="button" class="btn btn-info" id="ledger-download">
+                <i class="fa fa-file-excel-o"></i> @lang('accounting/accounts.download')
               </button>
             </div>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 lg-top-space md-top-space sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="accounts-print">
+              <button type="button" class="btn btn-info" id="ledger-print">
                 <i class="fa fa-print"></i> @lang('accounting/accounts.print')
               </button>
             </div>
@@ -131,6 +155,9 @@ $(function(){
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
             <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">@lang('accounting/accounts.ledger')</h3>
+              </div>
               <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
@@ -142,10 +169,19 @@ $(function(){
                       <th>@lang('accounting/accounts.value')</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="ledger-table-body">
 
                   </tbody>
                 </table>
+              </div>
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#" id="ledger-first">«</a></li>
+                  <li><a href="#" id="ledger-1">1</a></li>
+                  <li><a href="#" id="ledger-2">2</a></li>
+                  <li><a href="#" id="ledger-3">3</a></li>
+                  <li><a href="#" id="ledger-last">»</a></li>
+                </ul>
               </div>
             </div>
           </div>

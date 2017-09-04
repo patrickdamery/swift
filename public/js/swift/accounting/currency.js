@@ -1,13 +1,10 @@
-/*
-  Accounts Object.
-*/
-function Account() {
+function Currency() {
   view_account = {};
   report_account = {};
 }
 
-Account.prototype = {
-  constructor: Account,
+Currency.prototype = {
+  constructor: Currency,
   verify_account_data: function(a) {
     if(a.code == '') {
       swift_utils.display_error(swift_language.get_sentence('create_account_blank_code'));
@@ -138,106 +135,4 @@ Account.prototype = {
   },
 }
 
-var accounts_js = new Account();
-
-// Define Modal Event Listeners.
-swift_event_tracker.register_swift_event(
-  '#create-account-create',
-  'click',
-  accounts_js,
-  'create_account');
-
-$(document).on('click', '#create-account-create', function(e) {
-  swift_event_tracker.fire_event(e, '#create-account-create');
-});
-
-swift_event_tracker.register_swift_event(
-  '#account-type',
-  'change',
-  accounts_js,
-  'change_type');
-
-$(document).on('change', '#account-type', function(e) {
-  swift_event_tracker.fire_event(e, '#account-type');
-});
-
-swift_event_tracker.register_swift_event(
-  '#account-code',
-  'change',
-  accounts_js,
-  'change_code');
-
-$(document).on('change', '#account-code', function(e) {
-  swift_event_tracker.fire_event(e, '#account-code');
-});
-
-swift_event_tracker.register_swift_event(
-  '#account-ledger-search',
-  'click',
-  accounts_js,
-  'load_ledger');
-
-$(document).on('click', '#account-ledger-search', function(e) {
-  swift_event_tracker.fire_event(e, '#account-ledger-search');
-});
-
-swift_event_tracker.register_swift_event(
-  '#ledger-print',
-  'click',
-  accounts_js,
-  'print_ledger');
-
-$(document).on('click', '#ledger-print', function(e) {
-  swift_event_tracker.fire_event(e, '#ledger-print');
-});
-
-swift_event_tracker.register_swift_event(
-  '#ledger-download',
-  'click',
-  accounts_js,
-  'download_ledger');
-
-$(document).on('click', '#ledger-download', function(e) {
-  swift_event_tracker.fire_event(e, '#ledger-download');
-});
-
-$(function() {
-  $('#account-code').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_accounts',
-      { code: request.term,
-        type: $('#account-type').val(),
-        _token: swift_utils.swift_token()
-      },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
-  $('#account-ledger-code').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_accounts',
-      { code: request.term,
-        type: 'all',
-        _token: swift_utils.swift_token()
-      },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
-});
-// Define Menu Tab Events.
-swift_event_tracker.register_swift_event('#accounts-view-accounts-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#accounts-view-accounts-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#accounts-view-accounts-tab');
-});
-
-swift_event_tracker.register_swift_event('#accounts-ledger-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#accounts-ledger-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#accounts-ledger-tab');
-});
+var currency_js = new Currency();

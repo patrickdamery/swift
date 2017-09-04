@@ -42,4 +42,8 @@ return [
     'all' => 'All',
     'ledger' => 'Ledger',
     'download' => 'Download',
+    'search' => 'Search',
+    'accounts' => 'Accounts',
+    'ledger_report' => 'Ledger Report',
+    'ledger_account' => 'Account',
 ];

@@ -53,7 +53,12 @@ Route::prefix('swift')->group(function() {
 
   // Accounting Routes.
   Route::prefix('accounting')->group(function() {
+    Route::post('suggest_accounts', 'AccountController@suggest_accounts');
     Route::post('create_account', 'AccountController@create_account');
+    Route::post('load_accounts', 'AccountController@load_accounts');
+    Route::post('load_ledger', 'AccountController@load_ledger');
+    Route::post('print_ledger', 'AccountController@print_ledger');
+    Route::get('download_ledger', 'AccountController@download_ledger');
   });
 
   // System routes.

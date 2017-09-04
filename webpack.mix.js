@@ -29,6 +29,9 @@ mix.styles([
     'public/css/morris/morris.css',
     'public/css/fonts/fonts.css',
     'public/css/fullcalendar/fullcalendar.min.css',
+    'public/css/jquery/ui/jquery-ui.min.css',
+    'public/css/jquery/ui/jquery-ui.structure.min.css',
+    'public/css/jquery/ui/jquery-ui.theme.min.css',
     //'public/css/fullcalendar/fullcalendar.print.min.css'
   ], 'public/css/base.css').
   scripts([

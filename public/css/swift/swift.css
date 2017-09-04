@@ -155,3 +155,7 @@
 .contacts-search{
   padding-bottom: 15px;
 }
+
+.print_area {
+  display: none;
+}

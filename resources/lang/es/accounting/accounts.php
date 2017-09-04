@@ -42,4 +42,8 @@ return [
     'all' => 'Todos',
     'ledger' => 'Libro Mayor',
     'download' => 'Descargar',
+    'search' => 'Buscar',
+    'accounts' => 'Cuentas',
+    'ledger_report' => 'Reporte Libro Mayor',
+    'ledger_account' => 'Cuenta',
 ];
