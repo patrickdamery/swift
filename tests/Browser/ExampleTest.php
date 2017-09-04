@@ -15,9 +15,34 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        $this->browse(function (Browser $browser) {
+
+
+
+        $this->browse(function (Browser $browser)
+        {
             $browser->visit('http://swift.sys/login')
                     ->assertSee('Ferreteria Prueba');
         });
+
+
+/*
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/')
+                    ->assertSee('Laravel');
+        });
+
+
+
+
+
+        $this->browse(function ($browser) {
+            $browser->visit('/login')
+                    ->type('user', 'somarribasaul@gmail.com')
+                    ->type('password', 'secret')
+                    ->press('Login')
+                    ->assertPathIs('/home');
+        });
+
+        */
     }
 }
