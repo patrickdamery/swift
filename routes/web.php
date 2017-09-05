@@ -61,6 +61,13 @@ Route::prefix('swift')->group(function() {
     Route::get('download_ledger', 'AccountController@download_ledger');
   });
 
+  // products Routes.
+  Route::prefix('products')->group(function() {
+    Route::post('suggest_products', 'AccountController@suggest_accounts');
+    Route::post('create_products', 'AccountController@create_account');
+    Route::post('load_products', 'AccountController@load_accounts');
+  });
+
   // System routes.
   Route::prefix('system')->group(function() {
     Route::get('main', function() {

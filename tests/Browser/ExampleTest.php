@@ -17,32 +17,13 @@ class ExampleTest extends DuskTestCase
     {
 
 
+                    $this->browse(function (Browser $browser) {
+                      $browser->visit('http://swift.sys/login')
+                              ->assertSee('Ferreteria Prueba')
+                              ->type('username', 'thiel.winifred')
+                              ->type('password', 'secret')
+                              ->press('#qwerty');
+                    });
 
-        $this->browse(function (Browser $browser)
-        {
-            $browser->visit('http://swift.sys/login')
-                    ->assertSee('Ferreteria Prueba');
-        });
-
-
-/*
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
-        });
-
-
-
-
-
-        $this->browse(function ($browser) {
-            $browser->visit('/login')
-                    ->type('user', 'somarribasaul@gmail.com')
-                    ->type('password', 'secret')
-                    ->press('Login')
-                    ->assertPathIs('/home');
-        });
-
-        */
     }
 }

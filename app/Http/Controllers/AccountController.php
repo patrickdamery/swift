@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Input;
 use App\Account;
 class AccountController extends Controller
 {
+
+
   public function download_ledger() {
     $validator = Validator::make(Input::all(),
       array(
@@ -65,6 +67,7 @@ class AccountController extends Controller
     };
     return response()->stream($callback, 200, $headers);
   }
+
 
   public function print_ledger() {
     $validator = Validator::make(Input::all(),
