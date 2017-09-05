@@ -26,4 +26,5 @@ return [
     'date_range' => 'Rango de Fechas',
     'currency' => 'Moneda',
     'date' => 'Fecha',
+    'search' => 'Buscar',
 ];

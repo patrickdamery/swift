@@ -58,6 +58,8 @@ Route::prefix('swift')->group(function() {
     Route::post('create_currency', 'CurrencyController@create_currency');
     Route::post('currency_table', 'CurrencyController@currency_table');
     Route::post('save_local_currency', 'CurrencyController@save_local_currency');
+    Route::post('variation_search', 'CurrencyController@variation_search');
+    Route::post('change_rate', 'CurrencyController@change_rate');
 
     // Accounts Routes.
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');

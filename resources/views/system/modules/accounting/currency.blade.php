@@ -83,7 +83,7 @@ if(typeof currency_js === 'undefined') {
               </button>
             </div>
           </div>
-          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
+          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-currency">
                 <i class="fa fa-plus"></i> @lang('accounting/currency.create')
@@ -94,6 +94,9 @@ if(typeof currency_js === 'undefined') {
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
             <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">@lang('accounting/currency.title')</h3>
+              </div>
               <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
                   <thead>
@@ -115,21 +118,21 @@ if(typeof currency_js === 'undefined') {
       </div>
       <div class="tab-pane" id="currency-view-time-variation">
         <div class="row form-inline">
-          <div class="col-lg-6 col-md-6 col-sm-4 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="form-group">
-              <label for="currency-date-range" class="control-label">@lang('accounting/currency.date_range')</label>
+              <label for="currency-variation-date-range" class="control-label">@lang('accounting/currency.date_range')</label>
               <div class="input-group date">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control daterangepicker-sel" id="currency-date-range">
+                <input type="text" class="form-control daterangepicker-sel" id="currency-variation-date-range">
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 sm-top-space">
             <div class="form-group">
               <label for="currency-main" class="control-label">@lang('accounting/currency.currency')</label>
-              <select class="form-control" id="currency-main">
+              <select class="form-control" id="currency-variation-main">
                 @foreach(\App\Currency::where('code', '!=', '0')->get() as $currency)
                   <option value="{{ $currency->code }}">
                     {{ $currency->description }}
@@ -138,9 +141,19 @@ if(typeof currency_js === 'undefined') {
               </select>
             </div>
           </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="currency-variation-search">
+                <i class="fa fa-search"></i> @lang('accounting/currency.search')
+              </button>
+            </div>
+          </div>
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+            <div class="box-header">
+              <h3 class="box-title">@lang('accounting/currency.variations')</h3>
+            </div>
             <div class="box">
               <div class="box-body table-responsive no-padding swift-table">
                 <table class="table table-hover">
@@ -151,9 +164,18 @@ if(typeof currency_js === 'undefined') {
                       <th>@lang('accounting/currency.buy_rate')</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="currency-variation-table">
                   </tbody>
                 </table>
+              </div>
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#" id="variation-first">«</a></li>
+                  <li><a href="#" id="variation-1">1</a></li>
+                  <li><a href="#" id="variation-2">2</a></li>
+                  <li><a href="#" id="variation-3">3</a></li>
+                  <li><a href="#" id="variation-last">»</a></li>
+                </ul>
               </div>
             </div>
           </div>

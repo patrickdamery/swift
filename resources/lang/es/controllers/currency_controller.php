@@ -15,4 +15,7 @@ return [
 
     'currency_data_required' => 'La informacion de la moneda es requerida!',
     'currency_created' => 'La moneda fue creada exitosamente!',
+    'variation_search' => 'Rango de Fecha y Codigo de Moneda son requeridos!',
+    'rate_changed' => 'Tasa cambiada exitosamente!',
+    'change_data_required' => 'La informacion del cambio es requerida!',
 ];

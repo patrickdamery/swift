@@ -15,6 +15,7 @@ class CreateExchangeVariations extends Migration
     {
         Schema::create('currency_exchange_variations', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code', 10)->unique();
             $table->timestamp('exchange_date');
             $table->string('currency_code', 10);
             $table->double('exchange_rate');

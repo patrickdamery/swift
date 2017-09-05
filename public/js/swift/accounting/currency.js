@@ -1,4 +1,8 @@
-function Currency() {}
+function Currency() {
+  var edit_code = '';
+  var edit_value = 0;
+  var edit_type = '';
+}
 
 Currency.prototype = {
   constructor: Currency,
@@ -87,10 +91,89 @@ Currency.prototype = {
       swift_utils.free(e.target);
       swift_utils.ajax_fail(ev);
     });
-
   },
-  get_exchange_variation: function(e) {
+  variation_search: function(e) {
+    swift_utils.busy(e.target);
+    var variation_search = {
+      'date_range': $('#currency-variation-date-range').val(),
+      'code': $('#currency-variation-main').val()
+    };
+    var request = $.post('/swift/accounting/variation_search', { variation_search: variation_search, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      $('#currency-variation-table').empty();
+      $('#currency-variation-table').append(data);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  exchange_change: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
 
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+    edit_type = 'exchange';
+
+    cell.replaceWith('<td><input type="text" class="change-rate" value="'+edit_value+'"></td>')
+    $('.change-rate').focus();
+  },
+  buy_change: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+    edit_type = 'buy';
+
+    cell.replaceWith('<td><input type="text" class="change-rate" value="'+edit_value+'"></td>')
+    $('.change-rate').focus();
+  },
+  change_rate: function(e) {
+    // Get new rate.
+    var rate = $(e.target).val();
+    if(rate == edit_value || !$.isNumeric(rate)) {
+      if(edit_type == 'exchange') {
+        $(e.target).parent('td')
+          .replaceWith('<td class="exchange-rate">'+edit_value+'</td>');
+      } else {
+        $(e.target).parent('td')
+          .replaceWith('<td class="buy-rate">'+edit_value+'</td>');
+      }
+      return;
+    }
+    // Check if we are editing variation or current rate.
+    var change_type = 'variation';
+    if($(e.target).closest('tr').attr('id').split('-')[0] == 'currency') {
+      change_type = 'currency';
+    }
+
+    var change_data = {
+      'edit_value': rate,
+      'edit_type': edit_type,
+      'edit_code': edit_code,
+      'change_type': change_type
+    };
+    var request = $.post('/swift/accounting/change_rate', { change_data: change_data, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      if(edit_type == 'exchange') {
+        $(e.target).parent('td')
+          .replaceWith('<td class="exchange-rate">'+rate+'</td>');
+      } else {
+        $(e.target).parent('td')
+          .replaceWith('<td class="buy-rate">'+rate+'</td>');
+      }
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
 }
 
@@ -117,7 +200,45 @@ $(document).on('click', '#currency-save-main', function(e) {
   swift_event_tracker.fire_event(e, '#currency-save-main');
 });
 
+swift_event_tracker.register_swift_event(
+  '#currency-variation-search',
+  'click',
+  currency_js,
+  'variation_search');
 
+$(document).on('click', '#currency-variation-search', function(e) {
+  swift_event_tracker.fire_event(e, '#currency-variation-search');
+});
+
+swift_event_tracker.register_swift_event(
+  '.exchange-rate',
+  'click',
+  currency_js,
+  'exchange_change');
+
+$(document).on('click', '.exchange-rate', function(e) {
+  swift_event_tracker.fire_event(e, '.exchange-rate');
+});
+
+swift_event_tracker.register_swift_event(
+  '.buy-rate',
+  'click',
+  currency_js,
+  'buy_change');
+
+$(document).on('click', '.buy-rate', function(e) {
+  swift_event_tracker.fire_event(e, '.buy-rate');
+});
+
+swift_event_tracker.register_swift_event(
+  '.change-rate',
+  'focusout',
+  currency_js,
+  'change_rate');
+
+$(document).on('focusout', '.change-rate', function(e) {
+  swift_event_tracker.fire_event(e, '.change-rate');
+});
 
 // Define Menu Tab Events.
 swift_event_tracker.register_swift_event('#currency-view-currency-tab', 'click', swift_menu, 'select_submenu_option');
