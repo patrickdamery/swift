@@ -21,22 +21,30 @@ $(function(){
                                       'es': 'Ver Variacion de Tasa de Cambio'
                                     });
 
-swift_event_tracker.register_swift_event('#currency-view-currency-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#currency-view-currency-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#currency-view-currency-tab');
-});
-
-swift_event_tracker.register_swift_event('#currency-view-time-variation-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#currency-view-time-variation-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#currency-view-time-variation-tab');
-});
+  // Define Feedback Messages.
+  swift_language.add_sentence('create_currency_blank_code', {
+                              'en': 'Currency Code can\'t be left blank!',
+                              'es': 'Codigo de Moneda no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('create_currency_blank_description', {
+                              'en': 'Account Description can\'t be left blank!',
+                              'es': 'Descripcion de Cuenta no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('create_currency_exchange_error', {
+                              'en': 'Exchange Rate can\'t be blank and must be a numeric value!',
+                              'es': 'Tasa de Cambio no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('create_currency_buy_rate_error', {
+                              'en': 'Buy Rate can\'t be blank and must be a numeric value!',
+                              'es': 'Tasa de Compra no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
 
 // Check if we have already loaded the accounts JS file.
 if(typeof currency_js === 'undefined') {
   $.getScript('{{ URL::to('/') }}/js/swift/accounting/currency.js')
 }
 </script>
-
+@include('system.components.accounting.create_currency')
 <section class="content-header">
   <h1>
     @lang('accounting/currency.title')
@@ -77,7 +85,7 @@ if(typeof currency_js === 'undefined') {
           </div>
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-success" id="currency-create">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-currency">
                 <i class="fa fa-plus"></i> @lang('accounting/currency.create')
               </button>
             </div>
@@ -96,8 +104,8 @@ if(typeof currency_js === 'undefined') {
                       <th>@lang('accounting/currency.buy_rate')</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    @include('system.components.accounting.currency_table')
+                  <tbody id="currency-table">
+                    @include('system.components.accounting.currency_table_body')
                   </tbody>
                 </table>
               </div>
