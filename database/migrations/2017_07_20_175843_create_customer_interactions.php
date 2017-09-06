@@ -16,7 +16,7 @@ class CreateCustomerInteractions extends Migration
         Schema::create('client_interactions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
-            $table->timestamp('interaction_date');
+            $table->timestamp('interaction_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('interaction_type');
             $table->string('client_code');
             $table->string('worker_code', 10);

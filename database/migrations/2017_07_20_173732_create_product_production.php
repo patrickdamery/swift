@@ -15,7 +15,7 @@ class CreateProductProduction extends Migration
     {
         Schema::create('product_production', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('production_date');
+            $table->timestamp('production_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('production_order_code', 10);
             $table->string('product_code', 10);
             $table->tinyInteger('stage');

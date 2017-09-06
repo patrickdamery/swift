@@ -84,6 +84,8 @@ Utilities.prototype = {
       this.display_error(swift_language.get_sentence('404'));
     } else if(e.status === 500) {
       this.display_error(swift_language.get_sentence('500'));
+    } else if(e.status == 419) {
+      location.reload();
     } else {
       this.display_error(swift_language.get_sentence('no_internet'));
     }
@@ -99,29 +101,28 @@ Utilities.prototype = {
     token.fail(function(ev) {
       swift_utils.ajax_fail(ev);
     });
-  }
+  },
+  register_ajax_fail: function() {
+    swift_language.add_sentence('404', {
+                                'en': 'The requested resource could not be found on the server!',
+                                'es': 'No se pudo encontrar el recurso solicitado en el servidor!'
+                              });
+    swift_language.add_sentence('500', {
+                                'en': 'There\'s a configuration problem on the server, please contact your system\'s administrator!',
+                                'es': 'Hay un problema con la configuracion del servidor, por favor contactar al administrador!'
+                              });
+
+    swift_language.add_sentence('no_internet', {
+                                'en': 'You are not connected to the internet!',
+                                'es': 'No hay conexion al internet!'
+                              });
+  },
  }
 
 var swift_utils = new Utilities();
 
 // Interval to keep csrf token updated.
 setInterval('swift_utils.refresh_token()', 3600000);
-
-
-swift_language.add_sentence('404', {
-                            'en': 'The requested resource could not be found on the server!',
-                            'es': 'No se pudo encontrar el recurso solicitado en el servidor!'
-                          });
-swift_language.add_sentence('500', {
-                            'en': 'There\'s a configuration problem on the server, please contact your system\'s administrator!',
-                            'es': 'Hay un problema con la configuracion del servidor, por favor contactar al administrador!'
-                          });
-
-swift_language.add_sentence('no_internet', {
-                            'en': 'You are not connected to the internet!',
-                            'es': 'No hay conexion al internet!'
-                          });
-
 /**
  * List of all the available skins
  *

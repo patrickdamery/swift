@@ -15,7 +15,7 @@ class CreateInsufficientStockEvents extends Migration
     {
         Schema::create('insufficient_stock_events', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('event_date');
+            $table->timestamp('event_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('worker_code', 10);
             $table->string('branch_code', 10);
             $table->string('product_code', 10);

@@ -28,6 +28,7 @@ $(function(){
                               'en': 'Amount in Account can\'t be blank and must be a numeric value!',
                               'es': 'Saldo de Cuenta no puede dejarse en blanco y debe ser un valor numerico!'
                             });
+  swift_utils.register_ajax_fail();
 
   // Check if we have already loaded the accounts JS file.
   if(typeof accounts_js === 'undefined') {
@@ -85,26 +86,15 @@ $(function(){
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">@lang('accounting/accounts.accounts')</h3>
-              </div>
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/accounts.code')</th>
-                      <th>@lang('accounting/accounts.type')</th>
-                      <th>@lang('accounting/accounts.increases')</th>
-                      <th>@lang('accounting/accounts.name')</th>
-                      <th>@lang('accounting/accounts.value')</th>
-                    </tr>
-                  </thead>
-                  <tbody id="accounts-body">
-                    @include('system.components.accounting.accounts_table_body')
-                  </tbody>
-                </table>
-              </div>
+            <div class="box" id="accounts-table">
+              @include('system.components.accounting.accounts_table',
+                [
+                  'account_data' => array(
+                    'code' => '',
+                    'type' => 'all',
+                    'offset' => 1,
+                  )
+                ])
             </div>
           </div>
         </div>
@@ -154,35 +144,15 @@ $(function(){
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">@lang('accounting/accounts.ledger')</h3>
-              </div>
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/accounts.date')</th>
-                      <th>@lang('accounting/accounts.description')</th>
-                      <th>@lang('accounting/accounts.debit')</th>
-                      <th>@lang('accounting/accounts.credit')</th>
-                      <th>@lang('accounting/accounts.value')</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ledger-table-body">
-
-                  </tbody>
-                </table>
-              </div>
-              <div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#" id="ledger-first">«</a></li>
-                  <li><a href="#" id="ledger-1">1</a></li>
-                  <li><a href="#" id="ledger-2">2</a></li>
-                  <li><a href="#" id="ledger-3">3</a></li>
-                  <li><a href="#" id="ledger-last">»</a></li>
-                </ul>
-              </div>
+            <div class="box" id="ledger-table">
+              @include('system.components.accounting.ledger_table', [
+                'code' => '',
+                'offset' => 1,
+                'date_range' => array(
+                  date('Y-m-d').' 00:00:00',
+                  date('Y-m-d').' 23:59:59',
+                ),
+              ])
             </div>
           </div>
         </div>

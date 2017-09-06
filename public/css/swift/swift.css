@@ -57,12 +57,10 @@
    min-height: 300px;
    max-height: 600px;
 }
-
 .tab-pane {
   padding-top: 15px;
   padding-bottom: 15px;
 }
-
 .input-group .form-control {
     position: relative;
     z-index: 2;
@@ -70,47 +68,27 @@
     width: 100%;
     margin-bottom: 0;
 }
-
 .map {
   min-height: 250px;
   width: 100%;
 }
-
 .selected-filters {
   width: 250px;
   height: 150px;
   overflow-y: scroll;
 }
-
 .schedule {
   min-width: 400px;
   min-height: 400px;
   overflow: scroll;
 }
-
-/*.day, .time {
-  min-width: 80px;
-  float:left;
-  min-height: 1000px;
-  padding: 5px;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
-}
-
-.time {
-  border-left: 1px solid black;
-}
-*/
 .control-sidebar-bg, .control-sidebar {
   width: 310px!important;
   right: -310px!important;
 }
-
 .control-sidebar-open {
   right: 0px!important;
 }
-
 .contact-menu {
   margin: 0;
   padding: 0;
@@ -133,17 +111,14 @@
   font-size: 15px;
   position: relative;
 }
-
 .contact-block > a > p {
   margin: 0 0 0 45px;
   font-size: 12px;
   color: #888888;
 }
-
 .contact-block > a > h4 > small {
   float: right;
 }
-
 .received {
   color: #4fc3f7;
 }
@@ -155,7 +130,9 @@
 .contacts-search{
   padding-bottom: 15px;
 }
-
 .print_area {
   display: none;
+}
+.editable {
+  cursor:text;
 }

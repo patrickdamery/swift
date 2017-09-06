@@ -16,11 +16,12 @@ class CreateWorkerSavingsTransactions extends Migration
         Schema::create('worker_savings_transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('savings_code', 10);
-            $table->timestamp('transaction_date');
+            $table->timestamp('transaction_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('type');
             $table->double('before');
             $table->double('amount');
             $table->double('after');
+            $table->string('journal_entry_code', 15);
 
             $table->index('savings_code');
             $table->index('transaction_date');

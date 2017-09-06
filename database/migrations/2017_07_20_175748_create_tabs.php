@@ -15,7 +15,7 @@ class CreateTabs extends Migration
     {
         Schema::create('tabs', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('code', 10)->unique();
             $table->string('client_code', 10);
             $table->string('discount_code', 10);

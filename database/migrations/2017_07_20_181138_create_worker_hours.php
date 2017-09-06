@@ -16,7 +16,7 @@ class CreateWorkerHours extends Migration
         Schema::create('worker_hours', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 15)->unique();
-            $table->timestamp('recorded_at');
+            $table->timestamp('recorded_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('worker_code', 10);
             $table->tinyInteger('type');
             $table->boolean('processed')->default(false);

@@ -60,6 +60,7 @@ Route::prefix('swift')->group(function() {
     Route::post('save_local_currency', 'CurrencyController@save_local_currency');
     Route::post('variation_search', 'CurrencyController@variation_search');
     Route::post('change_rate', 'CurrencyController@change_rate');
+    Route::post('change_currency_description', 'CurrencyController@change_currency_description');
 
     // Accounts Routes.
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');
@@ -68,6 +69,8 @@ Route::prefix('swift')->group(function() {
     Route::post('load_ledger', 'AccountController@load_ledger');
     Route::post('print_ledger', 'AccountController@print_ledger');
     Route::get('download_ledger', 'AccountController@download_ledger');
+    Route::post('change_account_name', 'AccountController@change_account_name');
+    Route::post('change_ledger_description', 'AccountController@change_ledger_description');
   });
 
   // products Routes.

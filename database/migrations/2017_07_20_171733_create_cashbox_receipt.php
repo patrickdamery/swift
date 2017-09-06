@@ -18,7 +18,7 @@ class CreateCashboxReceipt extends Migration
             $table->string('code', 10)->unique();
             $table->string('cashbox_transaction_code', 15);
             $table->string('client_code', 10);
-            $table->timestamp('receipt_time');
+            $table->timestamp('receipt_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->double('amount');
             $table->text('reason');
             $table->string('journal_entry_code', 15);

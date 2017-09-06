@@ -27,4 +27,5 @@ return [
     'currency' => 'Currency',
     'date' => 'Date',
     'search' => 'Search',
+    'variations' => 'Exchange Variations',
 ];

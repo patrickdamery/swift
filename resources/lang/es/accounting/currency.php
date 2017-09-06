@@ -27,4 +27,5 @@ return [
     'currency' => 'Moneda',
     'date' => 'Fecha',
     'search' => 'Buscar',
+    'variations' => 'Variaciones de Tasas',
 ];

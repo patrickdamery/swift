@@ -1,7 +1,17 @@
 /*
   Accounts Object.
 */
-function Account() {}
+function Account() {
+  accounts_code = '';
+  accounts_type = 'all';
+  ledger_code = '';
+  ledger_date_range = '';
+  accounts_offset = 1;
+  ledger_offset = 1;
+  edit_type = '';
+  edit_code = '';
+  edit_value = '';
+}
 
 Account.prototype = {
   constructor: Account,
@@ -64,22 +74,33 @@ Account.prototype = {
     }
   },
   change_code: function(e) {
-    var code = $('#account-code').val();
-    var type = $('#account-type').val();
-    this.load_accounts({'code': code, 'type': type}, e);
+    accounts_code = $('#account-code').val();
+    accounts_type = $('#account-type').val();
+    accounts_offset = 1;
+    this.load_accounts({
+      'code': code,
+      'type': type,
+      'offset': accounts_offset,
+    }, e);
   },
   change_type: function(e) {
     // Clear code and get type.
+    accounts_offset = 1;
+    accounts_code = '';
     $('#account-code').val('');
-    var type = $('#account-type').val();
-    this.load_accounts({'code': '', 'type': type}, e);
+    accounts_type = $('#account-type').val();
+    this.load_accounts({
+      'code': accounts_code,
+      'type': accounts_type,
+      'offset': accounts_offset
+    }, e);
   },
   load_accounts: function(a, e) {
     var request = $.post('/swift/accounting/load_accounts', { account_data: a, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
-      $('#accounts-body').empty();
-      $('#accounts-body').append(data);
+      $('#accounts-table').empty();
+      $('#accounts-table').append(data);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
@@ -91,24 +112,40 @@ Account.prototype = {
       swift_utils.display_error(swift_language.get_sentence('create_account_blank_code'));
       return;
     }
+    ledger_code = $('#account-ledger-code').val();
     var ledger_data = {
-      'code': $('#account-ledger-code').val(),
+      'code': ledger_code,
       'date_range': $('#account-ledger-date-range').val(),
-      'offset': 0
+      'offset': ledger_offset,
     }
     var request = $.post('/swift/accounting/load_ledger', { ledger_data: ledger_data, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
-      $('#ledger-table-body').empty();
-      $('#ledger-table-body').append(data);
+      $('#ledger-table').empty();
+      $('#ledger-table').append(data);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
       swift_utils.ajax_fail(ev);
     });
   },
-  ledger_pagination: function() {
-    // TODO: Implement Pagination for ledger.
+  ledger_paginate: function(e) {
+    ledger_offset = $(e.target).attr('id').split('-')[2];
+    var ledger_data = {
+      'code': ledger_code,
+      'date_range': $('#account-ledger-date-range').val(),
+      'offset': ledger_offset,
+    }
+    var request = $.post('/swift/accounting/load_ledger', { ledger_data: ledger_data, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      $('#ledger-table').empty();
+      $('#ledger-table').append(data);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   download_ledger: function() {
     if($('#account-ledger-code').val() == '') {
@@ -138,6 +175,94 @@ Account.prototype = {
       $('.print_area').empty();
       $('.print_area').append(data);
       window.print();
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  accounts_paginate: function(e) {
+    accounts_offset = $(e.target).attr('id').split('-')[2];
+    this.load_accounts({
+      'code': accounts_code,
+      'type': accounts_type,
+      'offset': accounts_offset
+    }, e);
+  },
+  ledger_description_edit: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+
+    edit_code = row.attr('id').split('-')[2];
+    edit_value = cell.text();
+    edit_type = 'ledger';
+
+    cell.replaceWith('<td><input type="text" class="change-ledger" value="'+edit_value+'"></td>')
+    $('.change-ledger').focus();
+  },
+  account_name_edit: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+    edit_type = 'account';
+
+    cell.replaceWith('<td><input type="text" class="change-account" value="'+edit_value+'"></td>')
+    $('.change-account').focus();
+  },
+  account_name_change: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="account-name">'+edit_value+'</td>');
+      return;
+    }
+
+    var change_data = {
+      'edit_value': value,
+      'edit_type': edit_type,
+      'edit_code': edit_code,
+    };
+    var request = $.post('/swift/accounting/change_account_name', { change_data: change_data, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="account-name">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  ledger_description_change: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="ledger-description">'+edit_value+'</td>');
+      return;
+    }
+
+    var change_data = {
+      'edit_value': value,
+      'edit_type': edit_type,
+      'edit_code': edit_code,
+    };
+    var request = $.post('/swift/accounting/change_ledger_description', { change_data: change_data, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="ledger-description">'+value+'</td>');
+      swift_utils.display_success(data.message);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
@@ -207,6 +332,68 @@ swift_event_tracker.register_swift_event(
 
 $(document).on('click', '#ledger-download', function(e) {
   swift_event_tracker.fire_event(e, '#ledger-download');
+});
+
+swift_event_tracker.register_swift_event(
+  '.accounts-pagination > li > a',
+  'click',
+  accounts_js,
+  'accounts_paginate');
+
+$(document).on('click', '.accounts-pagination > li > a', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.accounts-pagination > li > a');
+});
+
+swift_event_tracker.register_swift_event(
+  '.ledger-pagination > li > a',
+  'click',
+  accounts_js,
+  'ledger_paginate');
+
+$(document).on('click', '.ledger-pagination > li > a', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.ledger-pagination > li > a');
+});
+
+swift_event_tracker.register_swift_event(
+  '.account-name',
+  'click',
+  accounts_js,
+  'account_name_edit');
+
+$(document).on('click', '.account-name', function(e) {
+  swift_event_tracker.fire_event(e, '.account-name');
+});
+
+swift_event_tracker.register_swift_event(
+  '.ledger-description',
+  'click',
+  accounts_js,
+  'ledger_description_edit');
+
+$(document).on('click', '.ledger-description', function(e) {
+  swift_event_tracker.fire_event(e, '.ledger-description');
+});
+
+swift_event_tracker.register_swift_event(
+  '.change-account',
+  'focusout',
+  accounts_js,
+  'account_name_change');
+
+$(document).on('focusout', '.change-account', function(e) {
+  swift_event_tracker.fire_event(e, '.change-account');
+});
+
+swift_event_tracker.register_swift_event(
+  '.change-ledger',
+  'focusout',
+  accounts_js,
+  'ledger_description_change');
+
+$(document).on('focusout', '.change-ledger', function(e) {
+  swift_event_tracker.fire_event(e, '.change-ledger');
 });
 
 $(function() {

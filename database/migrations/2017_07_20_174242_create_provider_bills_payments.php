@@ -15,7 +15,7 @@ class CreateProviderBillsPayments extends Migration
     {
         Schema::create('provider_bills_payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('payment_date');
+            $table->timestamp('payment_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('provider_bill_code', 10);
             $table->string('transaction_code', 10);
             $table->tinyInteger('transaction_type');

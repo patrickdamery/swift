@@ -16,6 +16,7 @@ class CreateChat extends Migration
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 15)->unique();
+            $table->timestamp('sent')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('from_code', 10);
             $table->string('to_code', 10);
             $table->boolean('seen')->default(false);

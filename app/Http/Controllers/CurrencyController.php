@@ -11,6 +11,32 @@ use \App\CurrencyExchange;
 use \App\Configuration;
 class CurrencyController extends Controller
 {
+  public function change_currency_description() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'description_data' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/currency_controller.change_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get currency and update description.
+    $currency = Currency::where('code', Input::get('description_data')['edit_code'])->first();
+    $currency->description = Input::get('description_data')['edit_description'];
+    $currency->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/currency_controller.description_changed'),
+    );
+    return response()->json($response);
+  }
+
   public function change_rate() {
     $validator = Validator::make(Input::all(),
       array(
@@ -76,7 +102,8 @@ class CurrencyController extends Controller
     return view('system.components.accounting.currency_variation_table',
      [
        'code' => $variation_search['code'],
-       'date_range' => $date_range
+       'date_range' => $date_range,
+       'offset' => $variation_search['offset']
     ]);
   }
 
@@ -108,8 +135,8 @@ class CurrencyController extends Controller
     }
 
     // Now convert current local rates to reference new local.
-    $current_local->exchange_rate = round($current_local->exchange_rate/$new_local->exchange_rate, 4);
-    $current_local->buy_rate = round($current_local->buy_rate/$new_local->buy_rate, 4);
+    $current_local->exchange_rate = $current_local->exchange_rate/$new_local->exchange_rate;
+    $current_local->buy_rate = $current_local->buy_rate/$new_local->buy_rate;
     $current_local->save();
 
     $new_local->exchange_rate = 1;
@@ -139,7 +166,7 @@ class CurrencyController extends Controller
   }
 
   public function currency_table() {
-    return view('system.components.accounting.currency_table_body');
+    return view('system.components.accounting.currency_table', ['offset'=> Input::get('offset')]);
   }
 
   public function create_currency() {

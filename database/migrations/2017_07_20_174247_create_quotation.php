@@ -15,7 +15,7 @@ class CreateQuotation extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
             $table->double('subtotal');

@@ -1,7 +1,10 @@
 function Currency() {
-  var edit_code = '';
-  var edit_value = 0;
-  var edit_type = '';
+  edit_code = '';
+  edit_value = 0;
+  edit_type = '';
+  edit_desrciption = '';
+  currency_offset = 1;
+  variation_offset = 1;
 }
 
 Currency.prototype = {
@@ -64,7 +67,8 @@ Currency.prototype = {
     return true;
   },
   load_currency_table: function() {
-    var request = $.post('/swift/accounting/currency_table', { _token: swift_utils.swift_token() });
+    currency_offset = 1;
+    var request = $.post('/swift/accounting/currency_table', { offset: currency_offset, _token: swift_utils.swift_token() });
     request.done(function(data) {
       $('#currency-table').empty();
       $('#currency-table').append(data);
@@ -94,9 +98,11 @@ Currency.prototype = {
   },
   variation_search: function(e) {
     swift_utils.busy(e.target);
+    offset = 1;
     var variation_search = {
       'date_range': $('#currency-variation-date-range').val(),
-      'code': $('#currency-variation-main').val()
+      'code': $('#currency-variation-main').val(),
+      'offset': offset,
     };
     var request = $.post('/swift/accounting/variation_search', { variation_search: variation_search, _token: swift_utils.swift_token() });
     request.done(function(data) {
@@ -175,6 +181,78 @@ Currency.prototype = {
       swift_utils.ajax_fail(ev);
     });
   },
+  description_change: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+    edit_code = row.attr('id').split('-')[1];
+    edit_description = cell.text();
+
+    cell.replaceWith('<td><input type="text" class="change-currency-description" value="'+edit_description+'"></td>')
+    $('.change-currency-description').focus();
+  },
+  currency_description_change: function(e) {
+    // Get new description.
+    var description = $(e.target).val();
+    if(description == edit_description) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="description-rate">'+description+'</td>');
+      return;
+    }
+
+    var description_data = {
+      'edit_description': description,
+      'edit_code': edit_code,
+    };
+    var request = $.post('/swift/accounting/change_currency_description', { description_data: description_data, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="description-rate">'+description+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  variation_paginate: function(e) {
+    variation_offset = $(e.target).attr('id').split('-')[2];
+    swift_utils.busy(e.target);
+
+    var variation_search = {
+      'date_range': $('#currency-variation-date-range').val(),
+      'code': $('#currency-variation-main').val(),
+      'offset': variation_offset,
+    };
+    var request = $.post('/swift/accounting/variation_search', { variation_search: variation_search, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      $('#currency-variation-table').empty();
+      $('#currency-variation-table').append(data);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  currency_paginate: function(e) {
+    currency_offset = $(e.target).attr('id').split('-')[2];
+    swift_utils.busy(e.target);
+
+    var request = $.post('/swift/accounting/currency_table', { offset: currency_offset, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      $('#currency-table').empty();
+      $('#currency-table').append(data);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  }
 }
 
 var currency_js = new Currency();
@@ -231,6 +309,16 @@ $(document).on('click', '.buy-rate', function(e) {
 });
 
 swift_event_tracker.register_swift_event(
+  '.description-rate',
+  'click',
+  currency_js,
+  'description_change');
+
+$(document).on('click', '.description-rate', function(e) {
+  swift_event_tracker.fire_event(e, '.description-rate');
+});
+
+swift_event_tracker.register_swift_event(
   '.change-rate',
   'focusout',
   currency_js,
@@ -238,6 +326,38 @@ swift_event_tracker.register_swift_event(
 
 $(document).on('focusout', '.change-rate', function(e) {
   swift_event_tracker.fire_event(e, '.change-rate');
+});
+
+swift_event_tracker.register_swift_event(
+  '.change-currency-description',
+  'focusout',
+  currency_js,
+  'currency_description_change');
+
+$(document).on('focusout', '.change-currency-description', function(e) {
+  swift_event_tracker.fire_event(e, '.change-currency-description');
+});
+
+swift_event_tracker.register_swift_event(
+  '.variation-pagination > li > a',
+  'click',
+  currency_js,
+  'variation_paginate');
+
+$(document).on('click', '.variation-pagination > li > a', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.variation-pagination > li > a');
+});
+
+swift_event_tracker.register_swift_event(
+  '.currency-pagination > li > a',
+  'click',
+  currency_js,
+  'currency_paginate');
+
+$(document).on('click', '.currency-pagination > li > a', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.currency-pagination > li > a');
 });
 
 // Define Menu Tab Events.

@@ -1,10 +1,10 @@
-<?php
+@php
   // Get data we need to display.
   use App\Configuration;
 
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
- ?>
+@endphp
 <script>
 $(function(){
  $('.daterangepicker-sel').daterangepicker({
@@ -38,7 +38,7 @@ $(function(){
                               'en': 'Buy Rate can\'t be blank and must be a numeric value!',
                               'es': 'Tasa de Compra no puede dejarse en blanco y debe ser un valor numerico!'
                             });
-
+  swift_utils.register_ajax_fail();
 // Check if we have already loaded the accounts JS file.
 if(typeof currency_js === 'undefined') {
   $.getScript('{{ URL::to('/') }}/js/swift/accounting/currency.js')
@@ -93,25 +93,12 @@ if(typeof currency_js === 'undefined') {
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">@lang('accounting/currency.title')</h3>
-              </div>
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/currency.code')</th>
-                      <th>@lang('accounting/currency.description')</th>
-                      <th>@lang('accounting/currency.exchange_rate')</th>
-                      <th>@lang('accounting/currency.buy_rate')</th>
-                    </tr>
-                  </thead>
-                  <tbody id="currency-table">
-                    @include('system.components.accounting.currency_table_body')
-                  </tbody>
-                </table>
-              </div>
+            <div class="box" id="currency-table">
+              @include('system.components.accounting.currency_table',
+                [
+                  'offset' => 1,
+                ]
+              )
             </div>
           </div>
         </div>
@@ -151,38 +138,21 @@ if(typeof currency_js === 'undefined') {
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box-header">
-              <h3 class="box-title">@lang('accounting/currency.variations')</h3>
-            </div>
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/currency.date')</th>
-                      <th>@lang('accounting/currency.exchange_rate')</th>
-                      <th>@lang('accounting/currency.buy_rate')</th>
-                    </tr>
-                  </thead>
-                  <tbody id="currency-variation-table">
-                  </tbody>
-                </table>
-              </div>
-              <div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#" id="variation-first">«</a></li>
-                  <li><a href="#" id="variation-1">1</a></li>
-                  <li><a href="#" id="variation-2">2</a></li>
-                  <li><a href="#" id="variation-3">3</a></li>
-                  <li><a href="#" id="variation-last">»</a></li>
-                </ul>
-              </div>
+            <div class="box" id="currency-variation-table">
+              @include('system.components.accounting.currency_variation_table',
+                [
+                  'code' => '',
+                  'date_range' => array(
+                    date('Y-m-d').' 00:00:00',
+                    date('Y-m-d').' 23:59:59',
+                  ),
+                  'offset' => 1,
+                ]
+              )
             </div>
           </div>
         </div>
       </div>
-      <!-- /.tab-pane -->
     </div>
-    <!-- /.tab-content -->
   </div>
 </section>

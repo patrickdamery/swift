@@ -17,7 +17,7 @@ class CreateWorkerLoans extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
-            $table->timestamp('loan_date');
+            $table->timestamp('loan_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->double('amount');
             $table->string('payment_code', 10);
             $table->string('journal_entry_code', 15);
