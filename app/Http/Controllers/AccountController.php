@@ -277,6 +277,7 @@ class AccountController extends Controller
       'parent_account' => $parent_account,
       'has_children' => Input::get('account')['children'],
       'amount' => Input::get('account')['amount'],
+      'currency_code' => Input::get('account')['currency'],
     ));
     $response = array(
       'state' => 'Success',

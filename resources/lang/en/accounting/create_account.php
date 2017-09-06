@@ -24,4 +24,5 @@ return [
     'amount' => 'Value',
     'parent' => 'Parent Account',
     'type' => 'Account Type',
+    'currency' => 'Currency',
 ];

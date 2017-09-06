@@ -24,4 +24,5 @@ return [
     'debit' => 'Debito',
     'credit' => 'Credito',
     'value' => 'Saldo',
+    'change_data_required' => 'Informacion del cambio es requerido!',
 ];

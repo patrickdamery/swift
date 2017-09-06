@@ -46,4 +46,5 @@ return [
     'accounts' => 'Accounts',
     'ledger_report' => 'Ledger Report',
     'ledger_account' => 'Account',
+    'currency' => 'Currency',
 ];

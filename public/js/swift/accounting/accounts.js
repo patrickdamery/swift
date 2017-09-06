@@ -31,8 +31,6 @@ Account.prototype = {
     return true;
   },
   create_account: function(e) {
-    // TODO: Accounts should include currency code.
-
     // Make target busy and get relevant data.
     swift_utils.busy(e.target);
     var account_data = {
@@ -42,6 +40,7 @@ Account.prototype = {
         'children': $('#create-account-children').val(),
         'parent': $('#create-account-parent').val(),
         'amount': $('#create-account-amount').val(),
+        'currency': $('#create-account-currency').val()
       };
 
     // Check if data is correct and create it if it is.
@@ -78,8 +77,8 @@ Account.prototype = {
     accounts_type = $('#account-type').val();
     accounts_offset = 1;
     this.load_accounts({
-      'code': code,
-      'type': type,
+      'code': accounts_code,
+      'type': accounts_type,
       'offset': accounts_offset,
     }, e);
   },

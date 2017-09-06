@@ -25,23 +25,12 @@ $(function(){
                                       'es': 'POS'
                                     });
 
-
-swift_event_tracker.register_swift_event('#bank-accounts-view-accounts-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#bank-accounts-view-accounts-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#bank-accounts-view-accounts-tab');
-});
-
-swift_event_tracker.register_swift_event('#bank-accounts-reports-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#bank-accounts-reports-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#bank-accounts-reports-tab');
-});
-
-swift_event_tracker.register_swift_event('#bank-accounts-pos-tab', 'click', swift_menu, 'select_submenu_option');
-$(document).on('click', '#bank-accounts-pos-tab', function(e) {
-  swift_event_tracker.fire_event(e, '#bank-accounts-pos-tab');
-});
+// Check if we have already loaded the bank accounts JS file.
+if(typeof bank_accounts_js === 'undefined') {
+  $.getScript('{{ URL::to('/') }}/js/swift/accounting/bank_accounts.js');
+}
 </script>
-
+@include('system.components.accounting.create_bank_account')
 <section class="content-header">
   <h1>
     @lang('accounting/bank_accounts.title')
@@ -81,7 +70,7 @@ $(document).on('click', '#bank-accounts-pos-tab', function(e) {
           </div>
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-success" id="bank-accounts-create">
+              <button type="button" class="btn btn-success" id="bank-accounts-search">
                 <i class="fa fa-search"></i> @lang('accounting/bank_accounts.search')
               </button>
             </div>
@@ -97,7 +86,7 @@ $(document).on('click', '#bank-accounts-pos-tab', function(e) {
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space md-top-space lg-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="bank-accounts-create">
+              <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#create-bank-account">
                 <i class="fa fa-plus"></i> @lang('accounting/bank_accounts.create')
               </button>
             </div>

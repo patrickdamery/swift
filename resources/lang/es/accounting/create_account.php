@@ -24,4 +24,5 @@ return [
     'amount' => 'Saldo',
     'parent' => 'Cuenta Padre',
     'type' => 'Tipo de Cuenta',
+    'currency' => 'Moneda',
 ];

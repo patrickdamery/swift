@@ -16,6 +16,10 @@ class UpdateCurrencies extends Migration
       Schema::table('currencies', function (Blueprint $table) {
           $table->string('description', 20);
       });
+      Schema::table('accounts', function (Blueprint $table) {
+        $table->string('currency_code', 10);
+        $table->foreign('currency_code')->references('code')->on('currencies');
+      });
     }
 
     /**
@@ -27,6 +31,9 @@ class UpdateCurrencies extends Migration
     {
       Schema::table('currencies', function (Blueprint $table) {
           $table->dropColumn('description');
+      });
+      Schema::table('accounts', function (Blueprint $table) {
+          $table->dropForeign(['currency_code']);
       });
     }
 }

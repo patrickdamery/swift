@@ -23,8 +23,8 @@ class Account extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'type', 'name',
-       'parent_account', 'has_children', 'amount'
+      'code', 'type', 'name', 'parent_account',
+      'has_children', 'amount' , 'currency_code'
   ];
 
   /**

@@ -36,6 +36,7 @@ class init_seed extends Seeder
           'parent_account' => '0',
           'has_children' => 0,
           'amount' => 0,
+          'currency_code' => 'cord',
           'deleted_at' => null
       ]);
 
