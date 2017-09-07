@@ -16,7 +16,7 @@ class CreateProviderBills extends Migration
         Schema::create('provider_bills', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
-            $table->timestamp('bill_date');
+            $table->timestamp('bill_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('bill_number', 10);
             $table->tinyInteger('bill_type');
             $table->double('subtotal');

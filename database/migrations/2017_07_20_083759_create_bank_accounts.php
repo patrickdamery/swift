@@ -17,7 +17,7 @@ class CreateBankAccounts extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('bank_name', 50);
-            $table->string('account_number', 50);
+            $table->string('account_number', 50)->index();
             $table->string('currency_code', 8);
             $table->double('balance');
             $table->string('account_code', 10);

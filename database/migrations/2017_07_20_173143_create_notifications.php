@@ -17,7 +17,7 @@ class CreateNotifications extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->text('reason');
             $table->string('url', 200);
             $table->boolean('seen')->default(false);

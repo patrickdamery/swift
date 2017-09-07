@@ -54,10 +54,20 @@ Route::prefix('swift')->group(function() {
   // Accounting Routes.
   Route::prefix('accounting')->group(function() {
 
+    // Bank Accounts Routes.
+    Route::post('create_bank_account', 'BankAccountController@create_account');
+    Route::post('suggest_bank_accounts', 'BankAccountController@suggest_accounts');
+    Route::post('search_bank_account', 'BankAccountController@search_bank_account');
+    Route::post('search_bank_transactions', 'BankAccountController@search_bank_transactions');
+    Route::post('make_bank_transaction', 'BankAccountController@make_bank_transaction');
+
     // Currency Routes.
     Route::post('create_currency', 'CurrencyController@create_currency');
     Route::post('currency_table', 'CurrencyController@currency_table');
     Route::post('save_local_currency', 'CurrencyController@save_local_currency');
+    Route::post('variation_search', 'CurrencyController@variation_search');
+    Route::post('change_rate', 'CurrencyController@change_rate');
+    Route::post('change_currency_description', 'CurrencyController@change_currency_description');
 
     // Accounts Routes.
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');
@@ -66,6 +76,9 @@ Route::prefix('swift')->group(function() {
     Route::post('load_ledger', 'AccountController@load_ledger');
     Route::post('print_ledger', 'AccountController@print_ledger');
     Route::get('download_ledger', 'AccountController@download_ledger');
+    Route::post('change_account_name', 'AccountController@change_account_name');
+    Route::post('change_ledger_description', 'AccountController@change_ledger_description');
+    Route::post('suggest_parent_accounts', 'AccountController@suggest_parent_accounts');
   });
 
   // products Routes.

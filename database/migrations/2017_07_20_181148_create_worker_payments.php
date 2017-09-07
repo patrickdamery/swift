@@ -16,7 +16,7 @@ class CreateWorkerPayments extends Migration
         Schema::create('worker_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
-            $table->timestamp('payment_date');
+            $table->timestamp('payment_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('worker_code', 10);
             $table->json('payment_data');
             $table->double('total_paid');

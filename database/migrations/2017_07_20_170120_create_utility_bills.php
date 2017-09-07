@@ -16,7 +16,7 @@ class CreateUtilityBills extends Migration
         Schema::create('utility_bills', function (Blueprint $table) {
             $table->increments('id');
             $table->string('utility_code', 10);
-            $table->timestamp('utility_date');
+            $table->timestamp('utility_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('bill_number', 15);
             $table->double('subtotal');
             $table->double('discount');

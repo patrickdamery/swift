@@ -16,7 +16,7 @@ class CreateWorkerIncome extends Migration
         Schema::create('workers_income', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
-            $table->timestamp('income_date');
+            $table->timestamp('income_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('branch_code', 10);
             $table->string('worker_code', 10);
             $table->double('income');

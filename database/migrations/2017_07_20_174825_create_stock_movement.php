@@ -15,7 +15,7 @@ class CreateStockMovement extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('product_code', 10);
             $table->double('quantity_before_movement');
             $table->double('quantity_to_move');

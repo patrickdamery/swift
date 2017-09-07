@@ -111,7 +111,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane active" id="alonica-configuration">
+      <div class="tab-pane" id="alonica-configuration">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="row form-inline">

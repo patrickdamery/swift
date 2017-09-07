@@ -46,4 +46,5 @@ return [
     'accounts' => 'Cuentas',
     'ledger_report' => 'Reporte Libro Mayor',
     'ledger_account' => 'Cuenta',
+    'currency' => 'Moneda',
 ];

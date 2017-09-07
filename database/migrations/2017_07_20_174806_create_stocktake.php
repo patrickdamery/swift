@@ -15,7 +15,7 @@ class CreateStocktake extends Migration
     {
         Schema::create('stocktakes', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
             $table->string('branch_code', 10);

@@ -7,9 +7,59 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use App\Account;
+use App\JournalEntryBreakdown;
 class AccountController extends Controller
 {
 
+  public function change_account_name() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'change_data' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.change_data_required')
+      );
+      return response()->json($response);
+    }
+
+    $account = Account::where('code', Input::get('change_data')['edit_code'])->first();
+    $account->name = Input::get('change_data')['edit_value'];
+    $account->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/account_controller.changed_data')
+    );
+    return response()->json($response);
+  }
+
+  public function change_ledger_description() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'change_data' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.change_data_required')
+      );
+      return response()->json($response);
+    }
+
+    $entry = JournalEntryBreakdown::where('code', Input::get('change_data')['edit_code'])->first();
+    $entry->description = Input::get('change_data')['edit_value'];
+    $entry->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/account_controller.changed_data')
+    );
+    return response()->json($response);
+  }
 
   public function download_ledger() {
     $validator = Validator::make(Input::all(),
@@ -68,7 +118,6 @@ class AccountController extends Controller
     return response()->stream($callback, 200, $headers);
   }
 
-
   public function print_ledger() {
     $validator = Validator::make(Input::all(),
       array(
@@ -116,12 +165,43 @@ class AccountController extends Controller
     $date_range[1] = date('Y-m-d H:i:s', strtotime($date_range[1].' 23:59:59'));
 
     // Return view.
-    return view('system.components.accounting.ledger_table_body',
+    return view('system.components.accounting.ledger_table',
      [
        'code' => Input::get('ledger_data')['code'],
        'date_range' => $date_range,
        'offset' => Input::get('ledger_data')['offset']
     ]);
+  }
+
+  public function suggest_parent_accounts(Request $request) {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Check if type is defined.
+    $accounts = array();
+
+    $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')
+    ->orWhere('name', 'like', '%'.Input::get('code').'%')
+    ->where('has_children', 1)->get();
+
+    $response = array();
+    foreach($accounts as $account) {
+        array_push($response, array(
+          'label' => $account->name,
+          'value' => $account->code,
+        ));
+    }
+    return response()->json($response);
   }
 
   public function suggest_accounts(Request $request) {
@@ -144,11 +224,11 @@ class AccountController extends Controller
 
     if($search_type) {
       $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')
-      ->where('name', 'like', '%'.Input::get('code').'%')
+      ->orWhere('name', 'like', '%'.Input::get('code').'%')
       ->where('type', Input::get('type'))->get();
     } else {
       $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')
-      ->where('name', 'like', '%'.Input::get('code').'%')->get();
+      ->orWhere('name', 'like', '%'.Input::get('code').'%')->get();
     }
 
     $response = array();
@@ -175,8 +255,11 @@ class AccountController extends Controller
       return response()->json($response);
     }
 
-    return view('system.components.accounting.accounts_table_body',
-     ['account_data' => Input::get('account_data')]);
+    return view('system.components.accounting.accounts_table',
+      [
+        'account_data' => Input::get('account_data')
+      ]
+    );
   }
 
   public function create_account() {
@@ -225,6 +308,7 @@ class AccountController extends Controller
       'parent_account' => $parent_account,
       'has_children' => Input::get('account')['children'],
       'amount' => Input::get('account')['amount'],
+      'currency_code' => Input::get('account')['currency'],
     ));
     $response = array(
       'state' => 'Success',

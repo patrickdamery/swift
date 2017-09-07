@@ -15,4 +15,7 @@ return [
 
     'currency_data_required' => 'Currency data is required!',
     'currency_created' => 'Currency was succesfully created!',
+    'variation_search' => 'Date Range and Currency Code required!',
+    'rate_changed' => 'Rate changed succesfully!',
+    'change_data_required' => 'The change data is required!',
 ];

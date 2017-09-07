@@ -13,16 +13,13 @@ return [
     |
     */
 
-    'title' => 'Crear Cuenta',
+    'title' => 'Crear Cuenta de Banco',
     'close' => 'Cerrar',
     'create' => 'Crear',
     'code' => 'Codigo',
-    'name' => 'Nombre',
-    'yes' => 'Si',
-    'no' => 'No',
-    'children' => 'Posee Sub Cuentas',
-    'amount' => 'Saldo',
-    'parent' => 'Cuenta Padre',
-    'type' => 'Tipo de Cuenta',
+    'name' => 'Nombre de Banco',
+    'number' => 'Numero de Cuenta',
+    'account' => 'Cuenta Contable',
+    'balance' => 'Balance',
     'currency' => 'Moneda',
 ];

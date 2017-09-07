@@ -26,4 +26,6 @@ return [
     'date_range' => 'Range of Dates',
     'currency' => 'Currency',
     'date' => 'Date',
+    'search' => 'Search',
+    'variations' => 'Exchange Variations',
 ];

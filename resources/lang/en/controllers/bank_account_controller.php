@@ -13,16 +13,10 @@ return [
     |
     */
 
-    'title' => 'Crear Cuenta',
-    'close' => 'Cerrar',
-    'create' => 'Crear',
-    'code' => 'Codigo',
-    'name' => 'Nombre',
-    'yes' => 'Si',
-    'no' => 'No',
-    'children' => 'Posee Sub Cuentas',
-    'amount' => 'Saldo',
-    'parent' => 'Cuenta Padre',
-    'type' => 'Tipo de Cuenta',
-    'currency' => 'Moneda',
+    'account_required' => 'Bank Account Information is required!',
+    'account_exists' => 'A bank account with the defined code already exists!',
+    'account_created' => 'The bank account has been created successfully!',
+    'inexistent_account' => 'The accounting account provided does not exist!',
+    'account_search_required' => 'The Account Search information is requried!',
+    'account_code_required' => 'The Account Code is required!',
 ];

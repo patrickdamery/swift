@@ -34,7 +34,7 @@ class AuthController extends Controller
 
       // Check if we found the user.
       if(!isset($user)) {
-          return redirect('/system/login')->with('message', \Lang::get('auth_controller.login_error'));
+          return redirect('/login')->with('message', \Lang::get('controllers/auth_controller.login_error'));
       }
 
       // Attempt to authenticate.
@@ -42,7 +42,7 @@ class AuthController extends Controller
                               'password' => Input::get('password').$user->salt), 1)) {
           return redirect()->intended('/swift/system/main');
       } else {
-          return redirect('/system/login')->with('message', \Lang::get('auth_controller.login_error'));
+          return redirect('/login')->with('message', \Lang::get('controllers/auth_controller.login_error'));
       }
     }
 

@@ -24,6 +24,20 @@
   <![endif]-->
 </head>
 <body class="hold-transition login-page" style="background:url(http://192.168.0.16/eirene/img/body-bg.png)">
+  @if(Session::get('message'))
+    <div class="wrapper">
+      <div>
+        <div class="wrapper">
+          <div id="alerts-area" style="position:fixed;width:100%;z-index:9999">
+            <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" ar`a-label="close">&times;</a>
+              {{ Session::get('message') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 <div class="login-box">
   <div class="login-logo">
     <b>{{ $config->name }}</b>

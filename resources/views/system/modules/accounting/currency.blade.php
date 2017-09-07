@@ -1,10 +1,10 @@
-<?php
+@php
   // Get data we need to display.
   use App\Configuration;
 
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
- ?>
+@endphp
 <script>
 $(function(){
  $('.daterangepicker-sel').daterangepicker({
@@ -38,7 +38,7 @@ $(function(){
                               'en': 'Buy Rate can\'t be blank and must be a numeric value!',
                               'es': 'Tasa de Compra no puede dejarse en blanco y debe ser un valor numerico!'
                             });
-
+  swift_utils.register_ajax_fail();
 // Check if we have already loaded the accounts JS file.
 if(typeof currency_js === 'undefined') {
   $.getScript('{{ URL::to('/') }}/js/swift/accounting/currency.js')
@@ -83,7 +83,7 @@ if(typeof currency_js === 'undefined') {
               </button>
             </div>
           </div>
-          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
+          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-currency">
                 <i class="fa fa-plus"></i> @lang('accounting/currency.create')
@@ -93,43 +93,33 @@ if(typeof currency_js === 'undefined') {
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/currency.code')</th>
-                      <th>@lang('accounting/currency.description')</th>
-                      <th>@lang('accounting/currency.exchange_rate')</th>
-                      <th>@lang('accounting/currency.buy_rate')</th>
-                    </tr>
-                  </thead>
-                  <tbody id="currency-table">
-                    @include('system.components.accounting.currency_table_body')
-                  </tbody>
-                </table>
-              </div>
+            <div class="box" id="currency-table">
+              @include('system.components.accounting.currency_table',
+                [
+                  'offset' => 1,
+                ]
+              )
             </div>
           </div>
         </div>
       </div>
       <div class="tab-pane" id="currency-view-time-variation">
         <div class="row form-inline">
-          <div class="col-lg-6 col-md-6 col-sm-4 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="form-group">
-              <label for="currency-date-range" class="control-label">@lang('accounting/currency.date_range')</label>
+              <label for="currency-variation-date-range" class="control-label">@lang('accounting/currency.date_range')</label>
               <div class="input-group date">
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control daterangepicker-sel" id="currency-date-range">
+                <input type="text" class="form-control daterangepicker-sel" id="currency-variation-date-range">
               </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 sm-top-space">
             <div class="form-group">
               <label for="currency-main" class="control-label">@lang('accounting/currency.currency')</label>
-              <select class="form-control" id="currency-main">
+              <select class="form-control" id="currency-variation-main">
                 @foreach(\App\Currency::where('code', '!=', '0')->get() as $currency)
                   <option value="{{ $currency->code }}">
                     {{ $currency->description }}
@@ -138,29 +128,31 @@ if(typeof currency_js === 'undefined') {
               </select>
             </div>
           </div>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="currency-variation-search">
+                <i class="fa fa-search"></i> @lang('accounting/currency.search')
+              </button>
+            </div>
+          </div>
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/currency.date')</th>
-                      <th>@lang('accounting/currency.exchange_rate')</th>
-                      <th>@lang('accounting/currency.buy_rate')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
+            <div class="box" id="currency-variation-table">
+              @include('system.components.accounting.currency_variation_table',
+                [
+                  'code' => '',
+                  'date_range' => array(
+                    date('Y-m-d').' 00:00:00',
+                    date('Y-m-d').' 23:59:59',
+                  ),
+                  'offset' => 1,
+                ]
+              )
             </div>
           </div>
         </div>
       </div>
-      <!-- /.tab-pane -->
     </div>
-    <!-- /.tab-content -->
   </div>
 </section>

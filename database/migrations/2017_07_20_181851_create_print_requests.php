@@ -16,7 +16,7 @@ class CreatePrintRequests extends Migration
         Schema::create('print_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->string('worker_code', 10);
-            $table->timestamp('requested_at');
+            $table->timestamp('requested_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('state');
             $table->tinyInteger('print_type');
             $table->string('print_code', 10);
@@ -25,7 +25,7 @@ class CreatePrintRequests extends Migration
             $table->index('requested_at');
             $table->index('state');
             $table->foreign('worker_code')->references('code')->on('workers');
-            
+
         });
     }
 

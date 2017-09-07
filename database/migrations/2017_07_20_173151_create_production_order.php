@@ -17,7 +17,7 @@ class CreateProductionOrder extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('client_code', 10);
-            $table->timestamp('created');
+            $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('completed')->default(false);
             $table->tinyInteger('type');
             $table->tinyInteger('priority');

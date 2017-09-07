@@ -38,4 +38,7 @@ return [
     'name' => 'Name',
     'bank_commission' => 'Bank Commission',
     'government_commission' => 'Government Commission',
+    'balance' => 'Balance',
+    'transactions' => 'Transactions',
+    'loans' => 'Bank Loans',
 ];

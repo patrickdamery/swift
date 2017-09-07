@@ -17,7 +17,7 @@ class CreateCashboxTransactions extends Migration
             $table->increments('id');
             $table->string('cashbox_code', 10);
             $table->string('code', 15)->unique();
-            $table->timestamp('transaction_time');
+            $table->timestamp('transaction_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('type');
             $table->double('amount');
             $table->text('reason');

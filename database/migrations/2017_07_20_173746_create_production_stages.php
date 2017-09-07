@@ -15,7 +15,7 @@ class CreateProductionStages extends Migration
     {
         Schema::create('production_stages', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamp('started');
+            $table->timestamp('started')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('production_order_code', 10);
             $table->tinyInteger('stage');
             $table->string('worker_code', 10);

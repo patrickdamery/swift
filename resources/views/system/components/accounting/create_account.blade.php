@@ -1,3 +1,10 @@
+@php
+  // Get data we need to display.
+  use App\Configuration;
+
+  $config = Configuration::find(1);
+  $modules = json_decode($config->modules);
+@endphp
 <div class="modal fade in" id="create-account">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -10,11 +17,11 @@
         <div class="row form-inline">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
             <label for="create-account-code" class="control-label">@lang('accounting/create_account.code')</label>
-            <input class="form-control" id="create-account-code">
+            <input type="text" class="form-control" id="create-account-code">
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
             <label for="create-account-name" class="control-label">@lang('accounting/create_account.name')</label>
-            <input class="form-control" id="create-account-name">
+            <input type="text" class="form-control" id="create-account-name">
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
@@ -39,12 +46,24 @@
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-            <label for="create-account-parent" class="control-label">@lang('accounting/create_account.parent')</label>
-            <input class="form-control" id="create-account-parent">
+            <label for="create-account-currency" class="control-label">@lang('accounting/create_account.currency')</label>
+            <select class="form-control" id="create-account-currency">
+              @foreach(\App\Currency::all() as $currency)
+                <option value="{{ $currency->code }}" {{ ($currency->code == $config->local_currency_code) ? 'selected' : '' }}>
+                  {{ $currency->description }}
+                </option>
+              @endforeach
+            </select>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
             <label for="create-account-amount" class="control-label">@lang('accounting/create_account.amount')</label>
-            <input class="form-control" id="create-account-amount">
+            <input type="text" class="form-control" id="create-account-amount">
+          </div>
+        </div>
+        <div class="row form-inline lg-top-space md-top-space sm-top-space">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center sm-top-space">
+            <label for="create-account-parent" class="control-label">@lang('accounting/create_account.parent')</label>
+            <input type="text" class="form-control" id="create-account-parent">
           </div>
         </div>
       </div>
