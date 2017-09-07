@@ -15,6 +15,7 @@ class CreateBankAccountsTransactions extends Migration
     {
         Schema::create('bank_accounts_transactions', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code', 10)->unique();
             $table->string('bank_account_code', 10);
             $table->timestamp('transaction_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('worker_code', 10);

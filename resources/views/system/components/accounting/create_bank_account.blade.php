@@ -15,61 +15,43 @@
       </div>
       <div class="modal-body">
         <div class="row form-inline">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-            <label for="create-account-code" class="control-label">@lang('accounting/create_account.code')</label>
-            <input class="form-control" id="create-account-code">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-code" class="control-label">@lang('accounting/create_bank_account.code')</label>
+            <input type="text" class="form-control" id="create-bank-account-code">
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
-            <label for="create-account-name" class="control-label">@lang('accounting/create_account.name')</label>
-            <input class="form-control" id="create-account-name">
-          </div>
-        </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-            <label for="create-account-type" class="control-label">@lang('accounting/create_account.type')</label>
-            <select class="form-control" id="create-account-type">
-              <option value="as">@lang('accounting/accounts.asset')</option>
-              <option value="dr">@lang('accounting/accounts.draw')</option>
-              <option value="ex">@lang('accounting/accounts.expense')</option>
-              <option value="li">@lang('accounting/accounts.liability')</option>
-              <option value="eq">@lang('accounting/accounts.equity')</option>
-              <option value="re">@lang('accounting/accounts.revenue')</option>
-            </select>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
-            <label for="create-account-children" class="control-label">@lang('accounting/create_account.children')</label>
-            <select class="form-control" id="create-account-children">
-              <option value="1">@lang('accounting/create_account.yes')</option>
-              <option value="0">@lang('accounting/create_account.no')</option>
-            </select>
-          </div>
-        </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-            <label for="create-account-currency" class="control-label">@lang('accounting/create_account.currency')</label>
-            <select class="form-control" id="create-account-currency">
-              @foreach(\App\Currency::where('code', '!=', '0')->get() as $currency)
-                <option value="{{ $currency->code }}" {{ ($currency->code == $config->local_currency_code) ? 'selected' : '' }}>
-                  {{ $currency->description }}
-                </option>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-curreny" class="control-label">@lang('accounting/create_bank_account.currency')</label>
+            <select class="form-control" id="create-bank-account-currency">
+              @foreach(\App\Currency::all() as $currency)
+                <option value="{{ $currency->code }}">{{ $currency->description }}</option>
               @endforeach
             </select>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
-          <label for="create-account-amount" class="control-label">@lang('accounting/create_account.amount')</label>
-          <input class="form-control" id="create-account-amount">
+        </div>
+        <div class="row form-inline lg-top-space md-top-space sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-name" class="control-label">@lang('accounting/create_bank_account.name')</label>
+            <input type="text" class="form-control" id="create-bank-account-name">
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-number" class="control-label">@lang('accounting/create_bank_account.number')</label>
+            <input type="text" class="form-control" id="create-bank-account-number">
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center sm-top-space">
-            <label for="create-account-parent" class="control-label">@lang('accounting/create_account.parent')</label>
-            <input class="form-control" id="create-account-parent">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-account" class="control-label">@lang('accounting/create_bank_account.account')</label>
+            <input type="text" class="form-control" id="create-bank-account-account">
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-bank-account-balance" class="control-label">@lang('accounting/create_bank_account.balance')</label>
+            <input type="text" class="form-control" id="create-bank-account-balance">
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">@lang('accounting/create_account.close')</button>
-        <button type="button" class="btn btn-primary" id="create-account-create">@lang('accounting/create_account.create')</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">@lang('accounting/create_bank_account.close')</button>
+        <button type="button" class="btn btn-primary" id="create-bank-account-create">@lang('accounting/create_bank_account.create')</button>
       </div>
     </div>
   </div>

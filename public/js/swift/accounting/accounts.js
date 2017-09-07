@@ -424,6 +424,20 @@ $(function() {
     },
     minLength: 2
   });
+  $('#create-account-parent').autocomplete({
+    // Get the suggestions.
+    source: function (request, response) {
+      $.post('/swift/accounting/suggest_parent_accounts',
+      { code: request.term,
+        type: 'all',
+        _token: swift_utils.swift_token()
+      },
+      function (data) {
+          response(data);
+      });
+    },
+    minLength: 2
+  });
 });
 // Define Menu Tab Events.
 swift_event_tracker.register_swift_event('#accounts-view-accounts-tab', 'click', swift_menu, 'select_submenu_option');

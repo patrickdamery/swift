@@ -10,11 +10,11 @@
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
             <label for="create-account-code" class="control-label">@lang('accounting/create_currency.code')</label>
-            <input class="form-control" id="create-currency-code">
+            <input type="text" class="form-control" id="create-currency-code">
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
             <label for="create-account-description" class="control-label">@lang('accounting/create_currency.description')</label>
-            <input class="form-control" id="create-currency-description">
+            <input type="text" class="form-control" id="create-currency-description">
           </div>
         </div>
         <div class="row lg-top-space md-top-space sm-top-space">

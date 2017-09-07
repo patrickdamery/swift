@@ -38,6 +38,7 @@ return [
     'name' => 'Nombre',
     'bank_commission' => 'Comision Bancaria',
     'government_commission' => 'Comision Gubernamental',
-
-
+    'balance' => 'Balance',
+    'transactions' => 'Transacciones',
+    'loans' => 'Prestamos de Banco',
 ];
