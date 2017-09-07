@@ -186,7 +186,7 @@
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">@lang('swift_menu.main_menu')</li>
           @if($modules->sales_stock == 1)
-            @include('system.components.sales.menu_sales')
+            @include('system.components.sale_product.menu_sales')
           @endif
           @if($modules->warehouses == 1)
             @include('system.components.warehouses.menu_warehouses')

@@ -42,7 +42,7 @@
       </div>
       <div class="row">
         <div class="col-xs-6">
-          <button id="qwerty" type="submit" class="btn btn-primary btn-block btn-flat">@lang('login.signin')</button>
+          <button id="qwerty" name="login_button" type="submit" class="btn btn-primary btn-block btn-flat">@lang('login.signin')</button>
         </div>
         <div class="col-xs-6">
           <a href="forgot">@lang('login.forgot')</a>

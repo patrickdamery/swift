@@ -70,9 +70,9 @@ Route::prefix('swift')->group(function() {
 
   // products Routes.
   Route::prefix('products')->group(function() {
-    Route::post('suggest_products', 'AccountController@suggest_accounts');
-    Route::post('create_products', 'AccountController@create_account');
-    Route::post('load_products', 'AccountController@load_accounts');
+    Route::post('suggest_products', 'AccountController@suggest_products');
+    Route::post('create_products', 'AccountController@create_product');
+    Route::post('load_products', 'AccountController@load_products');
   });
 
   // System routes.

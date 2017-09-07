@@ -39,6 +39,7 @@
     swift_event_tracker.fire_event(e, '#journal');
   });
 </script>
+
 <li class="treeview">
   <a href="">
     <i class="fa fa-book"></i>
