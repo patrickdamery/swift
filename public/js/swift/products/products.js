@@ -1,13 +1,39 @@
 /*
   products Object.
 */
-function Product() {}
+function Account() {
+  products_code = '';
+  products_provider = '';
+  products_description = '';
+  products_children = '';
+  products_measurement_unit_code = '';
+  products_avg_cost = '';
+  products_price = '';
+  products_sellable = '';
+  products_sell_at_base_price = '';
+  products_measurement_unit_code = '';
+  products_avg_cost = '';
+  products_price = '';
+  products_sellable = '';
+  products_sell_at_base_price = '';
+  products_price = '';
+  products_alternatives = '';
+  products_volume = '';
+  products_weight = '';
+  products_package_code = '';
+  products_package_measurement_unit_code = '';
+  products_order_by = '';
+  products_service = '';
+  products_materials = '';
+  products_points_cost = '';
+  products_account_code = '';
+}}
 
 Product.prototype = {
   constructor: Product,
 
 
-  /*
+  /
   verify_product_data: function(a) {
     if(a.code == '') {
       swift_utils.display_error(swift_language.get_sentence('create_product_blank_code'));
@@ -18,9 +44,8 @@ Product.prototype = {
     return true;
   },
 
-  */
+
   create_product: function(e) {
-    // TODO: products should include currency code.
 
     // Make target busy and get relevant data.
     swift_utils.busy(e.target);

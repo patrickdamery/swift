@@ -29,7 +29,7 @@
     <td>{{ $product->cost }}</td>
     <td>{{ $product->price }}</td>
     <td>{{ $product->sellable }}</td>
-    <td>{{ $product->sell-at-base-price }}</td>
-    <td>{{ $product->base-price }}</td>
+    <td>{{ $product->sell_at_base_price }}</td>
+    <td>{{ $product->base_price }}</td>
   </tr>
 @endforeach

@@ -82,7 +82,7 @@ $(function(){
           </div>
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-account">
+              <button id="create_account" type="button" class="btn btn-success" data-toggle="modal" data-target="#create-account">
                 <i class="fa fa-plus"></i> @lang('accounting/accounts.create')
               </button>
             </div>

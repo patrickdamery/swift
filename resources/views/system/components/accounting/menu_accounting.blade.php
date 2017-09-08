@@ -41,7 +41,7 @@
 </script>
 
 <li class="treeview">
-  <a href="">
+  <a id="menu_accounting" href="menu_accounting">
     <i class="fa fa-book"></i>
     <span>@lang('swift_menu.accountancy')</span>
   </a>

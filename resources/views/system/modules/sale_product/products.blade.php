@@ -25,10 +25,15 @@ $(document).on('click', '#products-view-service-tab', function(e) {
 swift_event_tracker.register_swift_event('#products-view-product-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#products-view-product-tab', function(e) {
   swift_event_tracker.fire_event(e, '#products-view-product-tab');
+
+  if(typeof accounts_js === 'undefined') {
+    $.getScript('{{ URL::to('/') }}/js/swift/products/products.js');
+  }
+
 });
 </script>
 
-
+@include('system.components.sale_product.create_product')
 
 <section class="content-header">
   <h1>
@@ -68,7 +73,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
           </div>
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="products-create-product" data-toggle="modal" data-target="#create_product">
+              <button type="button" class="btn btn-info" id="create-product" data-toggle="modal" data-target="#create_product">
                 <i class="fa fa-plus"></i> @lang('products/products.create_product')
               </button>
             </div>
@@ -93,7 +98,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
                     </tr>
                   </thead>
                   <tbody>
-                    @include('system.components.products.produs_table_body')
+                    @include('system.components.sale_product.products_table_body')
                   </tbody>
                 </table>
               </div>
@@ -111,7 +116,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
           </div>
           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="products-create-service">
+              <button type="button" class="btn btn-info" id="create-service">
                 <i class="fa fa-plus"></i> @lang('products/products.create_service')
               </button>
             </div>

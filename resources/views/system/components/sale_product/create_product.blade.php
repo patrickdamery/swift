@@ -44,7 +44,7 @@
           </div>
 
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-            <label for="create-product-measurement_unit_code" class="control-label">@lang('products/create_product.measurement_unit_code')</label>
+            <label for="create-product-measurement-unit-code" class="control-label">@lang('products/create_product.measurement_unit_code')</label>
             <input class="form-control" id="create-product-measurement_unit_code">
           </div>
 

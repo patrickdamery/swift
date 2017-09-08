@@ -21,8 +21,8 @@ class accountingTest extends DuskTestCase
                   ->assertSee('Ferreteria Prueba')
                   ->type('username', 'thiel.winifred')
                   ->type('password', 'secret')
-                  ->press('#qwerty')
-                  ->visit('http://swift.sys/swift/system/main');
+                  ->press('#login_button');
+
                   //->assertPathIs('http://swift.sys/swift/system/main');
         });
       }
@@ -36,19 +36,24 @@ class accountingTest extends DuskTestCase
         */
 
 
-/*
 
       public function testCreateAccount()
       {
           $this->browse(function (Browser $browser) {
 
-                      $browser
-
-                              //->whenAvailable('#modal-support', function ($modal) use($user) {
-                                //  $modal->assertInputValue('#support-from', $user->email);
-                              //});
-                  });
+              $browser->visit('http://swift.sys/swift/system/main')
+                      ->assertVisible('#menu_accounting');
+                      /*->visit(
+                       $browser->attribute('#menu_accounting', 'href')
+                     )*/
+                      //->click('a[href="accounts"]');
+                      //->clickLink('#menu_accounting')
+                      //->clickLink('#accounts');
+              $browser->attribute('#menu_accounting', 'href');
+              $browser->attribute('#accounts', 'href')
+                      ->press('#create_account');
+            });
         }
 
-    }*/
+
 }

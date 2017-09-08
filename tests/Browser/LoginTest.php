@@ -16,7 +16,7 @@ class LoginTest extends DuskTestCase
         $browser->visit('http://swift.sys/login')
                 ->type('username', 'thiel.winifred')
                 ->type('password', 'secret')
-                ->press('#qwerty');
+                ->press('#login_button');
                 //-assertRouteIs('http://swift.sys/swift/system/main');
 
       });
