@@ -31,7 +31,6 @@ class CreateClients extends Migration
             $table->text('auth_key');
             $table->string('discount_group_code', 10);
             $table->string('location_code', 10);
-            $table->string('account_code', 10);
             $table->softDeletes();
 
             $table->index('company_code');

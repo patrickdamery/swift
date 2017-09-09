@@ -95,7 +95,6 @@ class test_seed extends Seeder
           'location_code' => $provider_location->code,
           'delivers' => 1,
           'preferred_contact_method' => 'call',
-          'account_code' => '0'
       ]);
       DB::table('providers')->insert([
           'code' => '2',
@@ -115,7 +114,6 @@ class test_seed extends Seeder
           'location_code' => $provider_location->code,
           'delivers' => 1,
           'preferred_contact_method' => 'call',
-          'account_code' => '0'
       ]);
       DB::table('providers')->insert([
           'code' => '3',
@@ -135,7 +133,6 @@ class test_seed extends Seeder
           'location_code' => $provider_location->code,
           'delivers' => 1,
           'preferred_contact_method' => 'call',
-          'account_code' => '0'
       ]);
 
       // Now let's create a couple of products.

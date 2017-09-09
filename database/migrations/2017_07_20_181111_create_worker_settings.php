@@ -16,8 +16,8 @@ class CreateWorkerSettings extends Migration
         Schema::create('worker_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('worker_code', 10);
-            $table->double('full_shift_hours');
             $table->double('hourly_rate');
+            $table->string('vehicle_code', 10);
             $table->string('schedule_code', 10);
             $table->string('notification_group', 10);
             $table->boolean('self_print')->default(true);
@@ -26,13 +26,10 @@ class CreateWorkerSettings extends Migration
             $table->string('discount_group', 10);
             $table->string('branches_group', 10);
             $table->string('pos_group', 10);
-            $table->string('account_code', 10);
-            $table->boolean('pay_bonus')->default(true);
-            $table->boolean('pay_holidays')->default(true);
-            $table->boolean('pay_antiquity')->default(true);
 
             $table->index('worker_code');
             $table->foreign('worker_code')->references('code')->on('workers');
+            $table->foreign('vehicle_code')->references('code')->on('vehicles');
             $table->foreign('notification_group')->references('code')->on('groups');
             $table->foreign('print_group')->references('code')->on('groups');
             $table->foreign('commission_group')->references('code')->on('groups');

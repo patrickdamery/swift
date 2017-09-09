@@ -48,7 +48,7 @@
     $accounts = \App\Account::where('code', '!=', '0');
   }
   $records = $accounts->count();
-  $pages = ceil($records/100);
+  $pages = ceil($records/50);
 
   $offset = $account_data['offset'];
 
@@ -59,8 +59,9 @@
   } else {
     $offset--;
   }
-  $accounts = $accounts->offset($offset*100)
-    ->limit(100)
+  $accounts = $accounts->offset($offset*50)
+    ->limit(50)
+    ->orderBy('code')
     ->get();
 @endphp
 <div class="box-header">

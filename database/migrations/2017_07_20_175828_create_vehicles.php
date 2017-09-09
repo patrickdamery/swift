@@ -27,7 +27,8 @@ class CreateVehicles extends Migration
             $table->string('number_plate', 10);
             $table->double('latitude');
             $table->double('longitude');
-            $table->string('account_code', 10);
+            $table->string('asset_account', 10);
+            $table->string('depreciation_account', 10);
 
             $table->index('under_repairs');
             $table->index('type');

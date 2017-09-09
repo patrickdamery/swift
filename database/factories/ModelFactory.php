@@ -66,6 +66,7 @@ $factory->define(App\Product::class, function (Faker\Generator $faker) {
         'service' => 0,
         'materials' => json_encode(array()),
         'points_cost' => 0,
-        'account_code' => '0'
+        'sales_account' => '0',
+        'returns_account' => '0',
     ];
 });

@@ -136,3 +136,7 @@
 .editable {
   cursor:text;
 }
+
+.ui-autocomplete {
+  z-index:2147483647;
+}

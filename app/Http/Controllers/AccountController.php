@@ -287,12 +287,22 @@ class AccountController extends Controller
         );
         return response()->json($response);
       }
+      if($parent->type != Input::get('account')['type']) {
+        $response = array(
+          'state' => 'Error',
+          'error' => \Lang::get('controllers/account_controller.diff_type')
+        );
+        return response()->json($response);
+      }
     } else {
       $parent_account = 0;
     }
 
+    // Append Parent code if parent exists.
+    $code = ($parent_account != 0) ? $parent_account.'.'.Input::get('account')['code'] : Input::get('account')['code'];
+
     // Make sure an account with specified code does not exist already.
-    $account_check = Account::where('code', Input::get('account')['code'])->first();
+    $account_check = Account::where('code', $code)->first();
     if($account_check) {
       $response = array(
         'state' => 'Error',
@@ -302,7 +312,7 @@ class AccountController extends Controller
     }
 
     $account = Account::create(array(
-      'code' => Input::get('account')['code'],
+      'code' => $code,
       'type' => Input::get('account')['type'],
       'name' => Input::get('account')['name'],
       'parent_account' => $parent_account,

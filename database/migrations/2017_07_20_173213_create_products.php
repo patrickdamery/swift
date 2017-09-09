@@ -37,7 +37,8 @@ class CreateProducts extends Migration
             $table->boolean('service')->default(false);
             $table->json('materials');
             $table->double('points_cost');
-            $table->string('account_code', 10);
+            $table->string('sales_account', 10);
+            $table->string('returns_account', 10);
             $table->softDeletes();
 
             $table->index('provider_code');
