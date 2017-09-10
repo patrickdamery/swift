@@ -87,11 +87,10 @@ class init_seed extends Seeder
           'plugins' => '{}'
       ]);
 
-      DB::table('user_level')->insert([
+      DB::table('user_access')->insert([
             'code' => '1',
             'name' => 'Admin',
-            'permissions' => '{}',
-            'view' => '{}'
+            'access' => '{}'
       ]);
 
       DB::table('groups')->insert([

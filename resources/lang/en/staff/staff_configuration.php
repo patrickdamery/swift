@@ -49,4 +49,10 @@ return [
     'clear' => 'Clear',
     'draw' => 'Draw Accounts',
     'bank' => 'Bank Accounts',
+    'search' => 'Search',
+    'create' => 'Create',
+    'modules' => 'Modules',
+    'pages' => 'Pages',
+    'sub_pages' => 'Sub Pages',
+    'options' => 'Options',
 ];

@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserLevel extends Model
+class UserAccess extends Model
 {
   /**
    * The database table used by the model.
    *
    * @var string
    */
-  protected $table = 'user_level';
+  protected $table = 'user_access';
 
   /**
    * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class UserLevel extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'name', 'permissions', 'view'
+      'code', 'name', 'access'
   ];
 
   /**

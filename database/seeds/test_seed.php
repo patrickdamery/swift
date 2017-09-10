@@ -51,7 +51,7 @@ class test_seed extends Seeder
           $user = factory(App\User::class)->create([
             'code' => $u,
             'worker_code' => $worker->code,
-            'user_level_code' => 1,
+            'user_access_code' => 1,
           ]);
           $u++;
         }

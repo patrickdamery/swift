@@ -5,6 +5,41 @@
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
  ?>
+ <script>
+ $(function(){
+
+   // Define Menu Tab Options.
+   swift_menu.new_submenu();
+   swift_menu.get_language().add_sentence('staff-configuration-tab', {
+                                         'en': 'View Configuration',
+                                         'es': 'Ver Configuracion'
+                                       });
+   swift_menu.get_language().add_sentence('staff-configuration-view-access-tab', {
+                                       'en': 'Access Configuration',
+                                       'es': 'Configuracion de Accesos'
+                                     });
+
+   // Define Feedback Messages.
+   swift_language.add_sentence('create_account_blank_code', {
+                               'en': 'Account Code can\'t be left blank!',
+                               'es': 'Codigo de Cuenta no puede dejarse en blanco!'
+                             });
+   swift_language.add_sentence('create_account_blank_name', {
+                               'en': 'Account Name can\'t be left blank!',
+                               'es': 'Nombre de Cuenta no puede dejarse en blanco!'
+                             });
+   swift_language.add_sentence('create_account_amount_error', {
+                               'en': 'Amount in Account can\'t be blank and must be a numeric value!',
+                               'es': 'Saldo de Cuenta no puede dejarse en blanco y debe ser un valor numerico!'
+                             });
+   swift_utils.register_ajax_fail();
+
+   // Check if we have already loaded the staff configuration JS file.
+   if(typeof staff_configuration_js === 'undefined') {
+     $.getScript('{{ URL::to('/') }}/js/swift/staff/staff_configuration.js');
+   }
+ });
+ </script>
 <section class="content-header">
   <h1>
     @lang('staff/staff_configuration.title')
@@ -273,6 +308,33 @@
         </div>
       </div>
       <div class="tab-pane" id="staff-configuration-view-access">
+        <div class="row form-inline">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="staff-configuration-access-code" class="control-label">@lang('staff/staff_configuration.code')</label>
+              <input type="text" class="form-control" id="staff-configuration-access-code">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="staff-configuration-access-search">
+                <i class="fa fa-search"></i> @lang('staff/staff_configuration.search')
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-success" id="staff-configuration-access-create">
+                <i class="fa fa-plus"></i> @lang('staff/staff_configuration.create')
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row lg-top-space md-top-space sm-top-space">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            @include('system.components.staff.access_table')
+          </div>
+        </div>
       </div>
     </div>
   </div>

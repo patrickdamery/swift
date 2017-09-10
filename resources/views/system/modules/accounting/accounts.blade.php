@@ -35,8 +35,6 @@ $(function(){
     $.getScript('{{ URL::to('/') }}/js/swift/accounting/accounts.js');
   }
 });
-
-
 </script>
 @include('system.components.accounting.create_account')
 <section class="content-header">

@@ -3,11 +3,13 @@
   use App\Configuration;
   use App\Branch;
   use App\User;
+  use App\UserAccess;
   use App\Worker;
 
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
   $worker = Worker::where('code', Auth::user()->worker_code)->first();
+  $access = json_decode(UserAccess::where('code', Auth::user()->user_access_code)->first()->access);
 @endphp
 <!DOCTYPE html>
 <html>
@@ -179,67 +181,65 @@
                 </span>
           </div>
         </form>
-        <!-- /.search form -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
-
-
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">@lang('swift_menu.main_menu')</li>
-          @if($modules->sales_stock == 1)
+          @if($modules->sales_stock == 1 && ($access->sales->has || $access->products->has))
             @include('system.components.sale_product.menu_sales')
           @endif
-          @if($modules->warehouses == 1)
+          @if($modules->warehouses == 1 && $access->warehouses->has)
             @include('system.components.warehouses.menu_warehouses')
           @endif
-          @if($modules->staff == 1)
+          @if($modules->staff == 1 && $access->staff->has)
             @include('system.components.staff.menu_staff')
           @endif
-          @if($modules->vehicles == 1)
+          @if($modules->vehicles == 1 && $access->vehicles->has)
             @include('system.components.vehicles.menu_vehicles')
           @endif
-          @if($modules->accounting == 1)
+          @if($modules->accounting == 1 && $access->accounting->has)
             @include('system.components.accounting.menu_accounting')
           @endif
-          <script>
-            var option = {
-              'branch': '/swift/system/branch'
-            };
-            swift_menu.register_menu_option(option);
-            swift_event_tracker.register_swift_event('#branch', 'click', swift_menu, 'select_menu_option');
-            $(document).on('click', '#branch', function(e) {
-              e.preventDefault();
-              swift_event_tracker.fire_event(e, '#branch');
-            });
-            option = {
-              'group': '/swift/system/group'
-            };
-            swift_menu.register_menu_option(option);
-            swift_event_tracker.register_swift_event('#group', 'click', swift_menu, 'select_menu_option');
-            $(document).on('click', '#group', function(e) {
-              e.preventDefault();
-              swift_event_tracker.fire_event(e, '#group');
-            });
-            option = {
-              'configuration': '/swift/system/configuration'
-            };
-            swift_menu.register_menu_option(option);
-            swift_event_tracker.register_swift_event('#configuration', 'click', swift_menu, 'select_menu_option');
-            $(document).on('click', '#configuration', function(e) {
-              e.preventDefault();
-              swift_event_tracker.fire_event(e, '#configuration');
-            });
-          </script>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-cogs"></i>
-              <span>@lang('swift_menu.general_config')</span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#branch" id="branch"><i class="fa fa-building"></i> @lang('swift_menu.branches')</a></li>
-              <li><a href="#group" id="group"><i class="fa fa-users"></i> @lang('swift_menu.groups')</a></li>
-              <li><a href="#configuration" id="configuration"><i class="fa fa-cogs"></i> @lang('swift_menu.config')</a></li>
-            </ul>
-          </li>
+          @if($access->configuration->has)
+            <script>
+              var option = {
+                'branch': '/swift/system/branch'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#branch', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#branch', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#branch');
+              });
+              option = {
+                'group': '/swift/system/group'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#group', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#group', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#group');
+              });
+              option = {
+                'configuration': '/swift/system/configuration'
+              };
+              swift_menu.register_menu_option(option);
+              swift_event_tracker.register_swift_event('#configuration', 'click', swift_menu, 'select_menu_option');
+              $(document).on('click', '#configuration', function(e) {
+                e.preventDefault();
+                swift_event_tracker.fire_event(e, '#configuration');
+              });
+            </script>
+            <li class="treeview">
+              <a href="">
+                <i class="fa fa-cogs"></i>
+                <span>@lang('swift_menu.general_config')</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#branch" id="branch"><i class="fa fa-building"></i> @lang('swift_menu.branches')</a></li>
+                <li><a href="#group" id="group"><i class="fa fa-users"></i> @lang('swift_menu.groups')</a></li>
+                <li><a href="#configuration" id="configuration"><i class="fa fa-cogs"></i> @lang('swift_menu.config')</a></li>
+              </ul>
+            </li>
+          @endif
         </ul>
       </section>
     </aside>
