@@ -47,6 +47,9 @@
   } else {
     $accounts = \App\Account::where('code', '!=', '0');
   }
+
+
+
   $records = $accounts->count();
   $pages = ceil($records/100);
 
@@ -90,6 +93,8 @@
     </tbody>
   </table>
 </div>
+
+
 <div class="box-footer clearfix">
   <ul class="pagination pagination-sm no-margin pull-right accounts-pagination">
     <li><a href="#" id="accounts-pagination-first">«</a></li>

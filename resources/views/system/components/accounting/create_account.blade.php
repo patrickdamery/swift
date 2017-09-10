@@ -4,8 +4,7 @@
 
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
-@endph
-
+@endphp
 <div class="modal fade in" id="create-account">
   <div class="modal-dialog">
     <div class="modal-content">

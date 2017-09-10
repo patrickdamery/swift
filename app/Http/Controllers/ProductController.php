@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use App\product;
+use App\JournalEntryBreakdown;
 class ProductController extends Controller
 {
-
 
   public function suggest_products(Request $request) {
     $validator = Validator::make(Input::all(),
@@ -25,27 +25,23 @@ class ProductController extends Controller
       return response()->json($response);
     }
 
-    // Check if type is defined.
-    $products = array();
-    $search_type = ($request->has('type') && Input::get('type') != 'all')? true : false;
 
-    if($search_type) {
-      $products = product::where('code', 'like',  '%'.Input::get('code').'%')
-      ->where('name', 'like', '%'.Input::get('code').'%')
-      ->where('type', Input::get('type'))->get();
-    } else {
-      $products = product::where('code', 'like',  '%'.Input::get('code').'%')
-      ->where('name', 'like', '%'.Input::get('code').'%')->get();
-    }
+    $product = array();
+
+    $product = Product::where('code', 'like',  '%'.Input::get('code').'%');
+
+    // Check if type is defined.
+
 
     $response = array();
     foreach($products as $product) {
         array_push($response, array(
-          'label' => $product->name,
           'value' => $product->code,
         ));
     }
     return response()->json($response);
+
+
   }
 
 
@@ -82,9 +78,6 @@ class ProductController extends Controller
       );
       return response()->json($response);
     }
-
-
-
     // Make sure an product with specified code does not exist already.
     $product_check = product::where('code', Input::get('product')['code'])->first();
     if($product_check) {
@@ -123,6 +116,4 @@ class ProductController extends Controller
     );
     return response()->json($response);
   }
-
-
 }

@@ -275,7 +275,6 @@ class AccountController extends Controller
       );
       return response()->json($response);
     }
-
     // Check if parent is defined, and if it is make sure that parent has children.
     $parent_account = Input::get('account')['parent'];
     if($parent_account != '') {

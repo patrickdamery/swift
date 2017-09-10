@@ -1,7 +1,7 @@
 /*
   products Object.
 */
-function Account() {
+function Product() {
   products_code = '';
   products_provider = '';
   products_description = '';
@@ -27,6 +27,7 @@ function Account() {
   products_materials = '';
   products_points_cost = '';
   products_account_code = '';
+  products_offset = 1;
 }}
 
 Product.prototype = {
@@ -117,17 +118,13 @@ Product.prototype = {
     }
   },
 
-
   change_code: function(e) {
-    var code = $('#product-code').val();
-    var type = $('#product-type').val();
-    this.load_products({'code': code, 'type': type}, e);
-  },
-  change_type: function(e) {
-    // Clear code and get type.
-    $('#product-code').val('');
-    var type = $('#product-type').val();
-    this.load_products({'code': '', 'type': type}, e);
+    products_code = $('#account-code').val();
+    products_offset = 1;
+    this.load_products({
+      'code': products_code,
+      'offset': products_offset,
+    }, e);
   },
 
 
@@ -135,8 +132,8 @@ Product.prototype = {
     var request = $.post('/swift/products/load_products', { product_data: a, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
-      $('#products-body').empty();
-      $('#products-body').append(data);
+      $('#products-table').empty();
+      $('#products-table').append(data);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
@@ -144,8 +141,11 @@ Product.prototype = {
     });
   },
 
-  product_pagination: function() {
-    // TODO: Implement Pagination for product.
+  product_paginate: function() {
+      products_offset = $(e.target).attr('id').split('-')[2];
+      this.load_products({
+        'code': products_code,
+        'offset': products_offset
   },
 
 }

@@ -52,7 +52,6 @@ Account.prototype = {
           swift_utils.display_error(data.error);
           return;
         }
-
         // Clear modal and hide it.
         $('#create-account-code').val('');
         $('#create-account-name').val('');

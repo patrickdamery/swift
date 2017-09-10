@@ -15,6 +15,7 @@ return [
 
     'title' => 'Productos',
     'code' => 'Codigo',
+    'provider' => 'Proveedor',
     'description' => 'Descripcion',
     'category' => 'Categoria',
     'onload_function' => 'Funcion De Carga',
@@ -32,12 +33,15 @@ return [
 
     'package_code' => 'Codigo De Paquete',
     'package_mesasurement_unit_code' => 'Codigo De Unidad De Medida Del Paquete',
-    'orde_by' => 'Ordenar Por',
+    'order_by' => 'Ordenar Por',
     'service' => 'Servicio',
     'materials' => 'Materiales',
     'points_cost' => 'Costo De Los Puntos',
     'account_code' => 'Codigo De Cuenta',
 
+
+    'yes' => 'Si',
+    'no' => 'No',
     'close' => 'Cerrar',
     'create' => 'Crear',
 ];

@@ -15,6 +15,7 @@ return [
 
     'title' => 'Products',
     'code' => 'Code',
+    'provider' => 'Provider',
     'description' => 'Description',
     'category' => 'Category',
     'onload_function' => 'On Load Function',
@@ -32,7 +33,7 @@ return [
 
     'package_code' => 'Package Code',
     'package_mesasurement_unit_code' => 'Package Measurement Unit Code',
-    'orde_by' => 'Order By',
+    'order_by' => 'Order By',
     'service' => 'Service',
     'materials' => 'Materials',
     'points_cost' => 'Points Cost',
