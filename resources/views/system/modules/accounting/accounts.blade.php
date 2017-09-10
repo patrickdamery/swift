@@ -39,8 +39,6 @@ $(function(){
 
 </script>
 @include('system.components.accounting.create_account')
-
-
 <section class="content-header">
   <h1>
     @lang('accounting/accounts.title')
@@ -161,8 +159,6 @@ $(function(){
           </div>
         </div>
       </div>
-      <!-- /.tab-pane -->
     </div>
-    <!-- /.tab-content -->
   </div>
 </section>

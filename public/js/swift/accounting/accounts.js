@@ -45,11 +45,12 @@ Account.prototype = {
 
     // Check if data is correct and create it if it is.
     if(this.verify_account_data(account_data)) {
+      var account_ref = this;
       var request = $.post('/swift/accounting/create_account', { account: account_data, _token: swift_utils.swift_token() });
       request.done(function(data) {
-        swift_utils.free(e.target);
         if(data.state != 'Success') {
           swift_utils.display_error(data.error);
+          swift_utils.free(e.target);
           return;
         }
         // Clear modal and hide it.
@@ -62,6 +63,11 @@ Account.prototype = {
         $('#create-account').modal('hide');
 
         swift_utils.display_success(data.message);
+        account_ref.load_accounts({
+          'code': accounts_code,
+          'type': accounts_type,
+          'offset': accounts_offset
+        }, e);
       });
       request.fail(function(ev) {
         swift_utils.free(e.target);
@@ -435,7 +441,7 @@ $(function() {
           response(data);
       });
     },
-    minLength: 2
+    minLength: 2,
   });
 });
 // Define Menu Tab Events.

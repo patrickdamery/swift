@@ -1,6 +1,7 @@
 @php
   // Get data we need to display.
   use App\Configuration;
+  use App\User;
 
   $config = Configuration::find(1);
   $modules = json_decode($config->modules);
@@ -15,17 +16,17 @@
       </div>
       <div class="modal-body">
         <div class="row form-inline">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-code" class="control-label">@lang('accounting/create_account.code')</label>
             <input type="text" class="form-control" id="create-account-code">
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-name" class="control-label">@lang('accounting/create_account.name')</label>
             <input type="text" class="form-control" id="create-account-name">
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-type" class="control-label">@lang('accounting/create_account.type')</label>
             <select class="form-control" id="create-account-type">
               <option value="as">@lang('accounting/accounts.asset')</option>
@@ -36,7 +37,7 @@
               <option value="re">@lang('accounting/accounts.revenue')</option>
             </select>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-children" class="control-label">@lang('accounting/create_account.children')</label>
             <select class="form-control" id="create-account-children">
               <option value="1">@lang('accounting/create_account.yes')</option>
@@ -45,7 +46,7 @@
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-currency" class="control-label">@lang('accounting/create_account.currency')</label>
             <select class="form-control" id="create-account-currency">
               @foreach(\App\Currency::all() as $currency)
@@ -55,7 +56,7 @@
               @endforeach
             </select>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-account-amount" class="control-label">@lang('accounting/create_account.amount')</label>
             <input type="text" class="form-control" id="create-account-amount">
           </div>

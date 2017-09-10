@@ -40,6 +40,23 @@ class init_seed extends Seeder
           'deleted_at' => null
       ]);
 
+      DB::table('vehicles')->insert([
+          'code' => '0',
+          'make' => 'No Asignado',
+          'model' => 'No Asignado',
+          'efficiency' => 0,
+          'under_repairs' => 0,
+          'type' => 0,
+          'initial_value' => 0,
+          'current_value' => 0,
+          'currency_code' => 'cord',
+          'number_plate' => '',
+          'latitude' => 0,
+          'longitude' => 0,
+          'asset_account' => 0,
+          'depreciation_account' => 0,
+      ]);
+
       $modules = array(
         'crm' => 0,
         'staff' => 0,
@@ -110,7 +127,6 @@ class init_seed extends Seeder
             'location_code' => '0',
             'delivers' => 0,
             'preferred_contact_method' => '',
-            'account_code' => '0'
       ]);
     }
 }

@@ -66,7 +66,6 @@ class UpdateForeignKeys extends Migration
             $table->foreign('to_code')->references('code')->on('workers');
         });
         Schema::table('clients', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
             $table->foreign('location_code')->references('code')->on('locations');
             $table->index('type');
             $table->index('has_credit');
@@ -93,7 +92,8 @@ class UpdateForeignKeys extends Migration
             $table->index('priority');
         });
         Schema::table('products', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
+            $table->foreign('sales_account')->references('code')->on('accounts');
+            $table->foreign('returns_account')->references('code')->on('accounts');
             $table->foreign('measurement_unit_code')->references('code')->on('measurement_units');
             $table->foreign('package_measurement_unit_code')->references('code')->on('measurement_units');
             $table->foreign('category_code')->references('code')->on('category');
@@ -113,7 +113,6 @@ class UpdateForeignKeys extends Migration
             $table->index('stage');
         });
         Schema::table('providers', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
             $table->foreign('location_code')->references('code')->on('locations');
             $table->index('provider_type');
         });
@@ -166,7 +165,8 @@ class UpdateForeignKeys extends Migration
             $table->foreign('vehicle_code')->references('code')->on('vehicles');
         });
         Schema::table('vehicles', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
+            $table->foreign('depreciation_account')->references('code')->on('accounts');
+            $table->foreign('asset_account')->references('code')->on('accounts');
         });
         Schema::table('client_interactions', function (Blueprint $table) {
             $table->foreign('worker_code')->references('code')->on('workers');
@@ -174,9 +174,6 @@ class UpdateForeignKeys extends Migration
         Schema::table('worker_loans', function (Blueprint $table) {
             $table->foreign('payment_code')->references('code')->on('worker_payments');
             $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
-        });
-        Schema::table('worker_settings', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
         });
         Schema::table('worker_savings', function (Blueprint $table) {
             $table->foreign('account_code')->references('code')->on('accounts');
@@ -259,7 +256,6 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['to_code']);
         });
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
             $table->dropForeign(['location_code']);
             $table->dropIndex(['type']);
             $table->dropIndex(['has_credit']);
@@ -286,7 +282,8 @@ class UpdateForeignKeys extends Migration
             $table->dropIndex(['priority']);
         });
         Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
+            $table->dropForeign(['sales_account']);
+            $table->dropForeign(['returns_account']);
             $table->dropForeign(['measurement_unit_code']);
             $table->dropForeign(['package_measurement_unit_code']);
             $table->dropForeign(['category_code']);
@@ -306,7 +303,6 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['branch_code']);
         });
         Schema::table('providers', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
             $table->dropForeign(['location_code']);
             $table->dropIndex(['provider_type']);
         });
@@ -359,7 +355,7 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['vehicle_code']);
         });
         Schema::table('vehicles', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
+            $table->dropForeign(['asset_account', 'depreciation_account']);
         });
         Schema::table('client_interactions', function (Blueprint $table) {
             $table->dropForeign(['worker_code']);
@@ -367,9 +363,6 @@ class UpdateForeignKeys extends Migration
         Schema::table('worker_loans', function (Blueprint $table) {
             $table->dropForeign(['payment_code']);
             $table->dropForeign(['journal_entry_code']);
-        });
-        Schema::table('worker_settings', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
         });
         Schema::table('worker_savings', function (Blueprint $table) {
             $table->dropForeign(['account_code']);

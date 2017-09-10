@@ -32,7 +32,6 @@ class CreateProviders extends Migration
             $table->string('location_code', 10);
             $table->boolean('delivers')->default(false);
             $table->string('preferred_contact_method', 20);
-            $table->string('account_code', 10);
         });
     }
 
