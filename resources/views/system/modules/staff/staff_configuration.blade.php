@@ -15,22 +15,54 @@
                                          'es': 'Ver Configuracion'
                                        });
    swift_menu.get_language().add_sentence('staff-configuration-view-access-tab', {
-                                       'en': 'Access Configuration',
-                                       'es': 'Configuracion de Accesos'
-                                     });
+                                         'en': 'Access Configuration',
+                                         'es': 'Configuracion de Accesos'
+                                       });
 
    // Define Feedback Messages.
-   swift_language.add_sentence('create_account_blank_code', {
-                               'en': 'Account Code can\'t be left blank!',
-                               'es': 'Codigo de Cuenta no puede dejarse en blanco!'
+   swift_language.add_sentence('save_config_error', {
+                               'en': 'Worker Code is required!',
+                               'es': 'Codigo de Trabajador es requerido!'
                              });
-   swift_language.add_sentence('create_account_blank_name', {
-                               'en': 'Account Name can\'t be left blank!',
-                               'es': 'Nombre de Cuenta no puede dejarse en blanco!'
+   swift_language.add_sentence('access_error', {
+                               'en': 'Access code is required!',
+                               'es': 'Codigo de Acesso es requerido!'
                              });
-   swift_language.add_sentence('create_account_amount_error', {
-                               'en': 'Amount in Account can\'t be blank and must be a numeric value!',
-                               'es': 'Saldo de Cuenta no puede dejarse en blanco y debe ser un valor numerico!'
+   swift_language.add_sentence('hourly_rate_error', {
+                               'en': 'Hourly rate is required!',
+                               'es': 'Sueldo por hora es requerido!'
+                             });
+   swift_language.add_sentence('schedule_code_error', {
+                               'en': 'Schedule Code is required!',
+                               'es': 'Codigo de Horario es requerido!'
+                             });
+   swift_language.add_sentence('vehicle_code_error', {
+                               'en': 'Vehicle code is required!',
+                               'es': 'Codigo de Vehiculo es requerido!'
+                             });
+   swift_language.add_sentence('print_group_error', {
+                               'en': 'Print group Code is required!',
+                               'es': 'Codigo de Grupo para imprimir es requerido!'
+                             });
+   swift_language.add_sentence('notification_group_error', {
+                               'en': 'Notification Code is required!',
+                               'es': 'Codigo de Grupo de Notificacion es requerido!'
+                             });
+   swift_language.add_sentence('commission_group_error', {
+                               'en': 'Commission Group Code is required!',
+                               'es': 'Codigo de Grupo de Comisiones es requerido!'
+                             });
+   swift_language.add_sentence('discount_group_error', {
+                               'en': 'Discount Group Code is required!',
+                               'es': 'Codigo de Grupo de Descuentos es requerido!'
+                             });
+   swift_language.add_sentence('branches_group_error', {
+                               'en': 'Branch Group Code is required!',
+                               'es': 'Codigo de Grupo de Sucursales es requerido!'
+                             });
+   swift_language.add_sentence('pos_group_error', {
+                               'en': 'POS Group Code is required!',
+                               'es': 'Codigo de Grupo de POS es requerido!'
                              });
    swift_utils.register_ajax_fail();
 
@@ -100,8 +132,8 @@
             <div class="form-group">
               <label for="staff-configuration-self-print" class="control-label">@lang('staff/staff_configuration.self_print')</label>
               <select class="form-control" id="staff-configuration-self-print">
-                <option value="yes">@lang('staff/staff_configuration.yes')</option>
-                <option value="no">@lang('staff/staff_configuration.no')</option>
+                <option value="1">@lang('staff/staff_configuration.yes')</option>
+                <option value="0">@lang('staff/staff_configuration.no')</option>
               </select>
             </div>
           </div>

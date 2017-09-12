@@ -400,50 +400,63 @@ $(document).on('focusout', '.change-ledger', function(e) {
   swift_event_tracker.fire_event(e, '.change-ledger');
 });
 
-$(function() {
-  $('#account-code').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_accounts',
-      { code: request.term,
-        type: $('#account-type').val(),
-        _token: swift_utils.swift_token()
+$(document).on('focus', '#account-code', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_accounts',
+        { code: request.term,
+          type: $('#account-type').val(),
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
       },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
-  $('#account-ledger-code').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_accounts',
-      { code: request.term,
-        type: 'all',
-        _token: swift_utils.swift_token()
-      },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
-  $('#create-account-parent').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_parent_accounts',
-      { code: request.term,
-        type: 'all',
-        _token: swift_utils.swift_token()
-      },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2,
-  });
+      minLength: 2
+    })
+  }
 });
+
+$(document).on('focus', '#account-ledger-code', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_accounts',
+        { code: request.term,
+          type: 'all',
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#create-account-parent', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_parent_accounts',
+        { code: request.term,
+          type: 'all',
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
 // Define Menu Tab Events.
 swift_event_tracker.register_swift_event('#accounts-view-accounts-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#accounts-view-accounts-tab', function(e) {

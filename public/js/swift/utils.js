@@ -16,6 +16,7 @@ Utilities.prototype = {
     $(e).prop("disabled", false);
   },
   display_success: function(message, fadeOut = true, time = 5000) {
+    // TODO: Fix display issue.
     $('#alerts-area').empty();
     var box = $([
         '<div class="center-block alert alert-success alert-dismissible hide" role="alert" style="width:90%;display:none;">',
@@ -23,6 +24,7 @@ Utilities.prototype = {
         '<span aria-hidden="true">&times;</span></button>',
         '<span class="alert-text">'+message+'</span>',
         '</div>'].join("\n"));
+    console.log(box)
     $('#alerts-area').append(box);
     $(box).fadeIn('slow')
     if(fadeOut) {
@@ -71,6 +73,7 @@ Utilities.prototype = {
         '<span aria-hidden="true">&times;</span></button>',
         '<span class="alert-text">'+message+'</span>',
         '</div>'].join("\n"));
+    console.log(box)
     $('#alerts-area').append(box);
     $(box).fadeIn('slow')
     if(fadeOut) {

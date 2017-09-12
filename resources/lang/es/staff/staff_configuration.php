@@ -39,7 +39,7 @@ return [
     'loan' => 'Cuenta de Prestamos',
     'long_loan' => 'Prestamos Largo Plazo',
     'salary' => 'Cuenta de Salario',
-    'commission_account' => 'Cuenta de Comissiones',
+    'commission_account' => 'Cuenta de Comisiones',
     'bonus' => 'Cuenta de Aguinaldo',
     'antiquity' => 'Cuenta de Antiguedad',
     'holidays' => 'Cuenta de Vacaciones',

@@ -35,7 +35,7 @@ mix.styles([
     //'public/css/fullcalendar/fullcalendar.print.min.css'
   ], 'public/css/base.css').
   scripts([
-    'public/js/jquery/jquery.min.js',
+    //'public/js/jquery/jquery.min.js',
     'public/js/jquery/ui/jquery-ui.min.js',
     'public/js/bootstrap/bootstrap.min.js',
     'public/js/raphael/raphael.min.js',

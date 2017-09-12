@@ -41,6 +41,44 @@ $factory->define(App\Worker::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\WorkerSetting::class, function (Faker\Generator $faker) {
+
+    return [
+        'worker_code' => 0,
+        'hourly_rate' => 0,
+        'vehicle_code' => 0,
+        'schedule_code' => 0,
+        'notification_group' => 0,
+        'self_print' => 1,
+        'print_group' => 0,
+        'commission_group' => 0,
+        'discount_group' => 0,
+        'branches_group' => 0,
+        'pos_group' => 0
+    ];
+});
+
+$factory->define(App\WorkerAccount::class, function (Faker\Generator $faker) {
+
+    return [
+        'worker_code' => 0,
+        'cashbox_account' => 0,
+        'stock_account' => 0,
+        'loan_account' => 0,
+        'long_loan_account' => 0,
+        'salary_account' => 0,
+        'commission_account' => 0,
+        'bonus_account' => 0,
+        'antiquity_account' => 0,
+        'holidays_account' => 0,
+        'savings_account' => 0,
+        'insurance_account' => 0,
+        'reimbursement_accounts' => '{}',
+        'draw_accounts' => '{}',
+        'bank_accounts' => '{}',
+    ];
+});
+
 $factory->define(App\Product::class, function (Faker\Generator $faker) {
 
     return [

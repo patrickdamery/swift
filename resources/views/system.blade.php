@@ -27,20 +27,42 @@
     <link rel="stylesheet" href="{{ URL::to('/') }}/css/swift/print/a4.css">
 
     <!-- JS Files -->
-    <script src="{{ URL::to('/') }}/js/all.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/language.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/utils.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/event_tracker.js"></script>
-    <script src="{{ URL::to('/') }}/js/swift/menu.js"></script>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="{{ URL::to('/') }}/js/jquery/jquery.min.js"></script>
+    <script>
+      $(window).on('load', function() {
+        $('.overlay').hide();
+      });
+    </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
+  <div class="overlay">
+    <div class="lds-css ng-scope">
+      <div class="lds-square">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <h4 style="text-align:center">Loading...</h4>
+    </div>
+  </div>
+  <script src="{{ URL::to('/') }}/js/all.js"></script>
+  <script src="{{ URL::to('/') }}/js/swift/language.js"></script>
+  <script src="{{ URL::to('/') }}/js/swift/utils.js"></script>
+  <script src="{{ URL::to('/') }}/js/swift/event_tracker.js"></script>
+  <script src="{{ URL::to('/') }}/js/swift/menu.js"></script>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
   <div class="print_area">
   </div>
   <div class="wrapper">
@@ -176,9 +198,9 @@
           <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="@lang('swift_menu.search')">
             <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                  </button>
-                </span>
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
           </div>
         </form>
         <ul class="sidebar-menu" data-widget="tree">

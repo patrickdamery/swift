@@ -25,7 +25,6 @@ class Client extends Model
       'code', 'legal_id', 'name', 'company_code', 'phone', 'email',
       'ocupation', 'type', 'has_credit', 'credit_days', 'credit_limit',
       'points', 'website', 'auth_key', 'discount_group_code', 'location_code',
-      'account_code'
   ];
 
   /**

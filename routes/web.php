@@ -51,6 +51,17 @@ Route::prefix('alonica')->group(function() {
 
 Route::prefix('swift')->group(function() {
 
+  // Staff Routes.
+  Route::prefix('staff')->group(function() {
+
+    // Staff Routes.
+    Route::post('suggest_staff', 'StaffController@suggest_worker');
+
+    // Staff Configuration Routes.
+    Route::post('search_config', 'StaffConfigurationController@search_config');
+    Route::post('save_config', 'StaffConfigurationController@save_config');
+  });
+
   // Accounting Routes.
   Route::prefix('accounting')->group(function() {
 
@@ -71,6 +82,8 @@ Route::prefix('swift')->group(function() {
 
     // Accounts Routes.
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');
+    Route::post('suggest_asset', 'AccountController@suggest_asset');
+    Route::post('suggest_liability', 'AccountController@suggest_liability');
     Route::post('create_account', 'AccountController@create_account');
     Route::post('load_accounts', 'AccountController@load_accounts');
     Route::post('load_ledger', 'AccountController@load_ledger');
@@ -81,11 +94,16 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_parent_accounts', 'AccountController@suggest_parent_accounts');
   });
 
-  // products Routes.
+  // Products Routes.
   Route::prefix('products')->group(function() {
     Route::post('suggest_products', 'AccountController@suggest_products');
     Route::post('create_products', 'AccountController@create_product');
     Route::post('load_products', 'AccountController@load_products');
+  });
+
+  // Vehicle Routes.
+  Route::prefix('vehicle')->group(function() {
+    Route::post('suggest_vehicle', 'VehicleController@suggest_vehicle');
   });
 
   // System routes.
