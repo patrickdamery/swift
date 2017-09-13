@@ -60,6 +60,7 @@ Route::prefix('swift')->group(function() {
     // Staff Configuration Routes.
     Route::post('search_config', 'StaffConfigurationController@search_config');
     Route::post('save_config', 'StaffConfigurationController@save_config');
+    Route::post('save_access', 'StaffConfigurationController@search_access');
   });
 
   // Accounting Routes.
@@ -86,6 +87,7 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_liability', 'AccountController@suggest_liability');
     Route::post('create_account', 'AccountController@create_account');
     Route::post('load_accounts', 'AccountController@load_accounts');
+    Route::post('load_asset', 'AccountController@load_asset');
     Route::post('load_ledger', 'AccountController@load_ledger');
     Route::post('print_ledger', 'AccountController@print_ledger');
     Route::get('download_ledger', 'AccountController@download_ledger');

@@ -13,6 +13,28 @@ use \App\Worker;
 use \App\UserAccess;
 class StaffConfigurationController extends Controller
 {
+  public function search_access() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get access table.
+    return view('system.components.staff.access_table',
+      [
+        'code' => Input::get('code')
+      ]
+    );
+  }
+
   public function search_config() {
     $validator = Validator::make(Input::all(),
       array(

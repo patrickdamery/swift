@@ -26,4 +26,5 @@ return [
     'value' => 'Saldo',
     'change_data_required' => 'Informacion del cambio es requerido!',
     'diff_type' => 'La cuenta padre es un tipo de cuenta diferente al de la cuenta que se desea crear!',
+    'account_not_found' => 'No se pudo encontrar una cuenta valida con el codigo indicado!',
 ];

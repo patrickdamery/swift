@@ -17,4 +17,5 @@ return [
     'password' => 'Password',
     'forgot' => 'I forgot my password',
     'signin' => 'Sign In',
+    'loading' => 'Loading...',
 ];

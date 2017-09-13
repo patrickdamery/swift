@@ -48,7 +48,7 @@
         <div></div>
         <div></div>
       </div>
-      <h4 style="text-align:center">Loading...</h4>
+      <h4 style="text-align:center">@lang('login.loading')</h4>
     </div>
   </div>
   <script src="{{ URL::to('/') }}/js/all.js"></script>

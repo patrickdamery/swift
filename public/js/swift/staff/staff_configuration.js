@@ -74,9 +74,9 @@ StaffConfiguration.prototype = {
       swift_utils.display_error(swift_language.get_sentence('save_config_error'));
       return;
     }
-
+    var settings = {'ignore': ''};
     if($('#staff-configuration-hourly-rate').length) {
-      var settings = {
+      settings = {
         'hourly_rate': $('#staff-configuration-hourly-rate').val(),
         'schedule_code': $('#staff-configuration-schedule').val(),
         'vehicle_code': $('#staff-configuration-vehicle').val(),
@@ -97,11 +97,13 @@ StaffConfiguration.prototype = {
         return;
       }
     }
+    // TODO: There's probably a way to send empty JSON objects.
+    var accounts = {'ignore': ''};
     if($('#staff-configuration-cashbox').length) {
       $('#staff-configuration-reimbursement option').prop('selected', true);
       $('#staff-configuration-draw option').prop('selected', true);
       $('#staff-configuration-bank option').prop('selected', true);
-      var accounts = {
+      accounts = {
         'cashbox_account': $('#staff-configuration-cashbox').val(),
         'stock_account': $('#staff-configuration-stock').val(),
         'loan_account': $('#staff-configuration-loan').val(),
@@ -182,6 +184,99 @@ StaffConfiguration.prototype = {
     // TODO: Check accounts if required, might just make them 0 by default.
     return true;
   },
+  add_reimbursement: function(e) {
+    var code = $(e.target).val();
+    $(e.target).val('');
+    if(code == '') {
+      return;
+    }
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/load_asset', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      var option = '<option value="'+data.account.code+'">'+data.account.name+'</option>';
+      $('#staff-configuration-reimbursement').append(option);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  clear_reimbursement: function(e) {
+    $('#staff-configuration-reimbursement').empty();
+  },
+  add_draw: function(e) {
+    var code = $(e.target).val();
+    $(e.target).val('');
+    if(code == '') {
+      return;
+    }
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/load_asset', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      var option = '<option value="'+data.account.code+'">'+data.account.name+'</option>';
+      $('#staff-configuration-draw').append(option);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  clear_draw: function(e) {
+    $('#staff-configuration-draw').empty();
+  },
+  add_bank_account: function(e) {
+    var code = $(e.target).val();
+    $(e.target).val('');
+    if(code == '') {
+      return;
+    }
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/load_asset', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      var option = '<option value="'+data.account.code+'">'+data.account.name+'</option>';
+      $('#staff-configuration-bank').append(option);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  clear_bank_account: function(e) {
+    $('#staff-configuration-bank').empty();
+  },
+  search_access: function(e) {
+    var code = $(e.target).val();
+    if(code == '') {
+      swift_utils.display_error(swift_language.get_sentence('access_code_error'));
+      return;
+    }
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/staff/search_access', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(view) {
+      swift_utils.free(e.target);
+      $('#access-table').empty();
+      $('#access-table').append(view);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
 }
 
 var staff_configuration_js = new StaffConfiguration();
@@ -205,6 +300,66 @@ swift_event_tracker.register_swift_event(
 
 $(document).on('click', '#staff-configuration-save', function(e) {
   swift_event_tracker.fire_event(e, '#staff-configuration-save');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-reimbursement-code',
+  'change',
+  staff_configuration_js,
+  'add_reimbursement');
+
+$(document).on('change', '#staff-configuration-reimbursement-code', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-reimbursement-code');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-draw-code',
+  'change',
+  staff_configuration_js,
+  'add_draw');
+
+$(document).on('change', '#staff-configuration-draw-code', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-draw-code');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-bank-code',
+  'change',
+  staff_configuration_js,
+  'add_bank_account');
+
+$(document).on('change', '#staff-configuration-bank-code', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-bank-code');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-reimbursement-clear',
+  'click',
+  staff_configuration_js,
+  'clear_reimbursement');
+
+$(document).on('click', '#staff-configuration-reimbursement-clear', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-reimbursement-clear');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-draw-clear',
+  'click',
+  staff_configuration_js,
+  'clear_draw');
+
+$(document).on('click', '#staff-configuration-draw-clear', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-draw-clear');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-bank-clear',
+  'click',
+  staff_configuration_js,
+  'clear_bank_account');
+
+$(document).on('click', '#staff-configuration-bank-clear', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-bank-clear');
 });
 
 $(document).on('focus', '#staff-configuration-code', function(e) {

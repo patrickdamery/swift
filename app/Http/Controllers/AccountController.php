@@ -10,6 +10,41 @@ use App\Account;
 use App\JournalEntryBreakdown;
 class AccountController extends Controller
 {
+  public function load_asset() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get asset account.
+    $account = Account::where('code', Input::get('code'))
+    ->where('type', 'as')
+    ->where('has_children', 0)
+    ->first();
+
+    if(!$account) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $response = array(
+      'state' => 'Success',
+      'account' => $account
+    );
+    return response()->json($response);
+  }
+
   public function suggest_asset() {
     $validator = Validator::make(Input::all(),
       array(
