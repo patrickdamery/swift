@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('worker_code', 10);
-            $table->string('user_level_code', 10);
+            $table->string('user_access_code', 10);
             $table->string('username', 20)->unique();
             $table->string('email')->unique();
             $table->string('password', 100);

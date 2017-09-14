@@ -46,12 +46,19 @@ class test_seed extends Seeder
           'code' => $i,
         ]);
 
+        $settings = factory(App\WorkerSetting::class)->create([
+          'worker_code' => $worker->code
+        ]);
+
+        $accounts = factory(App\WorkerAccount::class)->create([
+          'worker_code' => $worker->code
+        ]);
         // Randomly decide if we should create user for worker.
         if(rand(0, 1) == 1) {
           $user = factory(App\User::class)->create([
             'code' => $u,
             'worker_code' => $worker->code,
-            'user_level_code' => 1,
+            'user_access_code' => 1,
           ]);
           $u++;
         }
@@ -78,61 +85,61 @@ class test_seed extends Seeder
         ));
       }
       DB::table('providers')->insert([
-          'code' => '1',
-          'name' => 'Proveedor 1',
-          'phone' => '',
-          'email' => '',
-          'ruc' => '55588882221581',
-          'website' => '',
-          'taxes' => 1,
-          'provider_type' => 1,
-          'offers_credit' => 1,
-          'credit_limit' => 30000,
-          'credit_days' => 15,
-          'ai_managed' => 0,
-          'sample_range_days' => 30,
-          'order_range_days' => 60,
-          'location_code' => $provider_location->code,
-          'delivers' => 1,
-          'preferred_contact_method' => 'call',
+        'code' => '1',
+        'name' => 'Proveedor 1',
+        'phone' => '',
+        'email' => '',
+        'ruc' => '55588882221581',
+        'website' => '',
+        'taxes' => 1,
+        'provider_type' => 1,
+        'offers_credit' => 1,
+        'credit_limit' => 30000,
+        'credit_days' => 15,
+        'ai_managed' => 0,
+        'sample_range_days' => 30,
+        'order_range_days' => 60,
+        'location_code' => $provider_location->code,
+        'delivers' => 1,
+        'preferred_contact_method' => 'call',
       ]);
       DB::table('providers')->insert([
-          'code' => '2',
-          'name' => 'Proveedor 2',
-          'phone' => '',
-          'email' => '',
-          'ruc' => '555888asdf21581',
-          'website' => '',
-          'taxes' => 1,
-          'provider_type' => 1,
-          'offers_credit' => 1,
-          'credit_limit' => 20000,
-          'credit_days' => 15,
-          'ai_managed' => 0,
-          'sample_range_days' => 30,
-          'order_range_days' => 60,
-          'location_code' => $provider_location->code,
-          'delivers' => 1,
-          'preferred_contact_method' => 'call',
+        'code' => '2',
+        'name' => 'Proveedor 2',
+        'phone' => '',
+        'email' => '',
+        'ruc' => '555888asdf21581',
+        'website' => '',
+        'taxes' => 1,
+        'provider_type' => 1,
+        'offers_credit' => 1,
+        'credit_limit' => 20000,
+        'credit_days' => 15,
+        'ai_managed' => 0,
+        'sample_range_days' => 30,
+        'order_range_days' => 60,
+        'location_code' => $provider_location->code,
+        'delivers' => 1,
+        'preferred_contact_method' => 'call',
       ]);
       DB::table('providers')->insert([
-          'code' => '3',
-          'name' => 'Proveedor 3',
-          'phone' => '',
-          'email' => '',
-          'ruc' => '55588882227777',
-          'website' => '',
-          'taxes' => 1,
-          'provider_type' => 1,
-          'offers_credit' => 1,
-          'credit_limit' => 18000,
-          'credit_days' => 30,
-          'ai_managed' => 0,
-          'sample_range_days' => 30,
-          'order_range_days' => 60,
-          'location_code' => $provider_location->code,
-          'delivers' => 1,
-          'preferred_contact_method' => 'call',
+        'code' => '3',
+        'name' => 'Proveedor 3',
+        'phone' => '',
+        'email' => '',
+        'ruc' => '55588882227777',
+        'website' => '',
+        'taxes' => 1,
+        'provider_type' => 1,
+        'offers_credit' => 1,
+        'credit_limit' => 18000,
+        'credit_days' => 30,
+        'ai_managed' => 0,
+        'sample_range_days' => 30,
+        'order_range_days' => 60,
+        'location_code' => $provider_location->code,
+        'delivers' => 1,
+        'preferred_contact_method' => 'call',
       ]);
 
       // Now let's create a couple of products.

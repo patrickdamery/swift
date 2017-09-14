@@ -17,4 +17,5 @@ return [
     'password' => 'Contraseña',
     'forgot' => 'Olvide mi contraseña',
     'signin' => 'Iniciar Session',
+    'loading' => 'Cargando...',
 ];

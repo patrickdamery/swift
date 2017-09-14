@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'username' => 'Username',
-    'password' => 'Password',
-    'forgot' => 'I forgot my password',
-    'signin' => 'Sign In',
-    'loading' => 'Loading...',
+    'title' => 'Create Access',
+    'code' => 'Code',
+    'name' => 'Name',
+    'close' => 'Close',
+    'create' => 'Create',
 ];

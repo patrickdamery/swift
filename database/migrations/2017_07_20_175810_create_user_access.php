@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserLevel extends Migration
+class CreateUserAccess extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateUserLevel extends Migration
      */
     public function up()
     {
-        Schema::create('user_level', function (Blueprint $table) {
+        Schema::create('user_access', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('name', 20);
-            $table->json('permissions');
-            $table->json('view');
+            $table->json('access');
         });
     }
 
@@ -29,6 +28,6 @@ class CreateUserLevel extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_level');
+        Schema::dropIfExists('user_access');
     }
 }

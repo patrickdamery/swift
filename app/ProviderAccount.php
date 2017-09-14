@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Provider extends Model
+class ProviderAccount extends Model
 {
 
   /**
@@ -12,7 +12,7 @@ class Provider extends Model
    *
    * @var string
    */
-  protected $table = 'providers';
+  protected $table = 'provider_accounts';
 
   /**
    * The attributes that are mass assignable.
@@ -20,10 +20,8 @@ class Provider extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'name', 'phone', 'email', 'ruc', 'website', 'taxes', 'provider_type',
-      'offers_credit', 'credit_limit', 'credit_days', 'ai_managed', 'sample_range_days',
-      'order_range_days', 'location_code', 'delivers',
-      'preferred_contact_method'
+      'code', 'provider_code', 'owed_account', 'service_account',
+      'stock_account', 'intransit_account', 'debt_account'
   ];
 
   /**

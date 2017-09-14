@@ -4,15 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WorkerSetting extends Model
+class UserAccess extends Model
 {
-
   /**
    * The database table used by the model.
    *
    * @var string
    */
-  protected $table = 'worker_settings';
+  protected $table = 'user_access';
 
   /**
    * The attributes that are mass assignable.
@@ -20,9 +19,7 @@ class WorkerSetting extends Model
    * @var array
    */
   protected $fillable = [
-      'worker_code', 'full_shift_hours', 'hourly_rate', 'schedule_code',
-      'notification_group', 'self_print', 'print_group', 'commission_group',
-      'discount_group', 'branches_group', 'pos_group'
+      'code', 'name', 'access'
   ];
 
   /**

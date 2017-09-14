@@ -15,7 +15,7 @@ class UpdateUserForeignKeys extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreign('worker_code')->references('code')->on('workers');
-            $table->foreign('user_level_code')->references('code')->on('user_level');
+            $table->foreign('user_access_code')->references('code')->on('user_access');
         });
     }
 
@@ -28,7 +28,7 @@ class UpdateUserForeignKeys extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['worker_code']);
-            $table->dropForeign(['user_level_code']);
+            $table->dropForeign(['user_access_code']);
         });
     }
 }

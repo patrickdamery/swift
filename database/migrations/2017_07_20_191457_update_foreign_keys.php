@@ -355,7 +355,8 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['vehicle_code']);
         });
         Schema::table('vehicles', function (Blueprint $table) {
-            $table->dropForeign(['asset_account', 'depreciation_account']);
+            $table->dropForeign(['asset_account']);
+            $table->dropForeign(['depreciation_account']);
         });
         Schema::table('client_interactions', function (Blueprint $table) {
             $table->dropForeign(['worker_code']);

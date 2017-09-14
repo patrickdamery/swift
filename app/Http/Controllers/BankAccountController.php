@@ -28,7 +28,7 @@ class BankAccountController extends Controller
     // Get Worker making transaction and accounts to be used.
     $worker = Worker::where('code', Auth::user()->worker_code)->first();
     $bank_account = BankAccount::where('code', Input::get('transaction')['code'])->first();
-    
+
 
   }
 
@@ -106,10 +106,10 @@ class BankAccountController extends Controller
 
     $response = array();
     foreach($accounts as $account) {
-        array_push($response, array(
-          'label' => $account->bank_name.' '.$account->account_number,
-          'value' => $account->code,
-        ));
+      array_push($response, array(
+        'label' => $account->bank_name.' '.$account->account_number,
+        'value' => $account->code,
+      ));
     }
     return response()->json($response);
   }

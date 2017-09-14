@@ -119,7 +119,7 @@ BankAccount.prototype = {
       'type' : $('#bank-account-transaction-type').val(),
       'value': $('#bank-account-transaction-value').val()
     };
-    
+
     var bank_account_ref = this;
     var request = $.post('/swift/accounting/make_bank_transaction', { transaction: transaction_data, _token: swift_utils.swift_token() });
     request.done(function(data) {
@@ -166,34 +166,41 @@ $(document).on('click', '#bank-accounts-search', function(e) {
   swift_event_tracker.fire_event(e, '#bank-accounts-search');
 });
 
-$(function() {
-  $('#create-bank-account-account').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_accounts',
-      { code: request.term,
-        type: 'all',
-        _token: swift_utils.swift_token()
+$(document).on('focus', '#create-bank-account-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_accounts',
+        { code: request.term,
+          type: 'all',
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
       },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
-  $('#bank-account-code').autocomplete({
-    // Get the suggestions.
-    source: function (request, response) {
-      $.post('/swift/accounting/suggest_bank_accounts',
-      { code: request.term,
-        _token: swift_utils.swift_token()
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#bank-account-code', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_bank_accounts',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
       },
-      function (data) {
-          response(data);
-      });
-    },
-    minLength: 2
-  });
+      minLength: 2
+    })
+  }
 });
 
 // Define Menu Tab Events.

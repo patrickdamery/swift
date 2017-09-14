@@ -15,7 +15,6 @@ class CreateWorkerAccounts extends Migration
     {
       Schema::create('worker_accounts', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('code', 10)->unique();
           $table->string('worker_code', 10);
           $table->string('cashbox_account', 10);
           $table->string('stock_account', 10);

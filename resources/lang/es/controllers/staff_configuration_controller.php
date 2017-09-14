@@ -13,9 +13,8 @@ return [
     |
     */
 
-    'username' => 'Username',
-    'password' => 'Password',
-    'forgot' => 'I forgot my password',
-    'signin' => 'Sign In',
-    'loading' => 'Loading...',
+    'configuration_required' => 'La informacion de la configuracion es requerida!',
+    'code_required' => 'El codigo del trabajador es requerido!',
+    'unknown' => 'No se encontro un trabajador con el codigo indicado!',
+    'configuration_saved' => 'Configuracion guardada exitosamente!',
 ];

@@ -13,9 +13,8 @@ return [
     |
     */
 
-    'username' => 'Username',
-    'password' => 'Password',
-    'forgot' => 'I forgot my password',
-    'signin' => 'Sign In',
-    'loading' => 'Loading...',
+    'configuration_required' => 'Configuration information is required!',
+    'code_required' => 'Worker code required!',
+    'unknown' => 'Could not find a worker with the provided code!',
+    'configuration_saved' => 'Configuration saved successfully!',
 ];

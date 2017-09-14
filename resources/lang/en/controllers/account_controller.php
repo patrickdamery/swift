@@ -26,5 +26,5 @@ return [
     'value' => 'Value',
     'change_data_required' => 'Change Data required!',
     'diff_type' => 'Parent account is a different type than the one you are attempting to create!',
-
+    'account_not_found' => 'Could not find a valid account with specified code!',
 ];

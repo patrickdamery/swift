@@ -13,9 +13,5 @@ return [
     |
     */
 
-    'username' => 'Username',
-    'password' => 'Password',
-    'forgot' => 'I forgot my password',
-    'signin' => 'Sign In',
-    'loading' => 'Loading...',
+    'code_required' => 'Code or name of worker required!',
 ];
