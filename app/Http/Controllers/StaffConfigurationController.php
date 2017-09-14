@@ -13,6 +13,82 @@ use \App\Worker;
 use \App\UserAccess;
 class StaffConfigurationController extends Controller
 {
+  public function create_access() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'name' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.name_required')
+      );
+      return response()->json($response);
+    }
+
+    // Make user access.
+    $last_access = UserAccess::orderBy('id', 'desc')->first();
+
+    $code = $last_access->code+1;
+
+    $user_access = UserAccess::create(array(
+      'code' => $code,
+      'name' => Input::get('name'),
+      'access' => '{"sales": {"has": 0, "sales": {"has": 0, "make_sale": {"has": 0, "points": 0, "quotation": 0}, "make_reservation": {"has": 0}, "make_subscription": {"has": 0}}, "orders": {"has": 0, "load_order": {"has": 0, "save": 0}, "make_order": {"has": 0}, "view_order": {"has": 0, "print": 0, "make_sale": 0}}, "cashbox": {"has": 0, "cashbox": {"has": 0, "bank_deposit": 0}, "transactions": {"has": 0, "search_bill": 0}, "print_requests": {"has": 0, "pay": 0}}, "clients": {"has": 0, "debts": {"has": 0, "print": 0}, "discounts": {"has": 0, "save": 0}, "view_client": {"has": 0, "save": 0, "create": 0}, "purchase_history": {"has": 0, "print": 0}}, "discounts": {"has": 0, "discounts": {"has": 0, "create": 0}}, "sales_analytics": {"has": 0}}, "staff": {"has": 0, "view_staff": {"has": 0, "view_staff": {"has": 0, "print": 0, "create": 0}}, "staff_config": {"has": 0, "view_config": {"has": 0, "general_config": 0, "accounting_config": 0}, "access_config": {"has": 0, "create": 0, "search": 0}}, "staff_payments": {"has": 0, "view_staff": {"has": 0, "loan": 0, "hour_add": 0}, "past_payments": {"has": 0}, "group_payments": {"has": 0, "pay": 0, "print": 0, "download": 0}}, "staff_analytics": {"has": 0, "view_analytics": {"has": 0}}, "staff_assistance": {"has": 0, "view_entries": {"has": 0, "print": 0, "download": 0}, "view_schedule": {"has": 0, "print": 0, "create": 0}}}, "products": {"has": 0, "providers": {"has": 0, "view_providers": {"has": 0, "save": 0, "create": 0}}, "purchases": {"has": 0, "view_purchases": {"has": 0, "print": 0}}, "categories": {"has": 0, "view_categories": {"has": 0, "create": 0}}, "suggestions": {"has": 0, "make_suggestion": {"has": 0, "save": 0, "print": 0, "generate": 0}}, "view_products": {"has": 0, "view_products": {"has": 0, "edit": 0, "create": 0}, "view_services": {"has": 0, "edit": 0, "create": 0}}, "local_purchases": {"has": 0, "purchase": {"has": 0, "pay": 0}}, "measurement_units": {"has": 0, "view_measurement_units": {"has": 0, "create": 0, "create_conversion": 0}}, "international_order": {"has": 0, "add_bill": {"has": 0}, "view_order": {"has": 0}, "importation_expense": {"has": 0}}}, "vehicles": {"has": 0, "view_routes": {"has": 0, "view_routes": {"has": 0, "create": 0}}, "view_vehicle": {"has": 0, "view_vehicle": {"has": 0, "create": 0}}, "view_journeys": {"has": 0, "view_journeys": {"has": 0, "create": 0}}}, "accounting": {"has": 0, "journal": {"has": 0, "view_entries": {"has": 0, "print": 0, "create": 0, "download": 0}}, "accounts": {"has": 0, "view_ledger": {"has": 0, "print": 0, "download": 0}, "view_accounts": {"has": 0, "create": 0}}, "currency": {"has": 0, "view_currency": {"has": 0, "save": 0, "create": 0}, "view_variation": {"has": 0}}, "bank_accounts": {"has": 0, "pos": {"has": 0, "create": 0}, "bank_loans": {"has": 0, "pay": 0, "loan": 0}, "view_accounts": {"has": 0, "create": 0, "transaction": 0}}}, "warehouses": {"has": 0, "stock": {"has": 0, "stocktake": {"has": 0, "check": 0, "print": 0, "in_system": 0}, "stocktake_report": {"has": 0}}, "receive": {"has": 0, "receive": {"has": 0}}, "dispatch": {"has": 0, "dispatch": {"has": 0}}, "warehouse": {"has": 0, "view_locations": {"has": 0, "print": 0, "create": 0}, "view_warehouse": {"has": 0, "create": 0}}, "stock_movement": {"has": 0, "stock_movement": {"has": 0, "print": 0, "download": 0}}}, "configuration": {"has": 0, "groups": {"has": 0, "view_group": {"has": 0, "create": 0}}, "branches": {"has": 0, "view_branch": {"has": 0, "save": 0, "create": 0}, "public_services": {"has": 0, "create": 0}}, "configuration": {"has": 0, "view_config": {"has": 0, "save": 0}, "modules_plugins": {"has": 0, "save": 0, "backup": 0, "update": 0, "generate": 0}}}}'
+    ));
+
+    $response = array(
+      'state' => 'Success',
+      'access' => $user_access,
+      'message' => \Lang::get('controllers/staff_configuration_controller.access_created'),
+    );
+    return response()->json($response);
+  }
+
+  public function change_access() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'access_code' => 'required',
+        'choice' => 'required',
+        'path_to' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.access_change_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get the user access.
+    $user_access = UserAccess::where('code', Input::get('access_code'))->first();
+    $access = json_decode($user_access->access, true);
+
+    // Make the change and save it.
+    $indexes = count(Input::get('path_to'));
+    switch($indexes) {
+      case 2:
+        $access[Input::get('path_to')[0]][Input::get('path_to')[1]] = Input::get('choice');
+      break;
+      case 3:
+        $access[Input::get('path_to')[0]][Input::get('path_to')[1]][Input::get('path_to')[2]] = Input::get('choice');
+      break;
+      case 4:
+        $access[Input::get('path_to')[0]][Input::get('path_to')[1]][Input::get('path_to')[2]][Input::get('path_to')[3]] = Input::get('choice');
+      break;
+    }
+    $user_access->access = json_encode($access);
+    $user_access->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_configuration_controller.access_changed'),
+    );
+    return response()->json($response);
+  }
+
   public function search_access() {
     $validator = Validator::make(Input::all(),
       array(

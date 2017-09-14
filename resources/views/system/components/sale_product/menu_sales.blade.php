@@ -206,7 +206,7 @@
     @if($access->products->local_purchases->has)
       <li><a href="#local_purchases" id="local_purchases"><i class="fa fa-truck"></i> @lang('swift_menu.local_purchase')</a></li>
     @endif
-    @if($access->products->internation_order->has)
+    @if($access->products->international_order->has)
       <li class="treeview">
         <a href=""><i class="fa fa-ship"></i> @lang('swift_menu.international_purchase')</a>
         <ul class="treeview-menu">

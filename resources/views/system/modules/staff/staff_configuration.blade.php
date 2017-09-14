@@ -75,6 +75,7 @@
    }
  });
  </script>
+@include('system.components.staff.create_access')
 <section class="content-header">
   <h1>
     @lang('staff/staff_configuration.title')
@@ -367,7 +368,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
-                <button type="button" class="btn btn-success" id="staff-configuration-access-create">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-access">
                   <i class="fa fa-plus"></i> @lang('staff/staff_configuration.create')
                 </button>
               </div>

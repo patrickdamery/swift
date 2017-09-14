@@ -277,6 +277,48 @@ StaffConfiguration.prototype = {
       swift_utils.ajax_fail(ev);
     });
   },
+  change_access:function(e) {
+    // Get the path and code.
+    var path_to = $(e.target).attr('id').split('-');
+    var choice = $(e.target).val();
+    var access_code = $('#staff-configuration-access-code').val();
+
+    var request = $.post('/swift/staff/change_access', { access_code: access_code,
+      path_to: path_to, choice: choice, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  create_access: function(e) {
+    // Get the name.
+    var name = $('#create-access-name').val();
+    var staff_config_ref = this;
+    var request = $.post('/swift/staff/create_access', { name: name, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      var option = '<option value="'+data.access.code+'">'+data.access.name+'</option>';
+      $('#staff-configuration-access-code').append(option);
+      $('#staff-configuration-access-code').val(data.access.code);
+      $('#staff-configuration-access-code').change();
+      $('#create-access').modal('hide');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
 }
 
 var staff_configuration_js = new StaffConfiguration();
@@ -360,6 +402,36 @@ swift_event_tracker.register_swift_event(
 
 $(document).on('click', '#staff-configuration-bank-clear', function(e) {
   swift_event_tracker.fire_event(e, '#staff-configuration-bank-clear');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-access-code',
+  'change',
+  staff_configuration_js,
+  'search_access');
+
+$(document).on('change', '#staff-configuration-access-code', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-access-code');
+});
+
+swift_event_tracker.register_swift_event(
+  '.access-select',
+  'change',
+  staff_configuration_js,
+  'change_access');
+
+$(document).on('change', '.access-select', function(e) {
+  swift_event_tracker.fire_event(e, '.access-select');
+});
+
+swift_event_tracker.register_swift_event(
+  '#create-access-create',
+  'click',
+  staff_configuration_js,
+  'create_access');
+
+$(document).on('click', '#create-access-create', function(e) {
+  swift_event_tracker.fire_event(e, '#create-access-create');
 });
 
 $(document).on('focus', '#staff-configuration-code', function(e) {
