@@ -25,26 +25,29 @@ class ProductController extends Controller
       return response()->json($response);
     }
 
-
     $product = array();
+    $search_provider = ($request->has('provider_code') && select::get('provider_code') != 'all') ? true : false;
 
-    $product = Product::where('code', 'like',  '%'.Input::get('code').'%');
+    if($search_provider) {
+      $products = Account::where('code', 'like',  '%'.Input::get('code').'%')
+      ->orWhere('description', 'like', '%'.Input::get('code').'%')
+      ->where('provider_code', Input::get('provider_code'))->get();
+    } else {
+      $products = Account::where('code', 'like',  '%'.Input::get('code').'%')
+      ->orWhere('description', 'like', '%'.Input::get('code').'%')->get();
+    }
 
     // Check if type is defined.
-
 
     $response = array();
     foreach($products as $product) {
         array_push($response, array(
+          'label' => $product->description,
           'value' => $product->code,
         ));
     }
     return response()->json($response);
-
-
   }
-
-
 
   public function load_products() {
     $validator = Validator::make(Input::all(),
@@ -78,8 +81,10 @@ class ProductController extends Controller
       );
       return response()->json($response);
     }
+
+    $code = Product::where('code', Input::get('product')['code']);
     // Make sure an product with specified code does not exist already.
-    $product_check = product::where('code', Input::get('product')['code'])->first();
+    $product_check = Product::where('code', Input::get('product')['code'])->first();
     if($product_check) {
       $response = array(
         'state' => 'Error',
@@ -89,12 +94,11 @@ class ProductController extends Controller
     }
 
     $product = product::create(array(
-
-      'code' => Input::get('product')['code'],
-      'provider' => Input::get('product')['provider'],
+      'code' => Input::get('product')['code'],,
+      'provider' => Input::get('product')['provider_code'],
       'description' => Input::get('product')['description'],
       'category' => Input::get('product')['category'],
-      'measurement_unit_code' => Input::get('product')['measurement_unit_code'],
+      'measurement_unit_code' => Input::get('product')['measurement-unit-code'],
       'avg-cost' => Input::get('product')['avg-cost'],
       'price'=> Input::get('product')['price'],
       'sellable'=> Input::get('product')['sellable'],

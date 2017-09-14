@@ -1,3 +1,4 @@
+
 <div class="modal fade in" id="create-product">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -7,7 +8,8 @@
         <h4 class="modal-title">@lang('products/create_product.title')</h4>
       </div>
       <div class="modal-body">
-        <div class="row form-inline">
+
+        <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
             <label for="create-product-code" class="control-label">@lang('products/create_product.code')</label>
             <input class="form-control" id="create-product-code">
@@ -58,7 +60,7 @@
             <input class="form-control" id="create-product-sellable">
           </div>
         </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space">
+        <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center sm-top-space">
             <label for="create-product-sell-at-base-price" class="control-label">@lang('products/create_product.sell_at_base_price')</label>
             <input class="form-control" id="create-product-sell-at-base-price">

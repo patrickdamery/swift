@@ -1,4 +1,4 @@
-<script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js">
   swift_menu.new_submenu();
   swift_menu.get_language().add_sentence('products-view-product-tab', {
                                         'en': 'View Products',
@@ -28,6 +28,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
 
   if(typeof products.js === 'undefined') {
     $.getScript('{{ URL::to('/') }}/js/swift/products/products.js');
+
   }
 
 });
@@ -57,13 +58,13 @@ $(document).on('click', '#products-view-product-tab', function(e) {
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="products-product-code" class="control-label">@lang('products/products.product_code')</label>
-              <input for="products-product-code" type="text" class="form-control" id="products-product-code">
+              <input type="text" class="form-control" id="products-product-code">
             </div>
           </div>
           <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="products-product-provider" class="control-label">@lang('products/products.product_provider')</label>
-              <select for="products-product-provider" class="form-control" id="products-product-provider">
+              <select class="form-control" id="products-product-provider">
                 <option value="0">@lang('products/products.all_providers')</option>
                 @foreach(\App\Provider::where('code', '!=', '0')->get() as $provider)
                   <option value="{{ $provider->code }}">{{ $provider->name }}</option>
@@ -86,7 +87,7 @@ $(document).on('click', '#products-view-product-tab', function(e) {
               [
                 'product_data' => array(
                   'code' => '',
-                  'provider' => 'all',
+                  'provider_code' => 'all',
                   'offset' => 1,
                 )
                 ])

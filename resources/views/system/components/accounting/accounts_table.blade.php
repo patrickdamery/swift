@@ -28,6 +28,8 @@
       return \Lang::get('accounting/accounts.credit');
     }
   }
+
+
   $accounts = array();
   if(isset($account_data)) {
     if($account_data['code'] == '') {
