@@ -24,4 +24,11 @@ return [
         'user' => 'User',
         'print' => 'Print',
         'create' => 'Create Worker',
+        'staff' => 'Staff',
+        'active' => 'Active',
+        'unactive' => 'Unactive',
+        'all' => 'All',
+        'create_user' => 'Create User',
+        'edit' => 'Edit User',
+        'phone' => 'Phone',
 ];

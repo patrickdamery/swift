@@ -475,7 +475,7 @@ $(document).on('focus', '#staff-configuration-print-group', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_print',
+        $.post('/swift/configuration/suggest_print_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },
@@ -493,7 +493,7 @@ $(document).on('focus', '#staff-configuration-notification-group', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_notification',
+        $.post('/swift/configuration/suggest_notification_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },
@@ -511,7 +511,7 @@ $(document).on('focus', '#staff-configuration-commission', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_commission',
+        $.post('/swift/configuration/suggest_commission_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },
@@ -529,7 +529,7 @@ $(document).on('focus', '#staff-configuration-discounts', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_discount',
+        $.post('/swift/configuration/suggest_discount_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },
@@ -547,7 +547,7 @@ $(document).on('focus', '#staff-configuration-branch', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_branch',
+        $.post('/swift/configuration/suggest_branch_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },
@@ -565,7 +565,7 @@ $(document).on('focus', '#staff-configuration-pos', function(e) {
     $(this).autocomplete({
       // Get the suggestions.
       source: function (request, response) {
-        $.post('/swift/group/suggest_pos',
+        $.post('/swift/configuration/suggest_pos_group',
         { code: request.term,
           _token: swift_utils.swift_token()
         },

@@ -14,4 +14,8 @@ return [
     */
 
     'code_required' => 'Code or name of worker required!',
+    'date_required' => 'Worker data required!',
+    'updated_worker' => 'Worker updated successfully!',
+    'created_worker' => 'Worker created successfully!',
+    'db_exception' => 'There was a problem when inserting data into database. Please try again!'
 ];

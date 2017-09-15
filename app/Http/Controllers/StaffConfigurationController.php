@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use Auth;
+use DB;
 use \App\WorkerSetting;
 use \App\WorkerAccount;
 use \App\Worker;
 use \App\UserAccess;
+use \App\Group;
 class StaffConfigurationController extends Controller
 {
   public function create_access() {
@@ -28,15 +30,24 @@ class StaffConfigurationController extends Controller
     }
 
     // Make user access.
-    $last_access = UserAccess::orderBy('id', 'desc')->first();
+    $user_access = null;
+    try {
+      $last_access = UserAccess::orderBy('id', 'desc')->first();
 
-    $code = $last_access->code+1;
+      $code = $last_access->code+1;
 
-    $user_access = UserAccess::create(array(
-      'code' => $code,
-      'name' => Input::get('name'),
-      'access' => '{"sales": {"has": 0, "sales": {"has": 0, "make_sale": {"has": 0, "points": 0, "quotation": 0}, "make_reservation": {"has": 0}, "make_subscription": {"has": 0}}, "orders": {"has": 0, "load_order": {"has": 0, "save": 0}, "make_order": {"has": 0}, "view_order": {"has": 0, "print": 0, "make_sale": 0}}, "cashbox": {"has": 0, "cashbox": {"has": 0, "bank_deposit": 0}, "transactions": {"has": 0, "search_bill": 0}, "print_requests": {"has": 0, "pay": 0}}, "clients": {"has": 0, "debts": {"has": 0, "print": 0}, "discounts": {"has": 0, "save": 0}, "view_client": {"has": 0, "save": 0, "create": 0}, "purchase_history": {"has": 0, "print": 0}}, "discounts": {"has": 0, "discounts": {"has": 0, "create": 0}}, "sales_analytics": {"has": 0}}, "staff": {"has": 0, "view_staff": {"has": 0, "view_staff": {"has": 0, "print": 0, "create": 0}}, "staff_config": {"has": 0, "view_config": {"has": 0, "general_config": 0, "accounting_config": 0}, "access_config": {"has": 0, "create": 0, "search": 0}}, "staff_payments": {"has": 0, "view_staff": {"has": 0, "loan": 0, "hour_add": 0}, "past_payments": {"has": 0}, "group_payments": {"has": 0, "pay": 0, "print": 0, "download": 0}}, "staff_analytics": {"has": 0, "view_analytics": {"has": 0}}, "staff_assistance": {"has": 0, "view_entries": {"has": 0, "print": 0, "download": 0}, "view_schedule": {"has": 0, "print": 0, "create": 0}}}, "products": {"has": 0, "providers": {"has": 0, "view_providers": {"has": 0, "save": 0, "create": 0}}, "purchases": {"has": 0, "view_purchases": {"has": 0, "print": 0}}, "categories": {"has": 0, "view_categories": {"has": 0, "create": 0}}, "suggestions": {"has": 0, "make_suggestion": {"has": 0, "save": 0, "print": 0, "generate": 0}}, "view_products": {"has": 0, "view_products": {"has": 0, "edit": 0, "create": 0}, "view_services": {"has": 0, "edit": 0, "create": 0}}, "local_purchases": {"has": 0, "purchase": {"has": 0, "pay": 0}}, "measurement_units": {"has": 0, "view_measurement_units": {"has": 0, "create": 0, "create_conversion": 0}}, "international_order": {"has": 0, "add_bill": {"has": 0}, "view_order": {"has": 0}, "importation_expense": {"has": 0}}}, "vehicles": {"has": 0, "view_routes": {"has": 0, "view_routes": {"has": 0, "create": 0}}, "view_vehicle": {"has": 0, "view_vehicle": {"has": 0, "create": 0}}, "view_journeys": {"has": 0, "view_journeys": {"has": 0, "create": 0}}}, "accounting": {"has": 0, "journal": {"has": 0, "view_entries": {"has": 0, "print": 0, "create": 0, "download": 0}}, "accounts": {"has": 0, "view_ledger": {"has": 0, "print": 0, "download": 0}, "view_accounts": {"has": 0, "create": 0}}, "currency": {"has": 0, "view_currency": {"has": 0, "save": 0, "create": 0}, "view_variation": {"has": 0}}, "bank_accounts": {"has": 0, "pos": {"has": 0, "create": 0}, "bank_loans": {"has": 0, "pay": 0, "loan": 0}, "view_accounts": {"has": 0, "create": 0, "transaction": 0}}}, "warehouses": {"has": 0, "stock": {"has": 0, "stocktake": {"has": 0, "check": 0, "print": 0, "in_system": 0}, "stocktake_report": {"has": 0}}, "receive": {"has": 0, "receive": {"has": 0}}, "dispatch": {"has": 0, "dispatch": {"has": 0}}, "warehouse": {"has": 0, "view_locations": {"has": 0, "print": 0, "create": 0}, "view_warehouse": {"has": 0, "create": 0}}, "stock_movement": {"has": 0, "stock_movement": {"has": 0, "print": 0, "download": 0}}}, "configuration": {"has": 0, "groups": {"has": 0, "view_group": {"has": 0, "create": 0}}, "branches": {"has": 0, "view_branch": {"has": 0, "save": 0, "create": 0}, "public_services": {"has": 0, "create": 0}}, "configuration": {"has": 0, "view_config": {"has": 0, "save": 0}, "modules_plugins": {"has": 0, "save": 0, "backup": 0, "update": 0, "generate": 0}}}}'
-    ));
+      $user_access = UserAccess::create(array(
+        'code' => $code,
+        'name' => Input::get('name'),
+        'access' => '{"sales": {"has": 0, "sales": {"has": 0, "make_sale": {"has": 0, "points": 0, "quotation": 0}, "make_reservation": {"has": 0}, "make_subscription": {"has": 0}}, "orders": {"has": 0, "load_order": {"has": 0, "save": 0}, "make_order": {"has": 0}, "view_order": {"has": 0, "print": 0, "make_sale": 0}}, "cashbox": {"has": 0, "cashbox": {"has": 0, "bank_deposit": 0}, "transactions": {"has": 0, "search_bill": 0}, "print_requests": {"has": 0, "pay": 0}}, "clients": {"has": 0, "debts": {"has": 0, "print": 0}, "discounts": {"has": 0, "save": 0}, "view_client": {"has": 0, "save": 0, "create": 0}, "purchase_history": {"has": 0, "print": 0}}, "discounts": {"has": 0, "discounts": {"has": 0, "create": 0}}, "sales_analytics": {"has": 0}}, "staff": {"has": 0, "view_staff": {"has": 0, "view_staff": {"has": 0, "print": 0, "create": 0}}, "staff_config": {"has": 0, "view_config": {"has": 0, "general_config": 0, "accounting_config": 0}, "access_config": {"has": 0, "create": 0, "search": 0}}, "staff_payments": {"has": 0, "view_staff": {"has": 0, "loan": 0, "hour_add": 0}, "past_payments": {"has": 0}, "group_payments": {"has": 0, "pay": 0, "print": 0, "download": 0}}, "staff_analytics": {"has": 0, "view_analytics": {"has": 0}}, "staff_assistance": {"has": 0, "view_entries": {"has": 0, "print": 0, "download": 0}, "view_schedule": {"has": 0, "print": 0, "create": 0}}}, "products": {"has": 0, "providers": {"has": 0, "view_providers": {"has": 0, "save": 0, "create": 0}}, "purchases": {"has": 0, "view_purchases": {"has": 0, "print": 0}}, "categories": {"has": 0, "view_categories": {"has": 0, "create": 0}}, "suggestions": {"has": 0, "make_suggestion": {"has": 0, "save": 0, "print": 0, "generate": 0}}, "view_products": {"has": 0, "view_products": {"has": 0, "edit": 0, "create": 0}, "view_services": {"has": 0, "edit": 0, "create": 0}}, "local_purchases": {"has": 0, "purchase": {"has": 0, "pay": 0}}, "measurement_units": {"has": 0, "view_measurement_units": {"has": 0, "create": 0, "create_conversion": 0}}, "international_order": {"has": 0, "add_bill": {"has": 0}, "view_order": {"has": 0}, "importation_expense": {"has": 0}}}, "vehicles": {"has": 0, "view_routes": {"has": 0, "view_routes": {"has": 0, "create": 0}}, "view_vehicle": {"has": 0, "view_vehicle": {"has": 0, "create": 0}}, "view_journeys": {"has": 0, "view_journeys": {"has": 0, "create": 0}}}, "accounting": {"has": 0, "journal": {"has": 0, "view_entries": {"has": 0, "print": 0, "create": 0, "download": 0}}, "accounts": {"has": 0, "view_ledger": {"has": 0, "print": 0, "download": 0}, "view_accounts": {"has": 0, "create": 0}}, "currency": {"has": 0, "view_currency": {"has": 0, "save": 0, "create": 0}, "view_variation": {"has": 0}}, "bank_accounts": {"has": 0, "pos": {"has": 0, "create": 0}, "bank_loans": {"has": 0, "pay": 0, "loan": 0}, "view_accounts": {"has": 0, "create": 0, "transaction": 0}}}, "warehouses": {"has": 0, "stock": {"has": 0, "stocktake": {"has": 0, "check": 0, "print": 0, "in_system": 0}, "stocktake_report": {"has": 0}}, "receive": {"has": 0, "receive": {"has": 0}}, "dispatch": {"has": 0, "dispatch": {"has": 0}}, "warehouse": {"has": 0, "view_locations": {"has": 0, "print": 0, "create": 0}, "view_warehouse": {"has": 0, "create": 0}}, "stock_movement": {"has": 0, "stock_movement": {"has": 0, "print": 0, "download": 0}}}, "configuration": {"has": 0, "groups": {"has": 0, "view_group": {"has": 0, "create": 0}}, "branches": {"has": 0, "view_branch": {"has": 0, "save": 0, "create": 0}, "public_services": {"has": 0, "create": 0}}, "configuration": {"has": 0, "view_config": {"has": 0, "save": 0}, "modules_plugins": {"has": 0, "save": 0, "backup": 0, "update": 0, "generate": 0}}}}'
+      ));
+    } catch(\Exception $e) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.db_exception'),
+      );
+      return response()->json($response);
+    }
 
     $response = array(
       'state' => 'Success',
@@ -178,12 +189,31 @@ class StaffConfigurationController extends Controller
     $access = UserAccess::where('code', Auth::user()->user_access_code)->first()->access;
     $access = json_decode($access);
 
+    // TODO: Make sure groups exist.
     if($access->staff->staff_config->view_config->general_config) {
       // Get settings and save them.
       $settings = WorkerSetting::where('worker_code', Input::get('code'))->first();
       $settings->hourly_rate = Input::get('settings')['hourly_rate'];
       $settings->vehicle_code = Input::get('settings')['vehicle_code'];
       $settings->schedule_code = Input::get('settings')['schedule_code'];
+
+      // Make sure all groups exist.
+      $notification_group = Group::where('code', Input::get('settings')['notification_group'])->first();
+      $print_group = Group::where('code', Input::get('settings')['print_group'])->first();
+      $commission_group = Group::where('code', Input::get('settings')['commission_group'])->first();
+      $discount_group = Group::where('code', Input::get('settings')['discount_group'])->first();
+      $branches_group = Group::where('code', Input::get('settings')['branches_group'])->first();
+      $pos_group = Group::where('code', Input::get('settings')['pos_group'])->first();
+
+      if(!$notification_group || !$print_group || !$commission_group || !$discount_group ||
+       !$branches_group || !$pos_group) {
+         $response = array(
+           'state' => 'Error',
+           'error' => \Lang::get('controllers/staff_configuration_controller.innexistent_group')
+         );
+         return response()->json($response);
+      }
+
       $settings->notification_group = Input::get('settings')['notification_group'];
       $settings->self_print = Input::get('settings')['self_print'];
       $settings->print_group = Input::get('settings')['print_group'];

@@ -51,11 +51,25 @@ Route::prefix('alonica')->group(function() {
 
 Route::prefix('swift')->group(function() {
 
+  // Products Routes.
+  Route::prefix('products')->group(function() {
+    Route::post('suggest_products', 'AccountController@suggest_products');
+    Route::post('create_products', 'AccountController@create_product');
+    Route::post('load_products', 'AccountController@load_products');
+  });
+
   // Staff Routes.
   Route::prefix('staff')->group(function() {
 
     // Staff Routes.
     Route::post('suggest_staff', 'StaffController@suggest_worker');
+    Route::post('search', 'StaffController@search_worker');
+    Route::post('create', 'StaffController@create_worker');
+    Route::post('change_name', 'StaffController@change_name');
+    Route::post('change_id', 'StaffController@change_id');
+    Route::post('change_phone', 'StaffController@change_phone');
+    Route::post('change_job', 'StaffController@change_job');
+    Route::post('change_state', 'StaffController@change_state');
 
     // Staff Configuration Routes.
     Route::post('search_config', 'StaffConfigurationController@search_config');
@@ -63,6 +77,11 @@ Route::prefix('swift')->group(function() {
     Route::post('search_access', 'StaffConfigurationController@search_access');
     Route::post('change_access', 'StaffConfigurationController@change_access');
     Route::post('create_access', 'StaffConfigurationController@create_access');
+  });
+
+  // Vehicle Routes.
+  Route::prefix('vehicle')->group(function() {
+    Route::post('suggest_vehicle', 'VehicleController@suggest_vehicle');
   });
 
   // Accounting Routes.
@@ -98,18 +117,17 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_parent_accounts', 'AccountController@suggest_parent_accounts');
   });
 
-  // Products Routes.
-  Route::prefix('products')->group(function() {
-    Route::post('suggest_products', 'AccountController@suggest_products');
-    Route::post('create_products', 'AccountController@create_product');
-    Route::post('load_products', 'AccountController@load_products');
-  });
+  // Configuration Routes.
+  Route::prefix('configuration')->group(function() {
 
-  // Vehicle Routes.
-  Route::prefix('vehicle')->group(function() {
-    Route::post('suggest_vehicle', 'VehicleController@suggest_vehicle');
+    // Group Routes.
+    Route::post('suggest_print_group', 'GroupController@suggest_print');
+    Route::post('suggest_notification_group', 'GroupController@suggest_notification');
+    Route::post('suggest_commission_group', 'GroupController@suggest_commission');
+    Route::post('suggest_discount_group', 'GroupController@suggest_discount');
+    Route::post('suggest_branch_group', 'GroupController@suggest_branch');
+    Route::post('suggest_pos_group', 'GroupController@suggest_pos');
   });
-
   // System routes.
   Route::prefix('system')->group(function() {
     Route::get('main', function() {

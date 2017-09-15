@@ -34,6 +34,7 @@ class Group extends Model
    *  6 = ChatGroup
    *  7 = Discounts
    *  8 = Commissions
+   *  9 = POS
    */
 
   /**

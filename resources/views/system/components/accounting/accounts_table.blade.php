@@ -94,8 +94,6 @@
     </tbody>
   </table>
 </div>
-
-
 <div class="box-footer clearfix">
   <ul class="pagination pagination-sm no-margin pull-right accounts-pagination">
     <li><a href="#" id="accounts-pagination-first">«</a></li>

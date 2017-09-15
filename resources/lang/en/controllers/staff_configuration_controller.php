@@ -17,4 +17,10 @@ return [
     'code_required' => 'Worker code required!',
     'unknown' => 'Could not find a worker with the provided code!',
     'configuration_saved' => 'Configuration saved successfully!',
+    'name_required' => 'Name required!',
+    'access_created' => 'Access created successfully!',
+    'access_change_required' => 'Access change information required!',
+    'access_changed' => 'Access changed successfully!',
+    'db_exception' => 'There was a problem when inserting data into database. Please try again!',
+    'innexistent_group' => 'At least one of the specified groups where not found!',
 ];

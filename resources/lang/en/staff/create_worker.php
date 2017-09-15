@@ -13,9 +13,12 @@ return [
     |
     */
 
-    'code_required' => 'Codigo o Nombre de trabajador son requeridos!',
-    'date_required' => 'Informacion de trabajador requerida!',
-    'updated_worker' => 'Trabajador actualizado exitosamente!',
-    'created_worker' => 'Trabajador creado exitosamente!',
-    'db_exception' => 'Hubo un problema al insertar la informacion en la base de datos. Por favor trate nuevamente!',
+    'title' => 'Create Worker',
+    'name' => 'Name',
+    'legal_id' => 'Legal ID',
+    'job_title' => 'Job Title',
+    'phone' => 'Phone',
+    'branch' => 'Branch',
+    'close' => 'Close',
+    'create' => 'Create',
 ];

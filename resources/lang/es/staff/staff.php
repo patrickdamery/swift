@@ -24,4 +24,11 @@ return [
         'user' => 'Usuario',
         'print' => 'Imprimir',
         'create' => 'Crear Trabajador',
+        'staff' => 'Personal',
+        'active' => 'Activo',
+        'unactive' => 'Inactivo',
+        'all' => 'Todos',
+        'create_user' => 'Crear Usuario',
+        'edit' => 'Editar Usuario',
+        'phone' => 'Telefono',
 ];

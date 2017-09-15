@@ -266,7 +266,7 @@
       </section>
     </aside>
     <div class="content-wrapper" id="main-content">
-      @include('system.modules.staff.staff_configuration')
+      @include('system.modules.staff.staff')
     </div>
     <footer class="main-footer">
       <strong>Copyright &copy; {{ date('Y') }} <a href="http://alonica.net">Alonica S.A</a>.</strong> All rights
