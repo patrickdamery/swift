@@ -39,6 +39,7 @@ return [
     'service_cost' => 'Costo',
     'service_price' => 'Precio',
     'service_category' => 'Categoria',
+    'products' => 'Productos',
 
     'view_analysis' => 'Ver Analisis',
 ];

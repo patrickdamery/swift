@@ -17,7 +17,7 @@ return [
     'view_product' => 'View Products',
     'product_code' => 'Product Code',
     'product_provider' => 'Product Provider',
-    'all_providers' => 'All Providers',
+    'all_providers' => 'All Protitleviders',
     'search_product' => 'Product Search',
     'create_product' => 'Create Product',
     'product_table_code' => 'Code',
@@ -38,6 +38,7 @@ return [
     'service_cost' => 'Cost',
     'service_price' => 'Price',
     'service_category' => 'Category',
+    'products' => 'Products',
 
     'view_analysis' => 'View Analysis',
 ];

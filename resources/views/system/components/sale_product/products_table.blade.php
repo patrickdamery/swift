@@ -15,41 +15,36 @@
     }
   }
 
-
-
+  function get_provider($t) {
+        $provider = \App\Provider::where('code', $t) ->first();
+        return $provider->name;
+  }
 
   $products = array();
   if(isset($product_data)) {
     if($product_data['code'] == '') {
-      if($product_data['provider'] == 'all') {
+      if($product_data['provider_code'] == 'all') {
         $products = \App\Product::where('code', '!=', '0');
       } else {
-        $products = \App\Product::where('provider', $product_data['provider']);
+        $products = \App\Product::where('provider_code', $product_data['provider_code']);
       }
     } else {
-      if($product_data['provider'] == 'all') {
+      if($product_data['provider_code'] == 'all') {
         $products = \App\Product::where('code', $product_data['code']);
       } else {
         $products = \App\Product::where('code', $product_data['code'])
-        ->where('provider', $product_data['provider']);
+        ->where('provider_code', $product_data['provider_code']);
       }
     }
   } else {
     $products = \App\Product::where('code', '!=', '0');
   }
 
-
-  function get_provider($t) {
-    if($t != 0){
-        $provider = \App\Provider::where('code', '===', '$t');
-        return $provider->name;
-      }else{
-    }
-  }
-
   $records = $products->count();
-  $pages = ceil($records/100);
+  $pages = ceil($records/50);
+
   $offset = $product_data['offset'];
+
   if($offset == 'first') {
     $offset = 0;
   } else if ($offset == 'last') {
@@ -58,9 +53,13 @@
     $offset--;
   }
   $products = $products->offset($offset*100)
-    ->limit(100)
+    ->limit(10)
+    ->orderBy('code')
     ->get();
 @endphp
+<div class="box-header">
+  <h3 class="box-title">@lang('products/products.products')</h3>
+</div>
 <div class="box-body table-responsive no-padding swift-table">
   <table class="table table-hover">
     <thead>
@@ -80,9 +79,8 @@
       @foreach($products as $product)
         <tr id="product-{{ $product->code }}">
           <td>{{ $product->code }}</td>
-          <td>{{ $product->provider_code}}</td>
+          <td>{{ get_provider($product->provider_code)}}</td>
           <td>{{ $product->description }}</td>
-          <td>{{ $product->desc }}</td>
           <td>{{ $product->avg_cost }}</td>
           <td>{{ $product->cost }}</td>
           <td>{{ $product->price }}</td>

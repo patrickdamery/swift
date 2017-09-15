@@ -266,7 +266,11 @@
       </section>
     </aside>
     <div class="content-wrapper" id="main-content">
+<<<<<<< HEAD
       @include('system.modules.staff.staff')
+=======
+      @include('system.modules.sale_product.products')
+>>>>>>> bfb53866ea35d6aad812d47a2d5895e10a8c1ad7
     </div>
     <footer class="main-footer">
       <strong>Copyright &copy; {{ date('Y') }} <a href="http://alonica.net">Alonica S.A</a>.</strong> All rights

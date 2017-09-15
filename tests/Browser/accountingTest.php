@@ -26,9 +26,9 @@ class accountingTest extends DuskTestCase
                   //->assertPathIs('http://swift.sys/swift/system/main');
         });
       }
-        /*
+/*
 
-        $$this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser) {
           $browser->loginAs(User::find(1))
                   ->visit('http://swift.sys/swift/system/main');
         });
