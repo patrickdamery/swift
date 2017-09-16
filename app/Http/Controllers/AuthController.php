@@ -7,8 +7,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
-use App\User;
 
+use App\User;
+use App\Worker;
 class AuthController extends Controller
 {
     /**
@@ -35,6 +36,12 @@ class AuthController extends Controller
       // Check if we found the user.
       if(!isset($user)) {
           return redirect('/login')->with('message', \Lang::get('controllers/auth_controller.login_error'));
+      }
+
+      // Check if user doesn't belong to an unactive worker.
+      $worker = Worker::withTrashed()->where('code', $user->worker_code)->first();
+      if($worker->state == 2) {
+        return redirect('/login')->with('message', \Lang::get('controllers/auth_controller.login_error'));
       }
 
       // Attempt to authenticate.

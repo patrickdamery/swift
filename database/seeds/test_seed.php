@@ -64,6 +64,51 @@ class test_seed extends Seeder
         }
       }
 
+      // Now make static workers and users for unit tests.
+      $worker = factory(App\Worker::class)->create([
+        'code' => 6,
+      ]);
+
+      $settings = factory(App\WorkerSetting::class)->create([
+        'worker_code' => $worker->code
+      ]);
+
+      $accounts = factory(App\WorkerAccount::class)->create([
+        'worker_code' => $worker->code
+      ]);
+
+      $u++;
+      $user = factory(App\User::class)->create([
+        'code' => $u,
+        'worker_code' => $worker->code,
+        'user_access_code' => 1,
+        'username' => 'test_user',
+        'email' => 'test_user@example.com',
+      ]);
+
+      $worker = factory(App\Worker::class)->create([
+        'code' => 7,
+        'state' => 2,
+        'deleted_at' => date('Y-m-d')
+      ]);
+
+      $settings = factory(App\WorkerSetting::class)->create([
+        'worker_code' => $worker->code
+      ]);
+
+      $accounts = factory(App\WorkerAccount::class)->create([
+        'worker_code' => $worker->code
+      ]);
+
+      $u++;
+      $user = factory(App\User::class)->create([
+        'code' => $u,
+        'worker_code' => $worker->code,
+        'user_access_code' => 1,
+        'username' => 'fired_user',
+        'email' => 'fired_user@example.com',
+      ]);
+
       // Create a couple of providers.
       $location = \App\Location::all()->last();
       $provider_location = null;
