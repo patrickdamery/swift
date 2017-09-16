@@ -14,7 +14,7 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="worker-user-email" class="control-label">@lang('staff/worker_user.email')</label>
-            <input type="text" class="form-control" id="worker-user-email">
+            <input type="email" class="form-control" id="worker-user-email">
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">

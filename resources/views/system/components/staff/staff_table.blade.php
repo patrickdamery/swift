@@ -14,7 +14,7 @@
   if(isset($code)) {
     if($code == '') {
       if($branch == 'all') {
-        $workers = \App\Worker::where('code', '!=', '0');
+        $workers = \App\Worker::where('code', '>=', '0');
       } else {
         $workers = \App\Worker::where('current_branch_code', $branch);
       }
@@ -27,7 +27,7 @@
       }
     }
   } else {
-    $workers = \App\Worker::where('code', '!=', '0');
+    $workers = \App\Worker::where('code', '>=', '0');
   }
 
   $records = $workers->count();
@@ -63,21 +63,11 @@
     <tbody>
       @foreach($workers as $worker)
         <tr id="worker-{{ $worker->code }}">
-          <td class="staff-name-edit">
-            {{ $worker->name }}
-          </td>
-          <td class="staff-id-edit">
-            {{ $worker->legal_id }}
-          </td>
-          <td class="staff-phone-edit">
-            {{ $worker->phone }}
-          </td>
-          <td class="staff-job-edit">
-            {{ $worker->cargo }}
-          </td>
-          <td class="staff-state-edit">
-            {{ get_state($worker->state) }}
-          </td>
+          <td class="staff-name-edit">{{ $worker->name }}</td>
+          <td class="staff-id-edit">{{ $worker->legal_id }}</td>
+          <td class="staff-phone-edit">{{ $worker->phone }}</td>
+          <td class="staff-job-edit">{{ $worker->job_title }}</td>
+          <td class="staff-state-edit">{{ get_state($worker->state) }}</td>
           <td>
             @php
               // Check if user exists.

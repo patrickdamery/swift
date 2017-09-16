@@ -31,4 +31,7 @@ return [
         'create_user' => 'Create User',
         'edit' => 'Edit User',
         'phone' => 'Phone',
+        'staff_list' => 'Staff List',
+        'staff_branch' => 'Branch',
+        'date' => 'Date',
 ];

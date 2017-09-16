@@ -7,8 +7,155 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use \App\Worker;
+use \App\User;
 class StaffController extends Controller
 {
+  public function print_staff() {
+    return view('system.printables.staff.staff_list',
+     [
+       'code' => Input::get('code'),
+       'branch' => Input::get('branch')
+    ]);
+  }
+
+  public function create_user() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'username' => 'required',
+        'email' => 'required',
+        'password' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get the user.
+    $user = User::where('username', Input::get('username'))->first();
+    if($user) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.username_exists')
+      );
+      return response()->json($response);
+    }
+    $user = User::where('email', Input::get('email'))->first();
+    if($user) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.email_exists')
+      );
+      return response()->json($response);
+    }
+    $user = User::where('worker_code', Input::get('code'))->first();
+    if($user) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.worker_has_user')
+      );
+      return response()->json($response);
+    }
+
+    // Create the user.
+    $last_user = User::orderBy('code', 'desc')->first();
+    $salt = uniqid();
+    $user = User::create(array(
+      'code' => $last_user->code+1,
+      'worker_code' => Input::get('code'),
+      'user_access_code' => '0',
+      'username' => Input::get('username'),
+      'email' => Input::get('email'),
+      'password' => bcrypt(Input::get('password').$salt),
+      'salt' => $salt,
+      'theme' => 'default',
+    ));
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_controller.user_created')
+    );
+    return response()->json($response);
+  }
+
+  public function edit_user() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'username' => 'required',
+        'email' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get the user.
+    $user = User::where('worker_code', Input::get('code'))->first();
+    if(!$user) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.user_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $user->username = Input::get('username');
+    $user->email = Input::get('email');
+
+    if(Input::get('password') != '') {
+      $salt = uniqid();
+      $user->password = bcrypt(Input::get('password').$salt);
+      $user->salt = $salt;
+    }
+    $user->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_controller.user_updated')
+    );
+    return response()->json($response);
+  }
+
+  public function get_user() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get the user.
+    $user = User::where('worker_code', Input::get('code'))->first();
+    if(!$user) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.user_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $response = array(
+      'state' => 'Success',
+      'user' => $user
+    );
+    return response()->json($response);
+  }
+
   public function change_name() {
     $validator = Validator::make(Input::all(),
       array(
@@ -30,7 +177,7 @@ class StaffController extends Controller
 
     $response = array(
       'state' => 'Success',
-      'error' => \Lang::get('controllers/staff_controller.name_changed')
+      'message' => \Lang::get('controllers/staff_controller.changed')
     );
     return response()->json($response);
   }
@@ -56,7 +203,7 @@ class StaffController extends Controller
 
     $response = array(
       'state' => 'Success',
-      'error' => \Lang::get('controllers/staff_controller.name_changed')
+      'message' => \Lang::get('controllers/staff_controller.changed')
     );
     return response()->json($response);
   }
@@ -82,7 +229,7 @@ class StaffController extends Controller
 
     $response = array(
       'state' => 'Success',
-      'error' => \Lang::get('controllers/staff_controller.name_changed')
+      'message' => \Lang::get('controllers/staff_controller.changed')
     );
     return response()->json($response);
   }
@@ -108,7 +255,7 @@ class StaffController extends Controller
 
     $response = array(
       'state' => 'Success',
-      'error' => \Lang::get('controllers/staff_controller.name_changed')
+      'message' => \Lang::get('controllers/staff_controller.changed')
     );
     return response()->json($response);
   }
@@ -138,11 +285,10 @@ class StaffController extends Controller
 
     $response = array(
       'state' => 'Success',
-      'error' => \Lang::get('controllers/staff_controller.name_changed')
+      'message' => \Lang::get('controllers/staff_controller.changed')
     );
     return response()->json($response);
   }
-
 
   public function create_worker() {
     $validator = Validator::make(Input::all(),
@@ -163,7 +309,7 @@ class StaffController extends Controller
     }
 
     // Check if worker with id doesn't already exist.
-    $worker_check = Worker::where('legal_id', Input::get('legal_id'))->first();
+    $worker_check = Worker::withTrashed()->where('legal_id', Input::get('id'))->first();
     if($worker_check) {
       if($worker_check->state == 2) {
         $worker_check->restore();
@@ -222,6 +368,7 @@ class StaffController extends Controller
     }
 
     $code = (Input::get('code') !== null) ? Input::get('code') : '';
+
     // Return view.
     return view('system.components.staff.staff_table',
      [

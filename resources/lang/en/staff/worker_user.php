@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'Create User',
+    'title' => 'User',
     'username' => 'Username',
     'email' => 'Email',
     'password' => 'Password',

@@ -4,7 +4,7 @@
 }
 
 @media print {
-  .wrapper {
+  .wrapper, .main-footer {
     display:none!important;
   }
   .print_area {
@@ -14,6 +14,10 @@
     border: 1px black solid;
     padding:3px;
     text-align: center;
+  }
+  th {
+    font-weight: bolder;
+    font-size: 16px;
   }
   .printable-document, .printable-header,
   .printable-body {
@@ -30,15 +34,29 @@
     width: 17cm;
     margin: auto;
   }
-  .ledger > td,
-  .ledger > th {
+  .ledger > td, .ledger > th {
     min-width: 100px;
   }
   .ledger-report {
     width: 100%;
   }
-  .ledger-account,
-  .ledger-date-range {
+  .ledger-account, .ledger-date-range {
+    width: 45%;
+    float: left;
+  }
+
+  /* Staff List CSS */
+  .staff-list {
+    width: 19cm;
+    margin: auto;
+  }
+  .staff-list > td, .staff-list > th {
+    min-width: 100px;
+  }
+  .staff-list-report {
+    width: 100%;
+  }
+  .staff-list-branch, .staff-list-date {
     width: 45%;
     float: left;
   }

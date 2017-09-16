@@ -70,6 +70,10 @@ Route::prefix('swift')->group(function() {
     Route::post('change_phone', 'StaffController@change_phone');
     Route::post('change_job', 'StaffController@change_job');
     Route::post('change_state', 'StaffController@change_state');
+    Route::post('get_user', 'StaffController@get_user');
+    Route::post('create_user', 'StaffController@create_user');
+    Route::post('edit_user', 'StaffController@edit_user');
+    Route::post('print_staff', 'StaffController@print_staff');
 
     // Staff Configuration Routes.
     Route::post('search_config', 'StaffConfigurationController@search_config');

@@ -6,9 +6,21 @@ $(function(){
                               'en': 'Active',
                               'es': 'Activo'
                             });
-  swift_language.add_sentence('inactive', {
+  swift_language.add_sentence('unactive', {
                               'en': 'Unactive',
                               'es': 'Inactivo'
+                            });
+  swift_language.add_sentence('create', {
+                              'en': 'Create',
+                              'es': 'Crear'
+                            });
+  swift_language.add_sentence('update', {
+                              'en': 'Update',
+                              'es': 'Actualizar'
+                            });
+  swift_language.add_sentence('short_pasword', {
+                              'en': 'The password must be at least 6 characters long!',
+                              'es': 'La contraseña debe tener al menos 6 caracteres!'
                             });
   swift_utils.register_ajax_fail();
 

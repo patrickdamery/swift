@@ -7,6 +7,7 @@ function Staff() {
   offset = 1;
   edit_code = '';
   edit_value = '';
+  user_action = '';
 }
 
 Staff.prototype = {
@@ -54,7 +55,7 @@ Staff.prototype = {
       return;
     }
     var staff_ref = this;
-    var request = $.post('/swift/staff/change_name', { code: code, value: value, _token: swift_utils.swift_token() });
+    var request = $.post('/swift/staff/change_name', { code: edit_code, value: value, _token: swift_utils.swift_token() });
     request.done(function(data) {
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
@@ -63,7 +64,6 @@ Staff.prototype = {
       $(e.target).parent('td')
         .replaceWith('<td class="staff-name-edit">'+value+'</td>');
       swift_utils.display_success(data.message);
-      staff_ref.search(e);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
@@ -81,7 +81,28 @@ Staff.prototype = {
     $('.staff-change-id').focus();
   },
   change_id: function(e) {
-
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-id-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_id', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-id-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   edit_phone: function(e) {
     var cell = $(e.target);
@@ -94,7 +115,62 @@ Staff.prototype = {
     $('.staff-change-phone').focus();
   },
   change_phone: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-phone-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_phone', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-phone-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  edit_job: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
 
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+
+    cell.replaceWith('<td><input type="text" class="staff-change-job" value="'+edit_value+'"></td>')
+    $('.staff-change-job').focus();
+  },
+  change_job: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-job-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_job', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-job-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   edit_state: function(e) {
     var cell = $(e.target);
@@ -103,14 +179,36 @@ Staff.prototype = {
     edit_code = row.attr('id').split('-')[1];
     edit_value = cell.text();
 
-    cell.replaceWith('<td><select class="staff-change-state">'
+    cell.replaceWith('<td><select class="form-control staff-change-state">'
       +'<option value="1">'+swift_language.get_sentence('active')+'</option>'
       +'<option value="2">'+swift_language.get_sentence('unactive')+'</option>'
       +'</td>')
     $('.staff-change-state').focus();
   },
   change_state: function(e) {
-
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-state-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_state', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-state-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+      staff_ref.search(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   create: function(e) {
     swift_utils.busy(e.target);
@@ -142,19 +240,128 @@ Staff.prototype = {
     });
   },
   print: function(e) {
-
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/staff/print_staff', { code: code, branch: branch,
+       _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      $('.print_area').empty();
+      $('.print_area').append(data);
+      window.print();
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
-  create_user: function(e) {
-
+  clear_create_user: function(e) {
+    var row = $(e.target).parent('td').parent('tr');
+    edit_code = row.attr('id').split('-')[1];
+    user_action = 'create';
+    $('#worker-user-update').html(swift_language.get_sentence('create'));
+    $('#worker-user-username').val('');
+    $('#worker-user-email').val('');
   },
-  edit_user: function(e) {
+  execute_user_action: function(e) {
+    swift_utils.busy(e.target);
+    var username = $('#worker-user-username').val();
+    var email = $('#worker-user-email').val();
+    var password = $('#worker-user-password').val();
+    if (password.length < 6 && user_action == 'create') {
+      swift_utils.free(e.target);
+      swift_utils.display_error(swift_language.get_sentence('short_pasword'));
+      return;
+    }
+    var staff_ref = this;
 
+    if(user_action == 'create') {
+      var request = $.post('/swift/staff/create_user', { code: edit_code, username: username,
+        email: email, password: password, _token: swift_utils.swift_token() });
+    } else {
+      var request = $.post('/swift/staff/edit_user', { code: edit_code, username: username,
+        email: email, password: password, _token: swift_utils.swift_token() });
+    }
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      swift_utils.display_success(data.message);
+      $('#worker-user').modal('hide');
+      staff_ref.search(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  show_edit_user: function(e) {
+    var row = $(e.target).parent('td').parent('tr');
+    edit_code = row.attr('id').split('-')[1];
+    user_action = 'edit';
+    $('#worker-user-update').html(swift_language.get_sentence('update'));
+
+    var request = $.post('/swift/staff/get_user', { code: edit_code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $('#worker-user-username').val(data.user.username);
+      $('#worker-user-email').val(data.user.email);
+      $('#worker-user').modal('show');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
 }
 
 var staff_js = new Staff();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#staff-print',
+  'click',
+  staff_js,
+  'print');
+
+$(document).on('click', '#staff-print', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-print');
+});
+
+swift_event_tracker.register_swift_event(
+  '#worker-user-update',
+  'click',
+  staff_js,
+  'execute_user_action');
+
+$(document).on('click', '#worker-user-update', function(e) {
+  swift_event_tracker.fire_event(e, '#worker-user-update');
+});
+
+swift_event_tracker.register_swift_event(
+  '.create-user',
+  'click',
+  staff_js,
+  'clear_create_user');
+
+$(document).on('click', '.create-user', function(e) {
+  swift_event_tracker.fire_event(e, '.create-user');
+});
+
+swift_event_tracker.register_swift_event(
+  '.edit-user',
+  'click',
+  staff_js,
+  'show_edit_user');
+
+$(document).on('click', '.edit-user', function(e) {
+  swift_event_tracker.fire_event(e, '.edit-user');
+});
+
 swift_event_tracker.register_swift_event(
   '.staff-state-edit',
   'click',
