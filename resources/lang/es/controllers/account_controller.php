@@ -27,4 +27,7 @@ return [
     'change_data_required' => 'Informacion del cambio es requerido!',
     'diff_type' => 'La cuenta padre es un tipo de cuenta diferente al de la cuenta que se desea crear!',
     'account_not_found' => 'No se pudo encontrar una cuenta valida con el codigo indicado!',
+    'parent_unexistent' => 'No se pudo encontrar una cuenta valida con el codigo de cuenta padre indicado!',
+    'account_not_empty' => 'Cuenta debe estar vacia para poder eliminarla!',
+    'account_deleted' => 'Cuenta eliminada exitosamente!',
 ];

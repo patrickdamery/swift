@@ -32,10 +32,13 @@ mix.styles([
     'public/css/jquery/ui/jquery-ui.min.css',
     'public/css/jquery/ui/jquery-ui.structure.min.css',
     'public/css/jquery/ui/jquery-ui.theme.min.css',
+    'public/css/jquery/context-menu/jquery.contextMenu.min.css',
     //'public/css/fullcalendar/fullcalendar.print.min.css'
   ], 'public/css/base.css').
   scripts([
     //'public/js/jquery/jquery.min.js',
+    'public/js/jquery/context-menu/jquery.contextMenu.min.js',
+    'public/js/jquery/context-menu/jquery.ui.position.min.js',
     'public/js/jquery/ui/jquery-ui.min.js',
     'public/js/bootstrap/bootstrap.min.js',
     'public/js/raphael/raphael.min.js',

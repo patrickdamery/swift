@@ -28,6 +28,10 @@ $(function(){
                               'en': 'Amount in Account can\'t be blank and must be a numeric value!',
                               'es': 'Saldo de Cuenta no puede dejarse en blanco y debe ser un valor numerico!'
                             });
+  swift_language.add_sentence('delete', {
+                              'en': 'Delete',
+                              'es': 'Eliminar'
+                            });
   swift_utils.register_ajax_fail();
 
   // Check if we have already loaded the accounts JS file.
@@ -37,6 +41,7 @@ $(function(){
 });
 </script>
 @include('system.components.accounting.create_account')
+@include('system.components.accounting.delete_account')
 <section class="content-header">
   <h1>
     @lang('accounting/accounts.title')

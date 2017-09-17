@@ -85,7 +85,7 @@
     </thead>
     <tbody>
       @foreach($accounts as $account)
-        <tr id="account-{{ $account->code }}">
+        <tr class="account-row" id="account-{{ $account->code }}">
           <td>{{ $account->code }}</td>
           <td>{{ get_type($account->type) }}</td>
           <td>{{ increase_type($account->type) }}</td>

@@ -11,6 +11,7 @@ function Account() {
   edit_type = '';
   edit_code = '';
   edit_value = '';
+  trigger = '';
 }
 
 Account.prototype = {
@@ -273,11 +274,74 @@ Account.prototype = {
       swift_utils.ajax_fail(ev);
     });
   },
+  show_delete_account: function(e) {
+    trigger = e.trigger[0].id.split('-')[1];
+    $('#delete-account').modal('show');
+    $('#delete-account-option').val(0);
+  },
+  delete_account: function(e) {
+    var option = $('#delete-account-option').val();
+    if(option == '0') {
+      $('#delete-account').modal('hide');
+      return;
+    }
+    var code = trigger;
+    var account_ref = this;
+    var request = $.post('/swift/accounting/delete_account', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      account_ref.load_accounts({
+        'code': accounts_code,
+        'type': accounts_type,
+        'offset': accounts_offset
+      }, e);
+      swift_utils.display_success(data.message);
+      $('#delete-account').modal('hide');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
 }
 
 var accounts_js = new Account();
 
 // Define Event Listeners.
+$(function() {
+  $.contextMenu({
+    selector: '.account-row',
+    callback: function(key, options) {
+      if(key == 'delete') {
+        var e = { 'type': 'context_option', 'trigger': options.$trigger};
+        swift_event_tracker.fire_event(e, '.account-row');
+      }
+    },
+    items: {
+      'delete': {name: swift_language.get_sentence('delete'), icon: 'fa-trash'},
+    }
+  });
+});
+
+swift_event_tracker.register_swift_event(
+  '.account-row',
+  'context_option',
+  accounts_js,
+  'show_delete_account');
+
+swift_event_tracker.register_swift_event(
+  '#delete-account-delete',
+  'click',
+  accounts_js,
+  'delete_account');
+
+$(document).on('click', '#delete-account-delete', function(e) {
+  swift_event_tracker.fire_event(e, '#delete-account-delete');
+});
+
 swift_event_tracker.register_swift_event(
   '#create-account-create',
   'click',

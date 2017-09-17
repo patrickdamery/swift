@@ -10,6 +10,42 @@ use App\Account;
 use App\JournalEntryBreakdown;
 class AccountController extends Controller
 {
+  public function delete_account() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get account.
+    $account = Account::where('code', Input::get('code'))->first();
+
+    // Make sure account is empty.
+    if($account->amount != 0) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_not_empty')
+      );
+      return response()->json($response);
+    }
+
+    // Delete it.
+    $account->delete();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/account_controller.account_deleted')
+    );
+    return response()->json($response);
+  }
+
   public function load_asset() {
     $validator = Validator::make(Input::all(),
       array(
@@ -376,6 +412,15 @@ class AccountController extends Controller
     $parent_account = Input::get('account')['parent'];
     if($parent_account != '') {
       $parent = Account::where('code', Input::get('account')['parent'])->first();
+
+      if(!$parent) {
+        $response = array(
+          'state' => 'Error',
+          'error' => \Lang::get('controllers/account_controller.parent_unexistent')
+        );
+        return response()->json($response);
+      }
+
       if(!$parent->has_children) {
         $response = array(
           'state' => 'Error',
@@ -407,6 +452,23 @@ class AccountController extends Controller
       return response()->json($response);
     }
 
+    $thrashed_account_check = Account::withTrashed()->where('code', $code)->first();
+    if($thrashed_account_check) {
+      $thrashed_account_check->restore();
+      $thrashed_account_check->type = Input::get('account')['type'];
+      $thrashed_account_check->name = Input::get('account')['name'];
+      $thrashed_account_check->parent_account = $parent_account;
+      $thrashed_account_check->has_children = Input::get('account')['children'];
+      $thrashed_account_check->amount = Input::get('account')['amount'];
+      $thrashed_account_check->currency_code = Input::get('account')['currency'];
+      $thrashed_account_check->save();
+
+      $response = array(
+        'state' => 'Success',
+        'message' => \Lang::get('controllers/account_controller.account_created')
+      );
+      return response()->json($response);
+    }
     $account = Account::create(array(
       'code' => $code,
       'type' => Input::get('account')['type'],

@@ -27,4 +27,7 @@ return [
     'change_data_required' => 'Change Data required!',
     'diff_type' => 'Parent account is a different type than the one you are attempting to create!',
     'account_not_found' => 'Could not find a valid account with specified code!',
+    'parent_unexistent' => 'Could not find a valid account with the specified parent code!',
+    'account_not_empty' => 'Account must be empty in order to be deleted!',
+    'account_deleted' => 'Account deleted successfully!',
 ];
