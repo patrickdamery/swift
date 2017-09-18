@@ -19,6 +19,7 @@ class CreateProducts extends Migration
             $table->string('provider_code', 10);
             $table->string('description', 50);
             $table->string('category_code', 8);
+            $table->string('currency_code', 10);
             $table->string('onload_function', 10);
             $table->string('onsale_function', 10);
             $table->string('measurement_unit_code', 10);

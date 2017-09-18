@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ URL::to('/') }}/css/base.css">
 
   <!-- JS Files -->
+  <script src="{{ URL::to('/') }}/js/jquery/jquery.min.js"></script>
   <script src="{{ URL::to('/') }}/js/all.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

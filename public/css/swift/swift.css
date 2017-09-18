@@ -41,7 +41,6 @@
   .lg-top-space {
     margin-top: 15px;
   }
-
   .map {
     height: 450px;
   }
@@ -291,13 +290,7 @@
   -webkit-animation-delay: -0.2s;
   animation-delay: -0.2s;
 }
-.lds-square div:nth-chi    $workers = \App\Worker::where('code', '>=', '0');
-  }
-
-  $workers->get();
-@endphp
-<div class="printable-document">
-  <div class="printable-headld(8) {
+.lds-square div:nth-child(8){
   top: 70px;
   left: 130px;
   background: #3b4368;

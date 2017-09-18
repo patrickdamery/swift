@@ -18,4 +18,5 @@ return [
     'variation_search' => 'Rango de Fecha y Codigo de Moneda son requeridos!',
     'rate_changed' => 'Tasa cambiada exitosamente!',
     'change_data_required' => 'La informacion del cambio es requerida!',
+    'description_changed' => 'Descripcion actualizada!',
 ];

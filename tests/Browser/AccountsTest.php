@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Artisan;
 
 class AccountsTest extends DuskTestCase
 {
@@ -15,6 +16,10 @@ class AccountsTest extends DuskTestCase
      */
     public function testLogin()
     {
+        $exitCode = Artisan::call('migrate:refresh', [
+            '--force' => true,
+            '--seed' => true
+        ]);
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
                     ->type('username', 'test_user')
@@ -22,23 +27,6 @@ class AccountsTest extends DuskTestCase
                     ->press('#login-button')
                     ->waitForLocation('/swift/system/main')
                     ->assertPathIs('/swift/system/main');
-        });
-    }
-
-    /**
-     * Navigate to accounts page.
-     *
-     * @return void
-     */
-    public function testNavigateAccount()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/swift/system/main')
-                    ->click('.sidebar-toggle')
-                    ->click('#menu_accounting')
-                    ->click('#accounts')
-                    ->waitForText('Ver Cuentas')
-                    ->assertSee('Ver Cuentas');
         });
     }
 
@@ -112,6 +100,15 @@ class AccountsTest extends DuskTestCase
                     ->select('#create-account-children', '1')
                     ->click('#create-account-create')
                     ->waitForText('La cuenta ha sido creada exitosamente!')
+                    ->assertSee('Activo')
+                    ->click('#create_account')
+                    ->waitForText('Posee Sub Cuentas')
+                    ->type('#create-account-code', '112')
+                    ->type('#create-account-name', 'Caja Chica')
+                    ->type('#create-account-amount', '0')
+                    ->select('#create-account-children', '0')
+                    ->click('#create-account-create')
+                    ->waitForText('La cuenta ha sido creada exitosamente!')
                     ->assertSee('Activo');
         });
     }
@@ -141,6 +138,47 @@ class AccountsTest extends DuskTestCase
                     ->click('#create-account-create')
                     ->waitForText('La cuenta padre es un tipo de cuenta diferente al de la cuenta que se desea crear!')
                     ->assertSee('La cuenta padre es un tipo de cuenta diferente al de la cuenta que se desea crear!');
+        });
+    }
+
+    /**
+     * Change account.
+     *
+     * @return void
+     */
+    public function testChangeAccount()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/swift/system/main')
+                    ->click('.sidebar-toggle')
+                    ->click('#menu_accounting')
+                    ->click('#accounts')
+                    ->waitForText('Ver Cuentas')
+                    ->click('#account-111 > .account-name')
+                    ->type('.change-account', 'Test Change')
+                    ->click('#accounts-view-accounts')
+                    ->pause(500)
+                    ->assertSee('Test Change');
+        });
+    }
+
+    /**
+     * Search account type.
+     *
+     * @return void
+     */
+    public function testSearchAccountType()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/swift/system/main')
+                    ->click('.sidebar-toggle')
+                    ->click('#menu_accounting')
+                    ->click('#accounts')
+                    ->waitForText('Ver Cuentas')
+                    ->select('#account-type', 're')
+                    ->assertDontSee('Test Change')
+                    ->select('#account-type', 'all')
+                    ->assertSee('Activo');
         });
     }
 

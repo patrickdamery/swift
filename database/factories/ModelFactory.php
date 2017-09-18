@@ -86,6 +86,7 @@ $factory->define(App\Product::class, function (Faker\Generator $faker) {
         'provider_code' => '1',
         'description' => implode(' ', $faker->words(2)),
         'category_code' => '0',
+        'currency_code' => 'cord',
         'onload_function' => '',
         'onsale_function' => '',
         'measurement_unit_code' => '0',

@@ -85,7 +85,7 @@ if(typeof currency_js === 'undefined') {
           </div>
           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-currency">
+              <button type="button" class="btn btn-success" id="currency-create" data-toggle="modal" data-target="#create-currency">
                 <i class="fa fa-plus"></i> @lang('accounting/currency.create')
               </button>
             </div>

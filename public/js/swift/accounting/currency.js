@@ -36,6 +36,9 @@ Currency.prototype = {
         $('#create-currency-buy-rate').val('');
         $('#create-currency').modal('hide');
 
+        var option = '<option value="'+data.currency.code+'">'+data.currency.description+'</option>';
+        $('#currency-main').append(option);
+
         currency_ref.load_currency_table();
         swift_utils.display_success(data.message);
       });

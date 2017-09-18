@@ -63,7 +63,7 @@
   @endif
 </script>
 <li class="treeview">
-  <a href="">
+  <a href="" id="menu_staff">
     <i class="fa fa-users"></i>
     <span>@lang('swift_menu.staff')</span>
   </a>

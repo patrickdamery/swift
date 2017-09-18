@@ -184,7 +184,7 @@ class CurrencyController extends Controller
     }
 
     // Create Currency.
-    Currency::create(array(
+    $currency = Currency::create(array(
       'code' => Input::get('currency_data')['code'],
       'exchange_rate' => Input::get('currency_data')['exchange'],
       'buy_rate' => Input::get('currency_data')['buy_rate'],
@@ -193,6 +193,7 @@ class CurrencyController extends Controller
 
     $response = array(
       'state' => 'Success',
+      'currency' => $currency,
       'message' => \Lang::get('controllers/currency_controller.currency_created')
     );
     return response()->json($response);

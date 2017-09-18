@@ -18,4 +18,5 @@ return [
     'variation_search' => 'Date Range and Currency Code required!',
     'rate_changed' => 'Rate changed succesfully!',
     'change_data_required' => 'The change data is required!',
+    'description_changed' => 'Description updated successfully!',
 ];

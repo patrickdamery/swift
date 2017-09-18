@@ -98,6 +98,7 @@ class UpdateForeignKeys extends Migration
             $table->foreign('package_measurement_unit_code')->references('code')->on('measurement_units');
             $table->foreign('category_code')->references('code')->on('category');
             $table->foreign('provider_code')->references('code')->on('providers');
+            $table->foreign('currency_code')->references('code')->on('currencies');
         });
         Schema::table('other_expenses', function (Blueprint $table) {
             $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
@@ -288,6 +289,7 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['package_measurement_unit_code']);
             $table->dropForeign(['category_code']);
             $table->dropForeign(['provider_code']);
+            $table->dropForeign(['currency_code']);
         });
         Schema::table('other_expenses', function (Blueprint $table) {
             $table->dropForeign(['journal_entry_code']);
