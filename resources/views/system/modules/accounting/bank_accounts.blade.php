@@ -19,14 +19,6 @@ $(function(){
                                         'en': 'View Accounts',
                                         'es': 'Ver Cuentas'
                                       });
-  swift_menu.get_language().add_sentence('bank-loans-tab', {
-                                      'en': 'Bank Loans',
-                                      'es': 'Prestamos de Banco'
-                                    });
-  swift_menu.get_language().add_sentence('bank-accounts-pos-tab', {
-                                      'en': 'POS',
-                                      'es': 'POS'
-                                    });
 
   // Define Feedback Messages.
   swift_language.add_sentence('create_account_blank_code', {
@@ -57,7 +49,6 @@ if(typeof bank_accounts_js === 'undefined') {
 }
 </script>
 @include('system.components.accounting.create_bank_account')
-@include('system.components.accounting.make_bank_transaction')
 @include('system.components.accounting.create_loan')
 @include('system.components.accounting.create_pos')
 <section class="content-header">
@@ -83,39 +74,14 @@ if(typeof bank_accounts_js === 'undefined') {
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="bank-account-code" class="control-label">@lang('accounting/bank_accounts.code')</label>
-              <input class="form-control" id="bank-account-code">
+              <select class="form-control" id="bank-account-code">
+              </select>
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="bank-account-date-range" class="control-label">@lang('accounting/bank_accounts.date_range')</label>
-              <div class="input-group date">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control daterangepicker-sel" id="bank-account-date-range">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
               <button type="button" class="btn btn-success" id="bank-accounts-search">
                 <i class="fa fa-search"></i> @lang('accounting/bank_accounts.search')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row form-inline sm-top-space md-top-space lg-top-space">
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="bank-account-balance" class="control-label">@lang('accounting/bank_accounts.balance')</label>
-              <input class="form-control" id="bank-account-balance" disabled>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bank-account-transaction">
-                <i class="fa fa-bank"></i> @lang('accounting/bank_accounts.make_transaction')
               </button>
             </div>
           </div>
@@ -134,10 +100,6 @@ if(typeof bank_accounts_js === 'undefined') {
                 [
                   'account_search' => array(
                     'code' => '',
-                    'date_range' => array(
-                        date('Y-m-d').' 00:00:00',
-                        date('Y-m-d').' 23:59:59',
-                      ),
                     'offset' => 1
                   )
                 ]
@@ -146,109 +108,6 @@ if(typeof bank_accounts_js === 'undefined') {
           </div>
         </div>
       </div>
-      <div class="tab-pane" id="bank-loans">
-        <div class="row form-inline">
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="bank-account-report-number" class="control-label">@lang('accounting/bank_accounts.number')</label>
-              <input class="form-control" id="bank-account-report-number">
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="bank-account-report-date-range" class="control-label">@lang('accounting/bank_accounts.date_range')</label>
-              <div class="input-group date">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control daterangepicker-sel" id="bank-account-report-date-range">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="bank-account-report-type" class="control-label">@lang('accounting/bank_accounts.report_type')</label>
-              <select class="form-control" id="bank-account-report-type">
-                <option value="summary">@lang('accounting/bank_accounts.summary')</option>
-                <option value="detail">@lang('accounting/bank_accounts.detail')</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 lg-top-space md-top-space sm-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="bank-accounts-generate">
-                <i class="fa fa-gears"></i> @lang('accounting/bank_accounts.generate')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 lg-top-space md-top-space sm-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="bank-accounts-print">
-                <i class="fa fa-print"></i> @lang('accounting/bank_accounts.print')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/bank_accounts.date')</th>
-                      <th>@lang('accounting/bank_accounts.description')</th>
-                      <th>@lang('accounting/bank_accounts.credit')</th>
-                      <th>@lang('accounting/bank_accounts.debit')</th>
-                      <th>@lang('accounting/bank_accounts.value')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane" id="bank-accounts-pos">
-        <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/bank_accounts.code')</th>
-                      <th>@lang('accounting/bank_accounts.name')</th>
-                      <th>@lang('accounting/bank_accounts.bank_commission')</th>
-                      <th>@lang('accounting/bank_accounts.government_commission')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row form-inline">
-          <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="bank-accounts-pos-create">
-                <i class="fa fa-plus"></i> @lang('accounting/bank_accounts.create_pos')
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /.tab-pane -->
     </div>
     <!-- /.tab-content -->
   </div>

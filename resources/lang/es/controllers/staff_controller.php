@@ -24,5 +24,5 @@ return [
     'username_exists' => 'Ya existe un usuario con el nombre de usuario especificado!',
     'email_exists' => 'Ya existe un usuario con el correo especificado!',
     'worker_has_user' => 'El trabajador seleccionado ya posee un usuario!',
-    'user_created' => 'User creado exitosamente!',
+    'user_created' => 'Usuario creado exitosamente!',
 ];

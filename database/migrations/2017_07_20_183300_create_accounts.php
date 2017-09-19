@@ -17,7 +17,7 @@ class CreateAccounts extends Migration
             $table->increments('id');
             $table->string('code', 10)->unique();
             $table->string('type', 2);
-            $table->string('name', 20);
+            $table->string('name', 50);
             $table->string('parent_account', 10);
             $table->boolean('has_children')->default(false);
             $table->double('amount');

@@ -1,6 +1,5 @@
 @php
-  $transactions = \App\BankAccountTransaction::where('bank_account_code', $account_search['code'])
-    ->whereBetween('transaction_date', $account_search['date_range']);
+  $transactions = \App\BankAccountTransaction::where('bank_account_code', $account_search['code']);
   $records = $transactions->count();
   $pages = ceil($records/50);
 

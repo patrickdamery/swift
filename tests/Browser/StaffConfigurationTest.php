@@ -41,7 +41,7 @@ class StaffConfigurationTest extends DuskTestCase
                   ->waitForText('Configuracion guardada exitosamente!')
                   ->assertSee('Configuracion guardada exitosamente!')
                   ->type('#staff-configuration-reimbursement-code', '112')
-                  ->click('#staff-configuration-reimbursement')
+                  ->keys('#staff-configuration-reimbursement-code', ['{enter}'])
                   ->waitForText('Caja Chica')
                   ->assertSelectHasOption('#staff-configuration-reimbursement', '112')
                   ->click('#staff-configuration-save')

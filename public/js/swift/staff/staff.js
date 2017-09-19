@@ -222,6 +222,7 @@ Staff.prototype = {
       job_title: job_title, phone: phone, branch: branch, _token: swift_utils.swift_token() });
     request.done(function(data) {
       if(data.state != 'Success') {
+        swift_utils.free(e.target);
         swift_utils.display_error(data.error);
         return;
       }

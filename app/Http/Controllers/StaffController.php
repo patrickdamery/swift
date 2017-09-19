@@ -325,11 +325,11 @@ class StaffController extends Controller
     }
 
     try {
-      $last_worker = Worker::orderBy('id', 'desc')->first();
+      $last_worker = Worker::withTrashed()->orderBy('id', 'desc')->first();
 
       // Create worker.
       $worker = Worker::create(array(
-        'code' => $last_worker->code+1,
+        'code' => ($last_worker->code+1),
         'name' => Input::get('name'),
         'legal_id' => Input::get('id'),
         'job_title' => Input::get('job_title'),
