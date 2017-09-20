@@ -19,7 +19,7 @@ return [
     'date_range' => 'Date Range',
     'search' => 'Search',
     'make_transaction' => 'Make Transaction',
-    'create' => 'Create Account',
+    'create' => 'Create',
     'account_reports' => 'Account Reports',
     'date' => 'Date',
     'description' => 'Description',
@@ -41,4 +41,8 @@ return [
     'balance' => 'Balance',
     'transactions' => 'Transactions',
     'loans' => 'Bank Loans',
+    'account_number' => 'Account Number',
+    'cheques' => 'Cheques',
+    'create_account' => 'Create Account',
+    'view' => 'View',
 ];

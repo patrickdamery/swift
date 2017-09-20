@@ -16,7 +16,7 @@ class AccountsTest extends DuskTestCase
      */
     public function testLogin()
     {
-        $exitCode = Artisan::call('migrate:refresh', [
+        Artisan::call('migrate:refresh', [
             '--force' => true,
             '--seed' => true
         ]);
@@ -101,6 +101,7 @@ class AccountsTest extends DuskTestCase
                     ->click('#create-account-create')
                     ->waitForText('La cuenta ha sido creada exitosamente!')
                     ->assertSee('Activo')
+                    ->pause(1000)
                     ->click('#create_account')
                     ->waitForText('Posee Sub Cuentas')
                     ->type('#create-account-code', '112')
@@ -109,7 +110,36 @@ class AccountsTest extends DuskTestCase
                     ->select('#create-account-children', '0')
                     ->click('#create-account-create')
                     ->waitForText('La cuenta ha sido creada exitosamente!')
-                    ->assertSee('Activo');
+                    ->assertSee('Activo')
+                    ->pause(1000)
+                    ->click('#create_account')
+                    ->waitForText('Posee Sub Cuentas')
+                    ->type('#create-account-code', '102')
+                    ->type('#create-account-name', 'Cuentas de Banco')
+                    ->type('#create-account-amount', '0')
+                    ->select('#create-account-children', '1')
+                    ->click('#create-account-create')
+                    ->waitForText('La cuenta ha sido creada exitosamente!')
+                    ->pause(1000)
+                    ->click('#create_account')
+                    ->waitForText('Posee Sub Cuentas')
+                    ->type('#create-account-code', '1')
+                    ->type('#create-account-name', 'BAC 123456789')
+                    ->type('#create-account-amount', '0')
+                    ->select('#create-account-children', '0')
+                    ->type('#create-account-parent', '102')
+                    ->click('#create-account-create')
+                    ->waitForText('La cuenta ha sido creada exitosamente!')
+                    ->pause(1000)
+                    ->click('#create_account')
+                    ->waitForText('Posee Sub Cuentas')
+                    ->type('#create-account-code', '2')
+                    ->type('#create-account-name', 'BDF 987654321')
+                    ->type('#create-account-amount', '0')
+                    ->type('#create-account-parent', '102')
+                    ->select('#create-account-children', '0')
+                    ->click('#create-account-create')
+                    ->waitForText('La cuenta ha sido creada exitosamente!');
         });
     }
 

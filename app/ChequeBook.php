@@ -3,18 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-class BankAccount extends Model
-{
 
-  use SoftDeletes;
-  
+class ChequeBook extends Model
+{
   /**
    * The database table used by the model.
    *
    * @var string
    */
-  protected $table = 'bank_accounts';
+  protected $table = 'cheque_book';
 
   /**
    * The attributes that are mass assignable.
@@ -22,7 +19,7 @@ class BankAccount extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'bank_name', 'account_number', 'account_code'
+      'code', 'bank_account_code', 'name', 'current_number'
   ];
 
   /**

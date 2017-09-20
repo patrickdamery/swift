@@ -19,4 +19,6 @@ return [
     'inexistent_account' => 'La cuenta contable especificada no existe!',
     'account_search_required' => 'La informacion de busqueda de la cuenta es requerida!',
     'account_code_required' => 'El codigo de cuenta es requerido!',
+    'db_exception' => 'Hubo un problema al insertar la informacion en la base de datos. Por favor trate nuevamente!',
+    'pos_created' => 'POS creado exitosamente!',
 ];

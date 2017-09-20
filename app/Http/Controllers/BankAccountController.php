@@ -8,59 +8,43 @@ use Illuminate\Support\Facades\Input;
 
 use App\BankAccount;
 use App\Account;
+use App\POS;
 class BankAccountController extends Controller
 {
 
-  public function bank_acocunt_transaction() {
+  public function create_pos() {
     $validator = Validator::make(Input::all(),
       array(
-        'transaction' => 'required',
+        'code' => 'required',
+        'name' => 'required',
+        'bank_commission' => 'required',
+        'government_commission' => 'required',
       )
     );
     if($validator->fails()) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/bank_account_controller.transaction_required')
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
       );
       return response()->json($response);
     }
 
-    // Get Worker making transaction and accounts to be used.
-    $worker = Worker::where('code', Auth::user()->worker_code)->first();
-    $bank_account = BankAccount::where('code', Input::get('transaction')['code'])->first();
+    // Create POS.
+    $last_pos = POS::orderBy('id', 'desc')->first();
+    $code = ($last_pos) ? $last_pos->code : 0;
+    $pos = POS::create(array(
+      'code' => $code+1,
+      'bank_account_code' => Input::get('code'),
+      'name' => Input::get('name'),
+      'bank_commission' => Input::get('bank_commission'),
+      'government_commission' => Input::get('government_commission')
+    ));
 
-
-  }
-
-  public function search_bank_transactions() {
-    $validator = Validator::make(Input::all(),
-      array(
-        'account_search' => 'required',
-      )
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/bank_account_controller.pos_created')
     );
-    if($validator->fails()) {
-      $response = array(
-        'state' => 'Error',
-        'error' => \Lang::get('controllers/bank_account_controller.account_search_required')
-      );
-      return response()->json($response);
-    }
-
-    // Explode date range.
-    $date_range = explode(' - ', Input::get('account_search')['date_range']);
-    $date_range[0] = date('Y-m-d H:i:s', strtotime($date_range[0]));
-    $date_range[1] = date('Y-m-d H:i:s', strtotime($date_range[1].' 23:59:59'));
-
-    // Return view.
-    return view('system.components.accounting.bank_account_table',
-      [
-        'account_search' => array(
-          'code' => Input::get('account_search')['code'],
-          'date_range' => $date_range,
-          'offset' => Input::get('account_search')['offset']
-        )
-      ]
-    );
+    return response()->json($response);
   }
 
   public function search_bank_account() {
@@ -77,13 +61,12 @@ class BankAccountController extends Controller
       return response()->json($response);
     }
 
-    $bank_account = BankAccount::where('code', Input::get('code'))->first();
-
-    $response = array(
-      'state' => 'Success',
-      'balance' => $bank_account->balance
+    // Return view.
+    return view('system.components.accounting.bank_account_table',
+      [
+        'code' => Input::get('code'),
+      ]
     );
-    return response()->json($response);
   }
 
   public function suggest_accounts(Request $request) {
@@ -141,8 +124,8 @@ class BankAccountController extends Controller
       }
     }
 
-    // Make sure a bank account with specified code does not exist already.
-    $account_check = BankAccount::where('code', Input::get('account')['code'])->first();
+    // Make sure a bank account with specified account does not exist already.
+    $account_check = BankAccount::where('account_code', Input::get('account')['account'])->first();
     if($account_check) {
       $response = array(
         'state' => 'Error',
@@ -151,18 +134,30 @@ class BankAccountController extends Controller
       return response()->json($response);
     }
 
-    $bank_account = BankAccount::create(array(
-      'code' => Input::get('account')['code'],
-      'bank_name' => Input::get('account')['bank_name'],
-      'account_number' => Input::get('account')['number'],
-      'currency_code' => Input::get('account')['currency'],
-      'balance' => Input::get('account')['balance'],
-      'account_code' => Input::get('account')['account'],
-    ));
-    $response = array(
-      'state' => 'Success',
-      'message' => \Lang::get('controllers/bank_account_controller.account_created')
-    );
-    return response()->json($response);
+    // Get last bank account.
+    $last_bank_account = BankAccount::withTrashed()->orderBy('id', 'desc')->first();
+    $code = ($last_bank_account) ? $last_bank_account->code : 0;
+
+    try{
+      $bank_account = BankAccount::create(array(
+        'code' => $code+1,
+        'bank_name' => Input::get('account')['bank_name'],
+        'account_number' => Input::get('account')['number'],
+        'account_code' => Input::get('account')['account'],
+      ));
+
+      $response = array(
+        'state' => 'Success',
+        'bank_account' => $bank_account,
+        'message' => \Lang::get('controllers/bank_account_controller.account_created')
+      );
+      return response()->json($response);
+    } catch(\Exception $e) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.db_exception')
+      );
+      return response()->json($response);
+    }
   }
 }

@@ -30,10 +30,6 @@ class UpdateForeignKeys extends Migration
         Schema::table('bank_accounts', function (Blueprint $table) {
             $table->foreign('account_code')->references('code')->on('accounts');
         });
-        Schema::table('bank_accounts_transactions', function (Blueprint $table) {
-            $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
-            $table->foreign('worker_code')->references('code')->on('workers');
-        });
         Schema::table('branch_settings', function (Blueprint $table) {
             $table->foreign('vehicle_group_code')->references('code')->on('groups');
             $table->foreign('worker_group_code')->references('code')->on('groups');
@@ -220,10 +216,6 @@ class UpdateForeignKeys extends Migration
         });
         Schema::table('bank_accounts', function (Blueprint $table) {
             $table->dropForeign(['account_code']);
-        });
-        Schema::table('bank_accounts_transactions', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code']);
-            $table->dropForeign(['worker_code']);
         });
         Schema::table('branch_settings', function (Blueprint $table) {
             $table->dropForeign(['vehicle_group_code']);

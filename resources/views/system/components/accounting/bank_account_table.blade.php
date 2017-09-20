@@ -1,63 +1,111 @@
 @php
-  $transactions = \App\BankAccountTransaction::where('bank_account_code', $account_search['code']);
-  $records = $transactions->count();
-  $pages = ceil($records/50);
-
-  $offset = $account_search['offset'];
-  if($offset == 'first') {
-    $offset = 0;
-  } else if ($offset == 'last') {
-    $offset = $pages-1;
+  $bank_accounts = array();
+  if($code != '') {
+    $bank_accounts = \App\BankAccount::where('code', $code)->get();
   } else {
-    $offset--;
+    $bank_accounts = \App\BankAccount::all();
   }
-
-  $transactions = $transactions->offset($offset*50)
-    ->limit(50)
-    ->get();
 @endphp
 <div class="box-header">
-  <h3 class="box-title">@lang('accounting/bank_accounts.transactions')</h3>
+  <h3 class="box-title">@lang('accounting/bank_accounts.title')</h3>
 </div>
 <div class="box-body table-responsive no-padding swift-table">
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>@lang('accounting/bank_accounts.date')</th>
-        <th>@lang('accounting/bank_accounts.description')</th>
-        <th>@lang('accounting/bank_accounts.type')</th>
-        <th>@lang('accounting/bank_accounts.value')</th>
+        <th>@lang('accounting/bank_accounts.account_number')</th>
+        <th>@lang('accounting/bank_accounts.pos')</th>
+        <th>@lang('accounting/bank_accounts.cheques')</th>
+        <th>@lang('accounting/bank_accounts.loans')</th>
       </tr>
     </thead>
     <tbody>
-      @foreach($transactions as $transaction)
-        <tr id="{{ $transaction->code }}">
-          <td>{{ $transaction->transaction_date }}</td>
-          <td class="editable bank-account-transaction-reason">{{ $transaction->reason }}</td>
-          <td>{{ convert_type($transaction->type) }}</td>
-          <td>{{ $transaction->transaction_value }}</td>
+      @foreach($bank_accounts as $bank_account)
+        <tr id="bank-account-{{ $bank_account->code }}">
+          <td>{{ $bank_account->account_number }}</td>
+          <td>
+            @foreach(\App\POS::where('bank_account_code', $bank_account->code)->get() as $pos)
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label class="control-label">{{ $pos->name }}</label>
+                  </div>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <button type="button" class="btn btn-info" id="view-pos-{{ $pos->code }}">
+                      <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
+                    </button>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <button type="button" class="btn btn-success create-pos" data-toggle="modal" data-target="#create-pos">
+                    <i class="fa fa-plus"></i> @lang('accounting/bank_accounts.create')
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            @foreach(\App\ChequeBook::where('bank_account_code', $bank_account->code)->get() as $cheque_book)
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label class="control-label">{{ $cheque_book->name }}</label>
+                  </div>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <button type="button" class="btn btn-info" id="view-cheque-{{ $cheque_book->code }}">
+                      <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
+                    </button>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <button type="button" class="btn btn-success create-cheque" data-toggle="modal" data-target="#create-cheque-book">
+                    <i class="fa fa-plus"></i> @lang('accounting/bank_accounts.create')
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            @foreach(\App\BankLoan::where('bank_account_code', $bank_account->code)->get() as $loan)
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label class="control-label">{{ \App\Account::where('code', $loan->account_code)->first()->name }}</label>
+                  </div>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <button type="button" class="btn btn-info" id="view-loan-{{ $loan->code }}">
+                      <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
+                    </button>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <button type="button" class="btn btn-success create-loan" data-toggle="modal" data-target="#create-loan">
+                    <i class="fa fa-plus"></i> @lang('accounting/bank_accounts.create')
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
       @endforeach
     </tbody>
   </table>
-</div>
-<div class="box-footer clearfix">
-  <ul class="pagination pagination-sm no-margin pull-right bank-accounts-pagination">
-    <li><a href="#" id="bank-accounts-pagination-first">«</a></li>
-    @if($offset+1 == 1)
-      <li><a href="#" id="bank-accounts-pagination-1">1</a></li>
-      @for($i = 2; $i <= $pages; $i++)
-        @if($i < 4)
-          <li><a href="#" id="bank-accounts-pagination-{{ $i }}">{{ $i }}</a></li>
-        @endif
-      @endfor
-    @else
-      <li><a href="#" id="bank-accounts-pagination-{{ $offset }}">{{ $offset }}</a></li>
-      <li><a href="#" id="bank-accounts-pagination-{{ $offset+1 }}">{{ $offset+1 }}</a></li>
-      @if($offset+2 <= $pages)
-        <li><a href="#" id="bank-accounts-pagination-{{ $offset+2 }}">{{ $offset+2 }}</a></li>
-      @endif
-    @endif
-    <li><a href="#" id="bank-accounts-pagination-last">»</a></li>
-  </ul>
 </div>

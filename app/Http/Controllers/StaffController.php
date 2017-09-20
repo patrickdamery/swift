@@ -63,9 +63,11 @@ class StaffController extends Controller
 
     // Create the user.
     $last_user = User::orderBy('code', 'desc')->first();
+    $code = ($last_user) ? $last_user->code : 0;
+
     $salt = uniqid();
     $user = User::create(array(
-      'code' => $last_user->code+1,
+      'code' => $code+1,
       'worker_code' => Input::get('code'),
       'user_access_code' => '0',
       'username' => Input::get('username'),
@@ -326,10 +328,10 @@ class StaffController extends Controller
 
     try {
       $last_worker = Worker::withTrashed()->orderBy('id', 'desc')->first();
-
+      $code = ($last_worker) ? $last_worker->code : 0;
       // Create worker.
       $worker = Worker::create(array(
-        'code' => ($last_worker->code+1),
+        'code' => ($code+1),
         'name' => Input::get('name'),
         'legal_id' => Input::get('id'),
         'job_title' => Input::get('job_title'),

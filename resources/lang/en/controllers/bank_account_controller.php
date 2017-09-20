@@ -19,4 +19,6 @@ return [
     'inexistent_account' => 'The accounting account provided does not exist!',
     'account_search_required' => 'The Account Search information is requried!',
     'account_code_required' => 'The Account Code is required!',
+    'db_exception' => 'There was a problem when inserting data into database. Please try again!',
+    'pos_created' => 'POS created successfully!',
 ];
