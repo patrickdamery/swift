@@ -18,7 +18,7 @@ class CreateCheckBook extends Migration
           $table->string('code', 10)->unique();
           $table->string('bank_account_code', 10)->index();
           $table->string('name', 25);
-          $table->string('current_number', 10)->index();
+          $table->string('current_number', 10);
 
           $table->foreign('bank_account_code')->references('code')->on('bank_accounts');
       });

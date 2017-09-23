@@ -21,4 +21,7 @@ return [
     'account_code_required' => 'El codigo de cuenta es requerido!',
     'db_exception' => 'Hubo un problema al insertar la informacion en la base de datos. Por favor trate nuevamente!',
     'pos_created' => 'POS creado exitosamente!',
+    'cheque_book_created' => 'Chequera creada exitosamente!',
+    'loan_created' => 'Prestamo creado exitosamente!',
+    'liability_required' => 'Cuenta debe ser un pasivo!',
 ];

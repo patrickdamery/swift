@@ -96,6 +96,8 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_bank_accounts', 'BankAccountController@suggest_accounts');
     Route::post('search_bank_account', 'BankAccountController@search_bank_account');
     Route::post('create_pos', 'BankAccountController@create_pos');
+    Route::post('create_cheque_book', 'BankAccountController@create_cheque_book');
+    Route::post('create_loan', 'BankAccountController@create_loan');
 
     // Currency Routes.
     Route::post('create_currency', 'CurrencyController@create_currency');

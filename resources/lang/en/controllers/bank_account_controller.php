@@ -21,4 +21,7 @@ return [
     'account_code_required' => 'The Account Code is required!',
     'db_exception' => 'There was a problem when inserting data into database. Please try again!',
     'pos_created' => 'POS created successfully!',
+    'cheque_book_created' => 'Cheque book created successfully!',
+    'loan_created' => 'Loan created successfully!',
+    'liability_required' => 'Account must be a liability!',
 ];

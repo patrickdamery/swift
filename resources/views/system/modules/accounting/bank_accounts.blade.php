@@ -47,7 +47,35 @@ $(function(){
                             });
   swift_language.add_sentence('pos_commission_required', {
                               'en': 'Commissions can\'t be blank and must be a numeric value!',
-                              'es': 'Comissiones no pueden dejarse en blanco y deben ser un valor numerico!'
+                              'es': 'Comissiones no pueden dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('blank_cheque_book_name', {
+                              'en': 'Cheque book name can\'t be blank!',
+                              'es': 'Nombre de chequera no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('cheque_number_required', {
+                              'en': 'Cheque number can\'t be blank and must be a numeric value!',
+                              'es': 'Numero de cheque no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('account_required', {
+                              'en': 'Account can\'t be blank!',
+                              'es': 'Cuenta no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('amount_required', {
+                              'en': 'Amount can\'t be blank and must be a numeric value!',
+                              'es': 'Cantidad no pueden dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('start_date_required', {
+                              'en': 'Start date can\'t be blank!',
+                              'es': 'Fecha inicial puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('interest_required', {
+                              'en': 'Interest can\'t be blank and must be a numeric value!',
+                              'es': 'Tasa de Interes no pueden dejarse en blanco y deben ser un valor numerico!'
+                            });
+  swift_language.add_sentence('payment_required', {
+                              'en': 'Payment rate can\'t be blank and must be a numeric value!',
+                              'es': 'Pago por intervalo no puede dejarse en blanco y debe ser un valor numerico!'
                             });
   swift_utils.register_ajax_fail();
 

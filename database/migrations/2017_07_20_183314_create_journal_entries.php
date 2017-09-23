@@ -17,6 +17,7 @@ class CreateJournalEntries extends Migration
             $table->increments('id');
             $table->string('code', 15)->unique();
             $table->timestamp('entry_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->tinyInteger('state');
             $table->softDeletes();
 
             $table->index('entry_date');

@@ -20,7 +20,7 @@ class JournalEntryBreakdown extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'journal_entry_code', 'debit', 'account_code', 'description',
+      'journal_entry_code', 'debit', 'account_code', 'description',
       'amount', 'balance'
   ];
 

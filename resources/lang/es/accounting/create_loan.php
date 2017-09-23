@@ -17,7 +17,7 @@ return [
     'close' => 'Cerrar',
     'create' => 'Crear',
     'account_code' => 'Cuenta Por Pagar',
-    'Amount' => 'Cantidad',
+    'amount' => 'Cantidad',
     'start_date' => 'Fecha Inicial',
     'interval' => 'Intervalo de Pago',
     'interest_rate' => 'Tasa de Interes',

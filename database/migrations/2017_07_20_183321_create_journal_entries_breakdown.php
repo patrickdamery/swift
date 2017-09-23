@@ -15,7 +15,6 @@ class CreateJournalEntriesBreakdown extends Migration
     {
         Schema::create('journal_entries_breakdown', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 15)->unique();
             $table->string('journal_entry_code', 10);
             $table->boolean('debit')->default(true);
             $table->string('account_code', 10);

@@ -93,8 +93,12 @@ BankAccount.prototype = {
   show_create_loan: function(e) {
     current_account = $(e.target).parents('tr')
       .attr('id').split('-')[2];
-    $('#create-cheque-book-name').val('');
-    $('#create-cheque-book-number').val('');
+    $('#create-loan-account').val('');
+    $('#create-loan-amount').val('');
+    $('#create-loan-start-date').val('');
+    $('#create-loan-interval').val('monthly');
+    $('#create-loan-interest').val('');
+    $('#create-loan-payment').val('');
   },
   create_pos: function(e) {
     var name = $('#create-pos-name').val();
@@ -115,13 +119,15 @@ BankAccount.prototype = {
     var request = $.post('/swift/accounting/create_pos', { code: current_account,
       name: name, bank_commission: bank_commission, government_commission: government_commission,
       _token: swift_utils.swift_token() });
-    request.done(function(view) {
+    request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
         return;
       }
-      
+
+      $('#create-pos').modal('hide');
+      swift_utils.display_success(data.message);
       bank_account_ref.search_account(e);
     });
     request.fail(function(ev) {
@@ -130,10 +136,88 @@ BankAccount.prototype = {
     });
   },
   create_cheque_book: function(e) {
+    var name = $('#create-cheque-book-name').val();
+    var number = $('#create-cheque-book-number').val();
 
+    if(name == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_cheque_book_name'));
+      return;
+    }
+    if(number == '' || !$.isNumeric(number)) {
+        swift_utils.display_error(swift_language.get_sentence('cheque_number_required'));
+        return;
+      }
+    swift_utils.busy(e.target);
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/create_cheque_book', { code: current_account,
+      name: name, number: number, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+
+      swift_utils.display_success(data.message);
+      $('#create-cheque-book').modal('hide');
+      bank_account_ref.search_account(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   create_loan: function(e) {
+    var account = $('#create-loan-account').val();
+    var amount = $('#create-loan-amount').val();
+    var start_date = $('#create-loan-start-date').val();
+    var interval = $('#create-loan-interval').val();
+    var interest = $('#create-loan-interest').val();
+    var payment = $('#create-loan-payment').val();
 
+    if(account == '' || !$.isNumeric(account)) {
+      swift_utils.display_error(swift_language.get_sentence('account_required'));
+      return;
+    }
+
+    if(amount == '' || !$.isNumeric(amount)) {
+      swift_utils.display_error(swift_language.get_sentence('amount_required'));
+      return;
+    }
+
+    if(start_date == '') {
+      swift_utils.display_error(swift_language.get_sentence('start_date_required'));
+      return;
+    }
+
+    if(interest == '' || !$.isNumeric(interest)) {
+      swift_utils.display_error(swift_language.get_sentence('interest_required'));
+      return;
+    }
+
+    if(payment == '' || !$.isNumeric(payment)) {
+      swift_utils.display_error(swift_language.get_sentence('payment_required'));
+      return;
+    }
+    swift_utils.busy(e.target);
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/create_loan', { code: current_account,
+      account: account, amount: amount, start_date: start_date,
+      interest: interest, payment: payment, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      swift_utils.display_success(data.message);
+      $('#create-loan').modal('hide');
+      bank_account_ref.search_account(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   load_pos: function(e) {
 
@@ -157,8 +241,27 @@ BankAccount.prototype = {
 
 var bank_accounts_js = new BankAccount();
 
-
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#create-loan-create',
+  'click',
+  bank_accounts_js,
+  'create_loan');
+
+$(document).on('click', '#create-loan-create', function(e) {
+  swift_event_tracker.fire_event(e, '#create-loan-create');
+});
+
+swift_event_tracker.register_swift_event(
+  '#create-cheque-book-create',
+  'click',
+  bank_accounts_js,
+  'create_cheque_book');
+
+$(document).on('click', '#create-cheque-book-create', function(e) {
+  swift_event_tracker.fire_event(e, '#create-cheque-book-create');
+});
+
 swift_event_tracker.register_swift_event(
   '#create-pos-create',
   'click',
@@ -227,6 +330,24 @@ $(document).on('focus', '#create-bank-account-account', function(e) {
         $.post('/swift/accounting/suggest_asset',
         { code: request.term,
           type: 'all',
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#create-loan-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_liability',
+        { code: request.term,
           _token: swift_utils.swift_token()
         },
         function (data) {

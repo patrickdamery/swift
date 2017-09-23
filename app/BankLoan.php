@@ -19,7 +19,8 @@ class BankLoan extends Model
    * @var array
    */
   protected $fillable = [
-      'bank_account_code', 'account_code', 'journal_entry_code'
+      'code', 'bank_account_code', 'account_code', 'start_date', 'payment_rate',
+      'interest_rate', 'interval', 'next_payment', 'state', 'journal_entry_code'
   ];
 
   /**
