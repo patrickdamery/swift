@@ -24,4 +24,9 @@ return [
     'cheque_book_created' => 'Chequera creada exitosamente!',
     'loan_created' => 'Prestamo creado exitosamente!',
     'liability_required' => 'Cuenta debe ser un pasivo!',
+    'cheque_book_failed' => 'Hubo un problema al crear la Chequera, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
+    'pos_failed' => 'Hubo un problema al crear el POS, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
+    'loan_failed' => 'Hubo un problema al crear el Prestamo de Banco, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
+    'account_failed' => 'Hubo un problema al crear la Cuenta de Banco, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
+    'past_start_date' => 'Fecha Inicial debe ser el primer dia en que se tenga que hacer un pago al prestamo y no puede ser una fecha en el pasado!',
 ];

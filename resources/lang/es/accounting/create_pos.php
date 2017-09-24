@@ -14,9 +14,11 @@ return [
     */
 
     'title' => 'Crear POS',
+    'edit_title' => 'Editar POS',
     'close' => 'Cerrar',
     'create' => 'Crear',
     'name' => 'Nombre',
     'bank_commission' => 'Commission Bancaria',
     'government_commission' => 'Commission Gubernamental',
+    'update' => 'Actualizar',
 ];

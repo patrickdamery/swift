@@ -22,6 +22,11 @@ return [
     'db_exception' => 'There was a problem when inserting data into database. Please try again!',
     'pos_created' => 'POS created successfully!',
     'cheque_book_created' => 'Cheque book created successfully!',
-    'loan_created' => 'Loan created successfully!',
+    'loan_created' => 'Bank Loan created successfully!',
     'liability_required' => 'Account must be a liability!',
+    'cheque_book_failed' => 'Failed to create Cheque book, please try again! If the problem persists contact Swift Support.',
+    'pos_failed' => 'Failed to create POS, please try again! If the problem persists contact Swift Support.',
+    'loan_failed' => 'Failed to create Bank Loan, please try again! If the problem persists contact Swift Support.',
+    'account_failed' => 'Failed to create Bank Account, please try again! If the problem persists contact Swift Support.',
+    'past_start_date' => 'Start Date must be the first day you will make a payment and can\'t be in the past!',
 ];

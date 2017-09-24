@@ -98,6 +98,13 @@ Route::prefix('swift')->group(function() {
     Route::post('create_pos', 'BankAccountController@create_pos');
     Route::post('create_cheque_book', 'BankAccountController@create_cheque_book');
     Route::post('create_loan', 'BankAccountController@create_loan');
+    Route::post('get_pos', 'BankAccountController@get_pos');
+    Route::post('edit_pos', 'BankAccountController@edit_pos');
+    Route::post('get_cheque_book', 'BankAccountController@get_cheque_book');
+    Route::post('load_cheques', 'BankAccountController@load_cheques');
+    Route::post('edit_cheque_book', 'BankAccountController@edit_cheque_book');
+    Route::post('get_loan', 'BankAccountController@get_loan');
+    Route::post('edit_loan', 'BankAccountController@edit_loan');
 
     // Currency Routes.
     Route::post('create_currency', 'CurrencyController@create_currency');

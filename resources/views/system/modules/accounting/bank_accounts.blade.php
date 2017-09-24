@@ -88,6 +88,8 @@ if(typeof bank_accounts_js === 'undefined') {
 @include('system.components.accounting.create_loan')
 @include('system.components.accounting.create_cheque_book')
 @include('system.components.accounting.create_pos')
+@include('system.components.accounting.view_pos')
+@include('system.components.accounting.view_cheque_book')
 <section class="content-header">
   <h1>
     @lang('accounting/bank_accounts.title')

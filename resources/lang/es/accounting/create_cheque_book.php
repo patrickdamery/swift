@@ -14,8 +14,17 @@ return [
     */
 
     'title' => 'Crear Chequera',
+    'edit_title' => 'Editar Chequera',
     'close' => 'Cerrar',
     'create' => 'Crear',
     'name' => 'Nombre',
     'current_number' => 'Numero Actual',
+    'cheques' => 'Cheques',
+    'date_range' => 'Rango de Fechas',
+    'date' => 'Fecha',
+    'cheque_number' => 'Numero de Cheque',
+    'reason' => 'Razon',
+    'amount' => 'Cantidad',
+    'create_cheque' => 'Crear Cheque',
+    'update' => 'Actualizar',
 ];

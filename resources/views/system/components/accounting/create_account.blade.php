@@ -1,10 +1,8 @@
 @php
   // Get data we need to display.
   use App\Configuration;
-  use App\User;
 
   $config = Configuration::find(1);
-  $modules = json_decode($config->modules);
 @endphp
 <div class="modal fade in" id="create-account">
   <div class="modal-dialog">

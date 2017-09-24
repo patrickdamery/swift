@@ -31,4 +31,22 @@ class Account extends Model
    * Disable Timestamps.
    */
   public $timestamps = false;
+
+  /**
+   * Function to get Amount in parents account.
+   */
+  public function load_amount() {
+    if($this->has_children) {
+      $children = \App\Account::where('parent_account', $this->code)->get();
+      $total = 0;
+      foreach($children as $child) {
+        $total += $child->load_amount();
+      }
+
+      return $total;
+    } else {
+      return $this->amount;
+    }
+      return Worker::find($this->WorkerId);
+  }
 }

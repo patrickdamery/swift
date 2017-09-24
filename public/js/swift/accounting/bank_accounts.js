@@ -4,6 +4,10 @@
 function BankAccount() {
   account_code = '';
   current_account = '';
+  pos_code = '';
+  cheque_book_code = '';
+  loan_code = '';
+  offset = 1;
 }
 
 BankAccount.prototype = {
@@ -203,7 +207,7 @@ BankAccount.prototype = {
     var bank_account_ref = this;
     var request = $.post('/swift/accounting/create_loan', { code: current_account,
       account: account, amount: amount, start_date: start_date,
-      interest: interest, payment: payment, _token: swift_utils.swift_token() });
+      interval: interval, interest: interest, payment: payment, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
@@ -220,18 +224,112 @@ BankAccount.prototype = {
     });
   },
   load_pos: function(e) {
+    pos_code = $(e.target).attr('id').split('-')[2];
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/get_pos', { code: pos_code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
 
+      $('#view-pos-name').val(data.pos.name);
+      $('#view-pos-bank-commission').val(data.pos.bank_commission);
+      $('#view-pos-government-commission').val(data.pos.government_commission);
+      $('#view-pos').modal('show');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   load_cheque_book: function(e) {
-
+    swift_utils.busy(e.target);
+    cheque_book_code = $(e.target).attr('id').split('-')[2];
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/get_cheque_book', { code: cheque_book_code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      offset = 1;
+      $('#view-cheque-book-name').val(data.cheque_book.name);
+      $('#view-cheque-book-number').val(data.cheque_book.current_number);
+      bank_account_ref.load_cheques(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  load_cheques: function(e) {
+    swift_utils.busy(e.target);
+    var date_range = $('#view-cheque-book-date-range').val();
+    cheque_book_code = $(e.target).attr('id').split('-')[2];
+    var request = $.post('/swift/accounting/load_cheques', { code: cheque_book_code,
+      date_range: date_range, offset: offset, _token: swift_utils.swift_token() });
+    request.done(function(view) {
+      swift_utils.free(e.target);
+      $('#cheques_table').empty();
+      $('#cheques_table').append(view);
+      $('#view-cheque-book').modal('show');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   load_loan: function(e) {
 
   },
   edit_pos: function(e) {
+    var name = $('#view-pos-name').val();
+    var bank_commission = $('#view-pos-bank-commission').val();
+    var government_commission = $('#view-pos-government-commission').val();
 
+    if(name == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_pos_name'));
+      return;
+    }
+    if(bank_commission == '' || government_commission == ''
+      || !$.isNumeric(bank_commission) || !$.isNumeric(government_commission)) {
+        swift_utils.display_error(swift_language.get_sentence('pos_commission_required'));
+        return;
+      }
+    swift_utils.busy(e.target);
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/edit_pos', { code: pos_code,
+      name: name, bank_commission: bank_commission, government_commission: government_commission,
+      _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+
+      $('#view-pos').modal('hide');
+      swift_utils.display_success(data.message);
+      bank_account_ref.search_account(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   edit_cheque_book: function(e) {
+
+  },
+  show_create_cheque: function(e) {
+
+  },
+  create_cheque: function(e) {
+
+  },
+  print_cheque: function(e) {
 
   },
   edit_loan: function(e) {
@@ -242,6 +340,46 @@ BankAccount.prototype = {
 var bank_accounts_js = new BankAccount();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#view-cheque-book-edit',
+  'click',
+  bank_accounts_js,
+  'edit_cheque_book');
+
+$(document).on('click', '#view-cheque-book-edit', function(e) {
+  swift_event_tracker.fire_event(e, '#view-cheque-book-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.view-cheque-book',
+  'click',
+  bank_accounts_js,
+  'load_cheque_book');
+
+$(document).on('click', '.view-cheque-book', function(e) {
+  swift_event_tracker.fire_event(e, '.view-cheque-book');
+});
+
+swift_event_tracker.register_swift_event(
+  '#view-pos-edit',
+  'click',
+  bank_accounts_js,
+  'edit_pos');
+
+$(document).on('click', '#view-pos-edit', function(e) {
+  swift_event_tracker.fire_event(e, '#view-pos-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.view-pos',
+  'click',
+  bank_accounts_js,
+  'load_pos');
+
+$(document).on('click', '.view-pos', function(e) {
+  swift_event_tracker.fire_event(e, '.view-pos');
+});
+
 swift_event_tracker.register_swift_event(
   '#create-loan-create',
   'click',

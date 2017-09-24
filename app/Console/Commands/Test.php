@@ -40,12 +40,14 @@ class Test extends Command
       print_r($last_entry);
       sleep(10);
       //DB::table('assets')->where('code', 1)->increment('value', 10);
-      $entry_code = ($last_entry) ? $last_entry[0]->code : 0;
+      $entry_code = ($last_entry) ? $last_entry[0]->code+1 : 1;
 
       DB::table('journal_entries')->insert([
-        ['code' => $entry_code+1, 'state' => 1]
+        ['code' => $entry_code, 'state' => 1]
       ]);
       DB::commit();
+
+      return $entry_code;
     }
     /**
      * Execute the console command.

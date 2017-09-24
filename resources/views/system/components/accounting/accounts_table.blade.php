@@ -90,7 +90,7 @@
           <td>{{ get_type($account->type) }}</td>
           <td>{{ increase_type($account->type) }}</td>
           <td class="editable account-name">{{ $account->name }}</td>
-          <td>{{ $account->amount }}</td>
+          <td>{{ $account->load_amount() }}</td>
         </tr>
       @endforeach
     </tbody>

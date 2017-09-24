@@ -43,7 +43,10 @@
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-loan-interest" class="control-label">@lang('accounting/create_loan.interest_rate')</label>
-            <input type="text" class="form-control" id="create-loan-interest">
+            <div class="input-group">
+              <input type="text" class="form-control" id="create-loan-interest">
+              <span class="input-group-addon">%</span>
+            </div>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-loan-payment" class="control-label">@lang('accounting/create_loan.payment_rate')</label>

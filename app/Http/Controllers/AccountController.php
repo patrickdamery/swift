@@ -62,9 +62,9 @@ class AccountController extends Controller
 
     // Get asset account.
     $account = Account::where('code', Input::get('code'))
-    ->where('type', 'as')
-    ->where('has_children', 0)
-    ->first();
+      ->where('type', 'as')
+      ->where('has_children', 0)
+      ->first();
 
     if(!$account) {
       $response = array(

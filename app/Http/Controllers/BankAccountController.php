@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Carbon;
+use DB;
 
 use App\BankAccount;
 use App\Account;
@@ -17,6 +18,217 @@ use App\BankLoan;
 class BankAccountController extends Controller
 {
 
+  /**
+   * Edit Cheque Book.
+   */
+  public function edit_cheque_book() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'name' => 'required',
+        'current_number' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Edit Cheque book.
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $cheque_book = DB::table('cheque_book')
+          ->where('code', Input::get('code'))
+          ->lockForUpdate()
+          ->get();
+
+        // Now update the cheque book.
+        DB::table('cheque_book')
+          ->where('code', Input::get('code'))
+          ->update(
+          [
+            'bank_account_code' => Input::get('code'),
+            'name' => Input::get('name'),
+            'current_number' => Input::get('number')
+          ]
+        );
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.cheque_book_failed')
+          );
+          return response()->json($response);
+        }
+      }
+    }
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/bank_account_controller.cheque_book_updated')
+    );
+    return response()->json($response);
+  }
+
+  /**
+   * Load Cheques.
+   */
+  public function load_cheques() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
+      );
+      return response()->json($response);
+    }
+    $date_range = explode(' - ', Input::get('date_range'));
+    $date_range[0] = date('Y-m-d H:i:s', strtotime($date_range[0]));
+    $date_range[1] = date('Y-m-d H:i:s', strtotime($date_range[1].' 23:59:59'));
+
+    // Return view.
+    return view('system.components.accounting.cheques_table',
+      [
+        'code' => Input::get('code'),
+        'offset' => Input::get('offset'),
+        'date_range' => $date_range
+      ]
+    );
+  }
+
+  /**
+   * Get Cheque Book.
+   */
+  public function get_cheque_book() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get Cheque book.
+    $cheque_book = ChequeBook::where('code', Input::get('code'))->first();
+    $response = array(
+      'state' => 'Success',
+      'cheque_book' => $cheque_book
+    );
+    return response()->json($response);
+  }
+
+  /**
+   * Edit POS.
+   */
+  public function edit_pos() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'name' => 'required',
+        'bank_commission' => 'required',
+        'government_commission' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Edit POS.
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $pos = DB::table('pos')
+          ->where('code', Input::get('code'))
+          ->lockForUpdate()
+          ->get();
+
+        // Now update pos.
+        DB::table('pos')
+          ->where('code', Input::get('code'))
+          ->update(
+          [
+            'bank_account_code' => Input::get('code'),
+            'name' => Input::get('name'),
+            'bank_commission' => Input::get('bank_commission'),
+            'government_commission' => Input::get('government_commission')
+          ]
+        );
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.pos_failed')
+          );
+          return response()->json($response);
+        }
+      }
+    }
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/bank_account_controller.pos_updated')
+    );
+    return response()->json($response);
+  }
+
+  /**
+   * Get POS.
+   */
+  public function get_pos() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.account_code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Create POS.
+    $pos = POS::where('code', Input::get('code'))->first();
+    $response = array(
+      'state' => 'Success',
+      'pos' => $pos
+    );
+    return response()->json($response);
+  }
+
+  /**
+   * Create Bank Loan.
+   */
   public function create_loan() {
     $validator = Validator::make(Input::all(),
       array(
@@ -50,98 +262,109 @@ class BankAccountController extends Controller
       return response()->json($response);
     }
 
-    // Create Journal Entry.
-    $last_entry = JournalEntry::orderBy('id', 'desc')->first();
-    $entry_code = ($last_entry) ? $last_entry->code : 0;
-
-    $entry = JournalEntry::create(array(
-      'code' => $entry_code+1,
-      'state' => 1
-    ));
-
-    // Now create the Loan.
-    $entry_breakdown = JournalEntryBreakdown::create(array(
-      'journal_entry_code' => $entry->code,
-      'debit' => 1,
-      'account_code' => $bank_account->account_code,
-      'description' => 'Prestamo de '.$bank_account->bank_name,
-      'amount' => Input::get('amount'),
-      'balance' => 0
-    ));
-
-    $entry_account = Account::where('code', $bank_account->account_code)->first();
-    $entry_account->amount += Input::get('amount');
-    $entry_account->save();
-
-    $entry_breakdown->balance = $entry_account->amount;
-    $entry_breakdown->save();
-
-    $entry_breakdown = JournalEntryBreakdown::create(array(
-      'journal_entry_code' => $entry->code,
-      'debit' => 0,
-      'account_code' => Input::get('account'),
-      'description' => 'Prestamo de '.$bank_account->bank_name,
-      'amount' => Input::get('amount'),
-      'balance' => 0
-    ));
-
-    $entry_account = Account::where('code', Input::get('account'))->first();
-    $entry_account->amount += Input::get('amount');
-    $entry_account->save();
-
-    $entry_breakdown->balance = $entry_account->amount;
-    $entry_breakdown->save();
-
-    $last_bank_loan = BankLoan::orderBy('id', 'desc')->first();
-    $code = ($last_bank_loan) ? $last_bank_loan->code : 0;
-
-    $today = strtotime("now");
-    $date = new DateTime('2000-01-01');
-    $date->add(new DateInterval('P10D'));
-    echo $date->format('Y-m-d')
-    $start_date = strtotime(Input::get('start_date'));
-    $next_payment = $start_date;
-    if($start_date < $today) {
-      switch(Input::get('interval')) {
-        case 'weekly':
-          $day = date('D', $start_date);
-          $next_payment = strtotime("+7 day", date('Y-m-').$day);
-        break;
-        case 'biweekly':
-          $day = date('D', $start_date);
-          $next_payment = strtotime("+14 day", date('Y-m-').$day);
-        break;
-        case 'monthly':
-          $month = date('M', $start_date);
-          $next_payment = strtotime("+1 month", date('Y-').$month.date('-d'));
-        break;
-        case 'bimester':
-
-        break;
-        case 'trimester':
-
-        break;
-        case 'semester':
-
-        break;
-        case 'annualy':
-
-        break;
-      }
+    // Prepare dates.
+    $today = Carbon::now();
+    $start_date = Carbon::createFromFormat('d-m-Y', Input::get('start_date'));
+    $next_payment = $start_date->toDateString();
+    if($start_date->isPast()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/bank_account_controller.past_start_date')
+      );
+      return response()->json($response);
     }
 
-    $bank_loan = BankLoan::create(array(
-      'code' => $code+1,
-      'bank_account_code' => Input::get('code'),
-      'account_code' => Input::get('account'),
-      'start_date' => Input::get('start_date'),
-      'payment_rate' => Input::get('payment_rate'),
-      'interest_rate' => Input::get('interest_rate'),
-      'interval' => Input::get('interval'),
-      'next_payment' => $next_payment,
-      'state' => 1,
-      'journal_entry_code' => $entry->code,
-    ));
+    // Insert data into database.
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+
+        // First lock any data we will work with.
+        $last_entry = DB::table('journal_entries')
+          ->orderBy('id', 'desc')
+          ->limit(1)
+          ->lockForUpdate()
+          ->get();
+        $last_loan = DB::table('bank_loans')
+          ->orderBy('id', 'desc')
+          ->limit(1)
+          ->lockForUpdate()
+          ->get();
+        DB::table('accounts')->where('code', $bank_account->account_code)
+          ->lockForUpdate();
+        DB::table('accounts')->where('code', Input::get('account'))
+          ->lockForUpdate();
+
+        // Create Journal Entry.
+        $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
+        DB::table('journal_entries')->insert([
+          ['code' => $entry_code, 'state' => 1]
+        ]);
+
+        // Now update the accounts.
+        DB::table('accounts')->where('code', $bank_account->account_code)
+          ->increment('amount', Input::get('amount'));
+        $debit = DB::table('accounts')->where('code', $bank_account->account_code)
+          ->first()->amount;
+
+        DB::table('accounts')->where('code', Input::get('account'))
+          ->increment('amount', Input::get('amount'));
+        $credit = DB::table('accounts')->where('code', Input::get('account'))
+          ->first()->amount;
+
+        // Make the entry breakdowns.
+        DB::table('journal_entries_breakdown')->insert([
+          [
+            'journal_entry_code' => $entry_code,
+            'debit' => 1,
+            'account_code' => $bank_account->account_code,
+            'description' => 'Prestamo de '.$bank_account->bank_name,
+            'amount' => Input::get('amount'),
+            'balance' => $debit
+          ]
+        ]);
+
+        DB::table('journal_entries_breakdown')->insert([
+          [
+            'journal_entry_code' => $entry_code,
+            'debit' => 0,
+            'account_code' => Input::get('account'),
+            'description' => 'Prestamo de '.$bank_account->bank_name,
+            'amount' => Input::get('amount'),
+            'balance' => $credit
+          ]
+        ]);
+
+        // Finally create loan.
+        $loan_code = (count($last_loan) > 0) ? $last_loan[0]->code+1 : 1;
+        DB::table('bank_loans')->insert([
+          'code' => $loan_code,
+          'bank_account_code' => Input::get('code'),
+          'account_code' => Input::get('account'),
+          'start_date' => $next_payment,
+          'payment_rate' => Input::get('payment'),
+          'interest_rate' => Input::get('interest'),
+          'interval' => Input::get('interval'),
+          'next_payment' => $next_payment,
+          'state' => 1,
+          'journal_entry_code' => $entry_code,
+        ]);
+
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.loan_failed')
+          );
+          return response()->json($response);
+        }
+      }
+    }
 
     $response = array(
       'state' => 'Success',
@@ -150,6 +373,9 @@ class BankAccountController extends Controller
     return response()->json($response);
   }
 
+  /**
+   * Create Cheque Book.
+   */
   public function create_cheque_book() {
     $validator = Validator::make(Input::all(),
       array(
@@ -167,14 +393,41 @@ class BankAccountController extends Controller
     }
 
     // Create Cheque Book.
-    $last_cheque_book = ChequeBook::orderBy('id', 'desc')->first();
-    $code = ($last_cheque_book) ? $last_cheque_book->code : 0;
-    $cheque_book = ChequeBook::create(array(
-      'code' => $code+1,
-      'bank_account_code' => Input::get('code'),
-      'name' => Input::get('name'),
-      'current_number' => Input::get('number')
-    ));
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $last_cheque_book = DB::table('cheque_book')
+          ->orderBy('id', 'desc')
+          ->limit(1)
+          ->lockForUpdate()
+          ->get();
+
+        // Now create the cheque book.
+        $code = (count($last_cheque_book) > 0) ? $last_cheque_book[0]->code+1 : 1;
+        DB::table('cheque_book')->insert([
+          [
+            'code' => $code,
+            'bank_account_code' => Input::get('code'),
+            'name' => Input::get('name'),
+            'current_number' => Input::get('number')
+          ]
+        ]);
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.cheque_book_failed')
+          );
+          return response()->json($response);
+        }
+      }
+    }
 
     $response = array(
       'state' => 'Success',
@@ -183,6 +436,9 @@ class BankAccountController extends Controller
     return response()->json($response);
   }
 
+  /**
+   * Create POS.
+   */
   public function create_pos() {
     $validator = Validator::make(Input::all(),
       array(
@@ -201,15 +457,42 @@ class BankAccountController extends Controller
     }
 
     // Create POS.
-    $last_pos = POS::orderBy('id', 'desc')->first();
-    $code = ($last_pos) ? $last_pos->code : 0;
-    $pos = POS::create(array(
-      'code' => $code+1,
-      'bank_account_code' => Input::get('code'),
-      'name' => Input::get('name'),
-      'bank_commission' => Input::get('bank_commission'),
-      'government_commission' => Input::get('government_commission')
-    ));
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $last_pos = DB::table('pos')
+          ->orderBy('id', 'desc')
+          ->limit(1)
+          ->lockForUpdate()
+          ->get();
+
+        // Now create the pos.
+        $code = (count($last_pos) > 0) ? $last_pos[0]->code+1 : 1;
+        DB::table('pos')->insert([
+          [
+            'code' => $code,
+            'bank_account_code' => Input::get('code'),
+            'name' => Input::get('name'),
+            'bank_commission' => Input::get('bank_commission'),
+            'government_commission' => Input::get('government_commission')
+          ]
+        ]);
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.pos_failed')
+          );
+          return response()->json($response);
+        }
+      }
+    }
 
     $response = array(
       'state' => 'Success',
@@ -218,6 +501,9 @@ class BankAccountController extends Controller
     return response()->json($response);
   }
 
+  /**
+   * Search for Bank Account.
+   */
   public function search_bank_account() {
     $validator = Validator::make(Input::all(),
       array(
@@ -240,6 +526,9 @@ class BankAccountController extends Controller
     );
   }
 
+  /**
+   * Suggest Bank Accounts.
+   */
   public function suggest_accounts(Request $request) {
     $validator = Validator::make(Input::all(),
       array(
@@ -268,6 +557,9 @@ class BankAccountController extends Controller
     return response()->json($response);
   }
 
+  /**
+   * Create Bank Accounts.
+   */
   public function create_account() {
     $validator = Validator::make(Input::all(),
       array(
@@ -306,29 +598,50 @@ class BankAccountController extends Controller
     }
 
     // Get last bank account.
-    $last_bank_account = BankAccount::withTrashed()->orderBy('id', 'desc')->first();
-    $code = ($last_bank_account) ? $last_bank_account->code : 0;
+    $tries = 0;
+    $bank_account_id = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $last_bank_account = DB::table('bank_accounts')
+          ->orderBy('id', 'desc')
+          ->limit(1)
+          ->lockForUpdate()
+          ->get();
 
-    try{
-      $bank_account = BankAccount::create(array(
-        'code' => $code+1,
-        'bank_name' => Input::get('account')['bank_name'],
-        'account_number' => Input::get('account')['number'],
-        'account_code' => Input::get('account')['account'],
-      ));
+        // Now bank account.
+        $code = (count($last_bank_account) > 0) ? $last_bank_account[0]->code+1 : 1;
+        $bank_account_id = DB::table('bank_accounts')->insertGetId(
+          [
+            'code' => $code,
+            'bank_name' => Input::get('account')['bank_name'],
+            'account_number' => Input::get('account')['number'],
+            'account_code' => Input::get('account')['account'],
+          ]
+        );
 
-      $response = array(
-        'state' => 'Success',
-        'bank_account' => $bank_account,
-        'message' => \Lang::get('controllers/bank_account_controller.account_created')
-      );
-      return response()->json($response);
-    } catch(\Exception $e) {
-      $response = array(
-        'state' => 'Error',
-        'error' => \Lang::get('controllers/bank_account_controller.db_exception')
-      );
-      return response()->json($response);
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/bank_account_controller.account_failed')
+          );
+          return response()->json($response);
+        }
+      }
     }
+
+    $bank_account = BankAccount::find($bank_account_id);
+    $response = array(
+      'state' => 'Success',
+      'bank_account' => $bank_account,
+      'message' => \Lang::get('controllers/bank_account_controller.account_created')
+    );
+    return response()->json($response);
   }
 }

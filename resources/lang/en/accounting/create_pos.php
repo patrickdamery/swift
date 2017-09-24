@@ -14,9 +14,11 @@ return [
     */
 
     'title' => 'Create POS',
+    'edit_title' => 'Update POS',
     'close' => 'Close',
     'create' => 'Create',
     'name' => 'Name',
     'bank_commission' => 'Bank Commission',
     'government_commission' => 'Government Commission',
+    'update' => 'Update',
 ];

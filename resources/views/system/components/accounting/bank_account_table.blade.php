@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-xs-8">
                   <div class="form-group">
-                    <button type="button" class="btn btn-info" id="view-pos-{{ $pos->code }}">
+                    <button type="button" class="btn btn-info view-pos" id="view-pos-{{ $pos->code }}">
                       <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
                     </button>
                   </div>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="col-xs-8">
                   <div class="form-group">
-                    <button type="button" class="btn btn-info" id="view-cheque-{{ $cheque_book->code }}">
+                    <button type="button" class="btn btn-info view-cheque-book" id="view-cheque-{{ $cheque_book->code }}">
                       <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
                     </button>
                   </div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-xs-8">
                   <div class="form-group">
-                    <button type="button" class="btn btn-info" id="view-loan-{{ $loan->code }}">
+                    <button type="button" class="btn btn-info view-loan" id="view-loan-{{ $loan->code }}">
                       <i class="fa fa-search"></i> @lang('accounting/bank_accounts.view')
                     </button>
                   </div>

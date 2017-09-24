@@ -166,6 +166,9 @@
   z-index: 10000;
   background: white;
 }
+i {
+  pointer-events: none;
+}
 
 // Loading Page CSS.
 @keyframes lds-square {
