@@ -29,4 +29,6 @@ return [
     'loan_failed' => 'Hubo un problema al crear el Prestamo de Banco, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
     'account_failed' => 'Hubo un problema al crear la Cuenta de Banco, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
     'past_start_date' => 'Fecha Inicial debe ser el primer dia en que se tenga que hacer un pago al prestamo y no puede ser una fecha en el pasado!',
+    'loan_update_failed' => 'Hubo un problema al actualizar el prestamo, por favor tratar otra vez! Si el problema persiste contacte a Soporte de Swift.',
+    'loan_update_success' => 'Prestamo actualizado exitosamente!',
 ];

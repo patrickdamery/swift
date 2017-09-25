@@ -18,6 +18,7 @@ class CreateCheques extends Migration
           $table->string('code', 10)->unique();
           $table->string('cheque_book_code', 10);
           $table->string('cheque_number', 10)->index();
+          $table->string('paid_to', 60);
           $table->string('journal_entry_code', 15);
 
           $table->foreign('journal_entry_code')->references('code')->on('journal_entries');

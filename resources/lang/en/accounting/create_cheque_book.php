@@ -27,4 +27,9 @@ return [
     'amount' => 'Amount',
     'create_cheque' => 'Create Cheque',
     'update' => 'Update',
+    'search' => 'Search',
+    'paid_account' => 'Accounting Account',
+    'pay_to' => 'Pay To',
+    'description' => 'Description',
+    'print' => 'Print',
 ];

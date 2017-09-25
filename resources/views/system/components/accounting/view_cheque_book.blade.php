@@ -23,13 +23,20 @@
           </div>
         </div>
         <div class="row form-inline" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
             <label for="view-cheque-book-date-range" class="control-label">@lang('accounting/create_cheque_book.date_range')</label>
             <div class="input-group date">
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
               <input type="text" class="form-control daterangepicker-sel" id="view-cheque-book-date-range">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 xs-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="view-cheque-book-search">
+                <i class="fa fa-search"></i> @lang('accounting/create_cheque_book.search')
+              </button>
             </div>
           </div>
         </div>
@@ -41,7 +48,7 @@
           </div>
         </div>
         <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="form-group">
               <button type="button" class="btn btn-success" id="view-cheque-book-create">
                 <i class="fa fa-edit"></i> @lang('accounting/create_cheque_book.create_cheque')

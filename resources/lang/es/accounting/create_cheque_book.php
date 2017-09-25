@@ -27,4 +27,9 @@ return [
     'amount' => 'Cantidad',
     'create_cheque' => 'Crear Cheque',
     'update' => 'Actualizar',
+    'search' => 'Buscar',
+    'paid_account' => 'Cuenta Contable',
+    'pay_to' => 'Pagar A',
+    'description' => 'Descripcion',
+    'print' => 'Imprimir',
 ];

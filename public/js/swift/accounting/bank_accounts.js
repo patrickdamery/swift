@@ -179,7 +179,7 @@ BankAccount.prototype = {
     var interest = $('#create-loan-interest').val();
     var payment = $('#create-loan-payment').val();
 
-    if(account == '' || !$.isNumeric(account)) {
+    if(account == '') {
       swift_utils.display_error(swift_language.get_sentence('account_required'));
       return;
     }
@@ -283,7 +283,26 @@ BankAccount.prototype = {
     });
   },
   load_loan: function(e) {
+    loan_code = $(e.target).attr('id').split('-')[2];
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/get_loan', { code: loan_code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
 
+      $('#view-loan-next-date').val(data.loan.next_payment);
+      $('#view-loan-interval').val(data.loan.interval);
+      $('#view-loan-payment').val(data.loan.payment_rate);
+      $('#view-loan-interest').val(data.loan.interest_rate);
+      $('#view-loan').modal('show');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   edit_pos: function(e) {
     var name = $('#view-pos-name').val();
@@ -321,18 +340,113 @@ BankAccount.prototype = {
     });
   },
   edit_cheque_book: function(e) {
+    var name = $('#view-cheque-book-name').val();
+    var number = $('#view-cheque-book-number').val();
 
-  },
-  show_create_cheque: function(e) {
+    if(name == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_cheque_book_name'));
+      return;
+    }
+    if(number == '' || !$.isNumeric(number)) {
+        swift_utils.display_error(swift_language.get_sentence('cheque_number_required'));
+        return;
+      }
+    swift_utils.busy(e.target);
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/edit_cheque_book', { code: cheque_book_code,
+      name: name, number: number, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
 
-  },
-  create_cheque: function(e) {
-
-  },
-  print_cheque: function(e) {
-
+      swift_utils.display_success(data.message);
+      $('#view-cheque-book').modal('hide');
+      bank_account_ref.search_account(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
   },
   edit_loan: function(e) {
+    var next_date = $('#view-loan-next-date').val();
+    var interval = $('#view-loan-interval').val();
+    var loan_payment = $('#view-loan-payment').val();
+    var interest = $('#view-loan-interest').val();
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/accounting/edit_loan', { code: loan_code,
+      next_payment: next_date, interval: interval, payment_rate: loan_payment,
+      interest_rate: interest, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+
+      swift_utils.display_success(data.message)
+      $('#view-loan').modal('hide');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  cheque_paginate: function(e) {
+    offset = $(e.target).attr('id').split('-')[2];
+    this.load_cheques(e);
+  },
+  search_cheque: function(e) {
+    offset = 1;
+    this.load_cheques(e);
+  },
+  show_create_cheque: function(e) {
+    $('#view-cheque-book').modal('hide');
+    $('#create-cheque').modal('show');
+  },
+  create_cheque: function(e) {
+    var paid_accoount = $('#create-cheque-account').val();
+    var amount = $('#create-cheque-amount').val();
+    var paid_to = $('#create-cheque-pay-to').val();
+    var description = $('#create-cheque-description').val();
+
+    if(paid_account == '') {
+      swift_utils.display_error(swift_language.get_sentence('paid_account_required'));
+      return;
+    }
+    if(amount == '' || !$.isNumeric(amount)) {
+      swift_utils.display_error(swift_language.get_sentence('amount_required'));
+      return;
+    }
+    if(paid_to == '') {
+      swift_utils.display_error(swift_language.get_sentence('paid_required'));
+      return;
+    }
+    if(description == '') {
+      swift_utils.display_error(swift_language.get_sentence('description_required'));
+      return;
+    }
+    swift_utils.busy(e.target);
+    var bank_account_ref = this;
+    var request = $.post('/swift/accounting/create_cheque', { code: cheque_book_code,
+      account: paid_account, amount: amount, paid_to: paid_to, description: description,
+      _token: swift_utils.swift_token() });
+    request.done(function(view) {
+      swift_utils.free(e.target);
+      $('#create-cheque').modal('hide');
+      $('.print_area').empty();
+      $('.print_area').append(view);
+      window.print();
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  print_cheque: function(e) {
 
   },
 }
@@ -341,13 +455,78 @@ var bank_accounts_js = new BankAccount();
 
 // Define Event Listeners.
 swift_event_tracker.register_swift_event(
-  '#view-cheque-book-edit',
+  '#view-loan-edit',
+  'click',
+  bank_accounts_js,
+  'edit_loan');
+
+$(document).on('click', '#view-loan-edit', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '#view-loan-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.view-loan',
+  'click',
+  bank_accounts_js,
+  'load_loan');
+
+$(document).on('click', '.view-loan', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.view-loan');
+});
+
+swift_event_tracker.register_swift_event(
+  '#create-cheque-create',
+  'click',
+  bank_accounts_js,
+  'create_cheque');
+
+$(document).on('click', '#create-cheque-create', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '#create-cheque-create');
+});
+
+swift_event_tracker.register_swift_event(
+  '#view-cheque-book-create',
+  'click',
+  bank_accounts_js,
+  'show_create_cheque');
+
+$(document).on('click', '#view-cheque-book-create', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '#view-cheque-book-create');
+});
+
+swift_event_tracker.register_swift_event(
+  '.cheque-pagination > li > a',
+  'click',
+  bank_accounts_js,
+  'cheque_paginate');
+
+$(document).on('click', '.cheque-pagination > li > a', function(e) {
+  e.preventDefault();
+  swift_event_tracker.fire_event(e, '.cheque-pagination > li > a');
+});
+
+swift_event_tracker.register_swift_event(
+  '#view-cheque-book-search',
+  'click',
+  bank_accounts_js,
+  'search_cheque');
+
+$(document).on('click', '#view-cheque-book-search', function(e) {
+  swift_event_tracker.fire_event(e, '#view-cheque-book-search');
+});
+
+swift_event_tracker.register_swift_event(
+  '#view-cheque-book-update',
   'click',
   bank_accounts_js,
   'edit_cheque_book');
 
-$(document).on('click', '#view-cheque-book-edit', function(e) {
-  swift_event_tracker.fire_event(e, '#view-cheque-book-edit');
+$(document).on('click', '#view-cheque-book-update', function(e) {
+  swift_event_tracker.fire_event(e, '#view-cheque-book-update');
 });
 
 swift_event_tracker.register_swift_event(
@@ -485,6 +664,24 @@ $(document).on('focus', '#create-loan-account', function(e) {
       // Get the suggestions.
       source: function (request, response) {
         $.post('/swift/accounting/suggest_liability',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#create-cheque-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_child_accounts',
         { code: request.term,
           _token: swift_utils.swift_token()
         },

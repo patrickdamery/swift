@@ -29,4 +29,7 @@ return [
     'trimester' => 'Trimestre',
     'semester' => 'Semestre',
     'annually' => 'Anual',
+    'edit_loan' => 'Editar Prestamo',
+    'next_payment' => 'Siguiente Pago',
+    'edit' => 'Actualizar',
 ];

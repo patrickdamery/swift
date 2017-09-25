@@ -337,6 +337,39 @@ class AccountController extends Controller
     return response()->json($response);
   }
 
+  public function suggest_child_accounts() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Check if type is defined.
+    $accounts = array();
+
+    $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')
+      ->orWhere('name', 'like', '%'.Input::get('code').'%')
+      ->get();
+
+    $accounts = $accounts->where('has_children', 0);
+
+    $response = array();
+    foreach($accounts as $account) {
+      array_push($response, array(
+        'label' => $account->name,
+        'value' => $account->code,
+      ));
+    }
+    return response()->json($response);
+  }
+
   public function suggest_accounts(Request $request) {
     $validator = Validator::make(Input::all(),
       array(

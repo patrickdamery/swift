@@ -63,7 +63,7 @@ $(function(){
                             });
   swift_language.add_sentence('amount_required', {
                               'en': 'Amount can\'t be blank and must be a numeric value!',
-                              'es': 'Cantidad no pueden dejarse en blanco y debe ser un valor numerico!'
+                              'es': 'Cantidad no puede dejarse en blanco y debe ser un valor numerico!'
                             });
   swift_language.add_sentence('start_date_required', {
                               'en': 'Start date can\'t be blank!',
@@ -71,11 +71,23 @@ $(function(){
                             });
   swift_language.add_sentence('interest_required', {
                               'en': 'Interest can\'t be blank and must be a numeric value!',
-                              'es': 'Tasa de Interes no pueden dejarse en blanco y deben ser un valor numerico!'
+                              'es': 'Tasa de Interes no puede dejarse en blanco y deben ser un valor numerico!'
                             });
   swift_language.add_sentence('payment_required', {
                               'en': 'Payment rate can\'t be blank and must be a numeric value!',
                               'es': 'Pago por intervalo no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('paid_account_required', {
+                              'en': 'Paid account can\'t be blank!',
+                              'es': 'Cuenta contable no puede dejarse en blanco!'
+                            });
+  swift_language.add_sentence('paid_required', {
+                              'en': 'Interval payment can\'t be blank and must be a numeric value!',
+                              'es': 'Pago por intervalo no puede dejarse en blanco y debe ser un valor numerico!'
+                            });
+  swift_language.add_sentence('description_required', {
+                              'en': 'Description can\'t be blank!',
+                              'es': 'Descripcion no puede dejarse en blanco!'
                             });
   swift_utils.register_ajax_fail();
 
@@ -88,8 +100,10 @@ if(typeof bank_accounts_js === 'undefined') {
 @include('system.components.accounting.create_loan')
 @include('system.components.accounting.create_cheque_book')
 @include('system.components.accounting.create_pos')
+@include('system.components.accounting.create_cheque')
 @include('system.components.accounting.view_pos')
 @include('system.components.accounting.view_cheque_book')
+@include('system.components.accounting.view_loan')
 <section class="content-header">
   <h1>
     @lang('accounting/bank_accounts.title')

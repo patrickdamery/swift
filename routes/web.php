@@ -105,6 +105,7 @@ Route::prefix('swift')->group(function() {
     Route::post('edit_cheque_book', 'BankAccountController@edit_cheque_book');
     Route::post('get_loan', 'BankAccountController@get_loan');
     Route::post('edit_loan', 'BankAccountController@edit_loan');
+    Route::post('create_cheque', 'BankAccountController@create_cheque');
 
     // Currency Routes.
     Route::post('create_currency', 'CurrencyController@create_currency');
@@ -127,6 +128,7 @@ Route::prefix('swift')->group(function() {
     Route::post('change_account_name', 'AccountController@change_account_name');
     Route::post('change_ledger_description', 'AccountController@change_ledger_description');
     Route::post('suggest_parent_accounts', 'AccountController@suggest_parent_accounts');
+    Route::post('suggest_child_accounts', 'AccountController@suggest_child_accounts');
     Route::post('delete_account', 'AccountController@delete_account');
   });
 
