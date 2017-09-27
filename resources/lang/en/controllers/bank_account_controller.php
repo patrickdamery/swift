@@ -31,4 +31,6 @@ return [
     'past_start_date' => 'Start Date must be the first day you will make a payment and can\'t be in the past!',
     'loan_update_failed' => 'Failed to update Loan, please try again! If the problem persists contact Swift Support.',
     'loan_update_success' => 'Loan updated successfully!',
+    'cheque_failed' => 'Failed to create a Cheque, please try again! If the problem persists contact Swift Support.',
+    'pos_updated' => 'POS updated successfully!',
 ];

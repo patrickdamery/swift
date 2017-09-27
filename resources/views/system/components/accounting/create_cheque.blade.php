@@ -24,8 +24,7 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-cheque-description" class="control-label">@lang('accounting/create_cheque_book.description')</label>
-            <textarea cols="25" rows="5" class="form-control" id="create-cheque-description">
-            </textarea>
+            <textarea cols="25" rows="5" class="form-control" id="create-cheque-description"></textarea>
           </div>
         </div>
       </div>

@@ -273,8 +273,8 @@ BankAccount.prototype = {
       date_range: date_range, offset: offset, _token: swift_utils.swift_token() });
     request.done(function(view) {
       swift_utils.free(e.target);
-      $('#cheques_table').empty();
-      $('#cheques_table').append(view);
+      $('#cheques-table').empty();
+      $('#cheques-table').append(view);
       $('#view-cheque-book').modal('show');
     });
     request.fail(function(ev) {
@@ -404,11 +404,15 @@ BankAccount.prototype = {
     this.load_cheques(e);
   },
   show_create_cheque: function(e) {
+    $('#create-cheque-account').val('');
+    $('#create-cheque-amount').val('');
+    $('#create-cheque-pay-to').val('');
+    $('#create-cheque-description').val('');
     $('#view-cheque-book').modal('hide');
     $('#create-cheque').modal('show');
   },
   create_cheque: function(e) {
-    var paid_accoount = $('#create-cheque-account').val();
+    var paid_account = $('#create-cheque-account').val();
     var amount = $('#create-cheque-amount').val();
     var paid_to = $('#create-cheque-pay-to').val();
     var description = $('#create-cheque-description').val();
@@ -434,11 +438,17 @@ BankAccount.prototype = {
     var request = $.post('/swift/accounting/create_cheque', { code: cheque_book_code,
       account: paid_account, amount: amount, paid_to: paid_to, description: description,
       _token: swift_utils.swift_token() });
-    request.done(function(view) {
+    request.done(function(data, status, request) {
       swift_utils.free(e.target);
-      $('#create-cheque').modal('hide');
+      if(request.getResponseHeader('Content-Type') == 'application/json') {
+        if(data.state != 'Success') {
+          swift_utils.display_error(data.error);
+          return;
+        }
+      }
+      //$('#create-cheque').modal('hide');
       $('.print_area').empty();
-      $('.print_area').append(view);
+      $('.print_area').append(data);
       window.print();
     });
     request.fail(function(ev) {

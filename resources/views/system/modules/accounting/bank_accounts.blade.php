@@ -82,8 +82,8 @@ $(function(){
                               'es': 'Cuenta contable no puede dejarse en blanco!'
                             });
   swift_language.add_sentence('paid_required', {
-                              'en': 'Interval payment can\'t be blank and must be a numeric value!',
-                              'es': 'Pago por intervalo no puede dejarse en blanco y debe ser un valor numerico!'
+                              'en': 'Paid to field can\'t be blank!',
+                              'es': 'Pagar A no puede dejarse en blanco!'
                             });
   swift_language.add_sentence('description_required', {
                               'en': 'Description can\'t be blank!',

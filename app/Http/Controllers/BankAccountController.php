@@ -217,16 +217,16 @@ class BankAccountController extends Controller
 
         // Now create the cheque.
         $cheque_code = (count($last_cheque) > 0) ? $last_cheque[0]->code+1 : 1;
-        $cheque_Id = DB::table('cheque')
-          ->insertGetId(
-          [
-            'code' => $cheque_code,
-            'cheque_book_code' => $cheque_book->code,
-            'cheque_number' => $cheque_book->current_number,
-            'paid_to' => Input::get('paid_to'),
-            'journal_entry_code' => $entry_code
-          ]
-        );
+        DB::table('cheques')
+          ->insert([
+            [
+              'code' => $cheque_code,
+              'cheque_book_code' => $cheque_book->code,
+              'cheque_number' => $cheque_book->current_number,
+              'paid_to' => Input::get('paid_to'),
+              'journal_entry_code' => $entry_code
+            ]
+          ]);
         DB::commit();
         $complete = true;
       } catch(\Exception $e) {
@@ -234,7 +234,8 @@ class BankAccountController extends Controller
         if($tries == 5) {
           $response = array(
             'state' => 'Error',
-            'error' => \Lang::get('controllers/bank_account_controller.cheque_failed')
+            'error' => \Lang::get('controllers/bank_account_controller.cheque_failed'),
+            'exception' => $e
           );
           return response()->json($response);
         }
@@ -318,14 +319,8 @@ class BankAccountController extends Controller
       array(
         'code' => 'required',
       )
-    );// Return view.
-    return view('system.components.accounting.cheques_table',
-      [
-        'code' => Input::get('code'),
-        'offset' => Input::get('offset'),
-        'date_range' => $date_range
-      ]
     );
+
     if($validator->fails()) {
       $response = array(
         'state' => 'Error',

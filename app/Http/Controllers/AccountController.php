@@ -28,7 +28,7 @@ class AccountController extends Controller
     $account = Account::where('code', Input::get('code'))->first();
 
     // Make sure account is empty.
-    if($account->amount != 0) {
+    if($account->load_amount() != 0) {
       $response = array(
         'state' => 'Error',
         'error' => \Lang::get('controllers/account_controller.account_not_empty')

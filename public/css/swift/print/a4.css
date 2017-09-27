@@ -1,18 +1,18 @@
 @page {
-    size: 21cm 29.7cm;
-    margin: 15mm 22mm 15mm 22mm; /* change the margins as you want them to be. */
+    size: 21cm 28.7cm;
+    margin: 0mm 0mm 0mm 0mm; /* change the margins as you want them to be. */
 }
 
 @media print {
   .wrapper, .main-footer {
-    display:none!important;
+    display: none!important;
   }
   .print_area {
-    display:block!important;
+    display: block!important;
   }
   td, th {
     border: 1px black solid;
-    padding:3px;
+    padding: 3px;
     text-align: center;
   }
   th {
@@ -21,8 +21,8 @@
   }
   .printable-document, .printable-header,
   .printable-body {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
   }
 
   .printable-header {
@@ -59,5 +59,62 @@
   .staff-list-branch, .staff-list-date {
     width: 45%;
     float: left;
+  }
+
+  /* Cheque CSS */
+  .cheque-date {
+    position: absolute;
+    left: 50vw;
+    width: 50vw;
+    top: 7vw;
+  }
+  .cheque-place {
+    float: left;
+    padding-left: 9vw;
+    width: 23vw;
+  }
+  .cheque-day {
+    float: left;
+    padding-left: 2vw;
+    width: 7vw;
+  }
+  .cheque-month {
+    float: left;
+    padding-left: 2vw;
+    width: 8vw;
+  }
+  .cheque-year {
+    float: left;
+    padding-left: 2vw;
+    width: 9vw;
+  }
+  .cheque-pay-to {
+    position: absolute;
+    top: 13vw;
+    left: 12vw;
+    width: 85vw;
+  }
+  .pay-to {
+    width: 57vw;
+    float: left;
+  }
+  .pay-amount {
+    padding-left: 6vw;
+    width: 22vw;
+    float: left;
+  }
+
+  .cheque-sum {
+    position: absolute;
+    left: 12vw;
+    top: 17vw;
+    width: 85vw;
+  }
+
+  .cheque-concept {
+    position: absolute;
+    top: 45vw;
+    left: 11vw;
+    width: 85vw;
   }
 }
