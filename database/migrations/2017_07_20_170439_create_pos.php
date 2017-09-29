@@ -19,6 +19,7 @@ class CreatePos extends Migration
             $table->string('bank_account_code', 10);
             $table->double('bank_commission');
             $table->double('government_commission');
+            $table->string('commission_account', 10);
 
             $table->foreign('bank_account_code')->references('code')->on('bank_accounts');
         });

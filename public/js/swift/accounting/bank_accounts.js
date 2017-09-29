@@ -85,6 +85,7 @@ BankAccount.prototype = {
     current_account = $(e.target).parents('tr')
       .attr('id').split('-')[2];
     $('#create-pos-name').val('');
+    $('#create-pos-commission-account').val('');
     $('#create-pos-bank-commission').val('');
     $('#create-pos-government-commission').val('');
   },
@@ -106,11 +107,16 @@ BankAccount.prototype = {
   },
   create_pos: function(e) {
     var name = $('#create-pos-name').val();
+    var commission_account = $('#create-pos-commission-account').val();
     var bank_commission = $('#create-pos-bank-commission').val();
     var government_commission = $('#create-pos-government-commission').val();
 
     if(name == '') {
       swift_utils.display_error(swift_language.get_sentence('blank_pos_name'));
+      return;
+    }
+    if(commission_account == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_pos_account'));
       return;
     }
     if(bank_commission == '' || government_commission == ''
@@ -122,7 +128,7 @@ BankAccount.prototype = {
     var bank_account_ref = this;
     var request = $.post('/swift/accounting/create_pos', { code: current_account,
       name: name, bank_commission: bank_commission, government_commission: government_commission,
-      _token: swift_utils.swift_token() });
+      commission_account: commission_account, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
@@ -235,6 +241,7 @@ BankAccount.prototype = {
       }
 
       $('#view-pos-name').val(data.pos.name);
+      $('#view-pos-commission-account').val(data.pos.commission_account);
       $('#view-pos-bank-commission').val(data.pos.bank_commission);
       $('#view-pos-government-commission').val(data.pos.government_commission);
       $('#view-pos').modal('show');
@@ -306,11 +313,16 @@ BankAccount.prototype = {
   },
   edit_pos: function(e) {
     var name = $('#view-pos-name').val();
+    var commission_account = $('#view-pos-commission-account').val();
     var bank_commission = $('#view-pos-bank-commission').val();
     var government_commission = $('#view-pos-government-commission').val();
 
     if(name == '') {
       swift_utils.display_error(swift_language.get_sentence('blank_pos_name'));
+      return;
+    }
+    if(commission_account == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_pos_account'));
       return;
     }
     if(bank_commission == '' || government_commission == ''
@@ -322,7 +334,7 @@ BankAccount.prototype = {
     var bank_account_ref = this;
     var request = $.post('/swift/accounting/edit_pos', { code: pos_code,
       name: name, bank_commission: bank_commission, government_commission: government_commission,
-      _token: swift_utils.swift_token() });
+      commission_account: commission_account, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {

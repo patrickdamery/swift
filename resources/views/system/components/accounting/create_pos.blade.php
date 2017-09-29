@@ -8,9 +8,13 @@
       </div>
       <div class="modal-body">
         <div class="row form-inline">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-pos-name" class="control-label">@lang('accounting/create_pos.name')</label>
             <input type="text" class="form-control" id="create-pos-name">
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-pos-commission-account" class="control-label">@lang('accounting/create_pos.commission_account')</label>
+            <input type="text" class="form-control" id="create-pos-commission-account">
           </div>
         </div>
         <div class="row lg-top-space md-top-space sm-top-space">

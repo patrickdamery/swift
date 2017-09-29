@@ -378,6 +378,7 @@ class BankAccountController extends Controller
         'name' => 'required',
         'bank_commission' => 'required',
         'government_commission' => 'required',
+        'commission_account' => 'required',
       )
     );
     if($validator->fails()) {
@@ -408,7 +409,8 @@ class BankAccountController extends Controller
             'bank_account_code' => Input::get('code'),
             'name' => Input::get('name'),
             'bank_commission' => Input::get('bank_commission'),
-            'government_commission' => Input::get('government_commission')
+            'government_commission' => Input::get('government_commission'),
+            'commission_account' => Input::get('commission_account')
           ]
         );
         DB::commit();
@@ -678,6 +680,7 @@ class BankAccountController extends Controller
         'name' => 'required',
         'bank_commission' => 'required',
         'government_commission' => 'required',
+        'commission_account' => 'required',
       )
     );
     if($validator->fails()) {
@@ -709,7 +712,8 @@ class BankAccountController extends Controller
             'bank_account_code' => Input::get('code'),
             'name' => Input::get('name'),
             'bank_commission' => Input::get('bank_commission'),
-            'government_commission' => Input::get('government_commission')
+            'government_commission' => Input::get('government_commission'),
+            'commission_account' => Input::get('commission_account')
           ]
         ]);
         DB::commit();

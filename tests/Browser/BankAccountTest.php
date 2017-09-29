@@ -103,7 +103,7 @@ class BankAccountTest extends DuskTestCase
                   ->click('#create-loan-create')
                   ->waitForText('Cuenta no puede dejarse en blanco!')
                   ->assertSee('Cuenta no puede dejarse en blanco!')
-                  ->type('#create-loan-account', '444.2.1')
+                  ->type('#create-loan-account', '444.1.1')
                   ->click('#create-loan-create')
                   ->waitForText('Cantidad no puede dejarse en blanco y debe ser un valor numerico!')
                   ->assertSee('Cantidad no puede dejarse en blanco y debe ser un valor numerico!')

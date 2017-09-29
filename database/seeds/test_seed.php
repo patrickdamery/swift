@@ -36,7 +36,8 @@ class test_seed extends Seeder
           'name' => 'Sucursal 1',
           'phone' => '1234-5464',
           'type' => 1,
-          'location_code' => $branch_location->code
+          'location_code' => $branch_location->code,
+          'mayorship_account' => 0
       ]);
 
       // Create some workers.

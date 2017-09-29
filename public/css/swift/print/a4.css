@@ -21,12 +21,12 @@
   }
   .printable-document, .printable-header,
   .printable-body {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vw;
   }
 
   .printable-header {
-    margin-bottom: 1cm;
+    margin-bottom: 0.5vh;
   }
 
   /* Ledger CSS */
