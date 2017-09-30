@@ -21,4 +21,5 @@ return [
     'bank_commission' => 'Bank Commission',
     'government_commission' => 'Government Commission',
     'update' => 'Update',
+    'commission_account' => 'Commission Account',
 ];

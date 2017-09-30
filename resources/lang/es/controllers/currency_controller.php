@@ -19,4 +19,5 @@ return [
     'rate_changed' => 'Tasa cambiada exitosamente!',
     'change_data_required' => 'La informacion del cambio es requerida!',
     'description_changed' => 'Descripcion actualizada!',
+    'currency_exists' => 'Una moneda con el codigo especificado ya existe!',
 ];

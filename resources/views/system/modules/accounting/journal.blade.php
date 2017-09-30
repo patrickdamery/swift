@@ -35,6 +35,7 @@ $(function(){
     $.getScript('{{ URL::to('/') }}/js/swift/accounting/journal.js');
   }
 </script>
+@include('system.components.accounting.create_entry')
 <section class="content-header">
   <h1>
     @lang('accounting/journal.title')
@@ -72,10 +73,7 @@ $(function(){
               <label for="journal-group-entry" class="control-label">@lang('accounting/journal.group_entry')</label>
               <select class="form-control" id="journal-group-entry">
                 <option value="detail">@lang('accounting/journal.detail')</option>
-                <option value="day">@lang('accounting/journal.day')</option>
-                <option value="week">@lang('accounting/journal.week')</option>
-                <option value="month">@lang('accounting/journal.month')</option>
-                <option value="year">@lang('accounting/journal.year')</option>
+                <option value="summary">@lang('accounting/journal.summary')</option>
               </select>
             </div>
           </div>
@@ -98,22 +96,17 @@ $(function(){
         </div>
         <div class="row" style="padding-top:15px;">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/journal.date')</th>
-                      <th>@lang('accounting/journal.account_name')</th>
-                      <th>@lang('accounting/journal.debit')</th>
-                      <th>@lang('accounting/journal.credit')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  </tbody>
-                </table>
-              </div>
+            <div class="box" id="journal-entries-table">
+              @include('system.components.accounting.journal_table',
+                [
+                  'type' => 'summary',
+                  'date_range' => array(
+                    date('Y-m-d', strtotime('7 days ago')).' 00:00:00',
+                    date('Y-m-d').' 23:59:59',
+                  ),
+                  'offset' => 1,
+                ]
+              )
             </div>
           </div>
         </div>
@@ -122,7 +115,7 @@ $(function(){
           </div>
           <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 sm-top-space">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-create-entry">
+              <button type="button" class="btn btn-info" id="journal-create-entry" data-toggle="modal" data-target="#create-entry">
                 <i class="fa fa-edit"></i> @lang('accounting/journal.create_entry')
               </button>
             </div>

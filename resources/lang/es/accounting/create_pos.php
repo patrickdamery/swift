@@ -18,7 +18,8 @@ return [
     'close' => 'Cerrar',
     'create' => 'Crear',
     'name' => 'Nombre',
-    'bank_commission' => 'Commission Bancaria',
-    'government_commission' => 'Commission Gubernamental',
+    'bank_commission' => 'Comision Bancaria',
+    'government_commission' => 'Comision Gubernamental',
     'update' => 'Actualizar',
+    'commission_account' => 'Cuenta de Comisiones',
 ];

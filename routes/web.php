@@ -119,6 +119,7 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_accounts', 'AccountController@suggest_accounts');
     Route::post('suggest_asset', 'AccountController@suggest_asset');
     Route::post('suggest_liability', 'AccountController@suggest_liability');
+    Route::post('suggest_expense', 'AccountController@suggest_expense');
     Route::post('create_account', 'AccountController@create_account');
     Route::post('load_accounts', 'AccountController@load_accounts');
     Route::post('load_asset', 'AccountController@load_asset');

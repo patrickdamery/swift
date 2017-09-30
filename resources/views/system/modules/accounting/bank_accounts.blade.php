@@ -45,6 +45,10 @@ $(function(){
                               'en': 'Name can\'t be blank!',
                               'es': 'Nombre no puede dejarse en blanco!'
                             });
+  swift_language.add_sentence('blank_pos_account', {
+                              'en': 'Commissions Account can\'t be blank!',
+                              'es': 'Cuenta de Comisiones no puede dejarse en blanco!'
+                            });
   swift_language.add_sentence('pos_commission_required', {
                               'en': 'Commissions can\'t be blank and must be a numeric value!',
                               'es': 'Comissiones no pueden dejarse en blanco y debe ser un valor numerico!'

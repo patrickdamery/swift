@@ -183,6 +183,16 @@ class CurrencyController extends Controller
       return response()->json($response);
     }
 
+    // Check if currency exists.
+    $currency_check = Currency::where('code', Input::get('currency_data')['code'])->first();
+    if($currency_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/currency_controller.currency_exists')
+      );
+      return response()->json($response);
+    }
+
     // Create Currency.
     $currency = Currency::create(array(
       'code' => Input::get('currency_data')['code'],

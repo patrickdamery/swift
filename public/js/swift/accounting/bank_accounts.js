@@ -661,6 +661,42 @@ $(document).on('click', '#bank-accounts-search', function(e) {
   swift_event_tracker.fire_event(e, '#bank-accounts-search');
 });
 
+$(document).on('focus', '#create-pos-commission-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_expense',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#view-pos-commission-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_expense',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
 $(document).on('focus', '#create-bank-account-account', function(e) {
   if(!$(this).data('autocomplete')) {
     $(this).autocomplete({

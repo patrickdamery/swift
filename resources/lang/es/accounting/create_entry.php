@@ -13,11 +13,15 @@ return [
     |
     */
 
-    'currency_data_required' => 'Currency data is required!',
-    'currency_created' => 'Currency was succesfully created!',
-    'variation_search' => 'Date Range and Currency Code required!',
-    'rate_changed' => 'Rate changed succesfully!',
-    'change_data_required' => 'The change data is required!',
-    'description_changed' => 'Description updated successfully!',
-    'currency_exists' => 'A currency with the specified code already exists!',
+    'title' => 'Crear Entrada',
+    'close' => 'Cerrar',
+    'create' => 'Crear',
+    'account' => 'Cuenta',
+    'amount' => 'Monto',
+    'type' => 'Tipo',
+    'description' => 'Descripcion',
+    'add' => 'Agregar',
+    'entries' => 'Entradas',
+    'debit' => 'Debito',
+    'credit' => 'Credito',
 ];

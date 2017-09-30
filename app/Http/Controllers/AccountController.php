@@ -142,6 +142,37 @@ class AccountController extends Controller
     return response()->json($response);
   }
 
+  public function suggest_expense() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    $accounts = Account::where('code', 'like',  '%'.Input::get('code').'%')
+      ->orWhere('name', 'like', '%'.Input::get('code').'%')
+      ->get();
+
+    $accounts = $accounts->where('has_children', 0)
+      ->where('type', 'ex');
+
+    $response = array();
+    foreach($accounts as $account) {
+      array_push($response, array(
+        'label' => $account->name,
+        'value' => $account->code,
+      ));
+    }
+    return response()->json($response);
+  }
+
   public function change_account_name() {
     $validator = Validator::make(Input::all(),
       array(
