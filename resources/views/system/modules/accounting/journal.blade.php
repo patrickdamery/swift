@@ -29,6 +29,30 @@ $(function(){
                                         'es': 'Configuracion',
                                       });
   swift_utils.register_ajax_fail();
+  swift_language.add_sentence('blank_account', {
+    'en': 'Account can\'t be left blank!',
+    'es': 'Cuenta no se puede dejar en blanco!',
+  });
+  swift_language.add_sentence('blank_amount', {
+    'en': 'Amount can\'t be left blank and must be a numeric value!',
+    'es': 'Monto no se puede dejar en blanco y debe ser un valor numerico!',
+  });
+  swift_language.add_sentence('blank_description', {
+    'en': 'Description can\'t be left blank!',
+    'es': 'Descripcion no se puede dejar en blanco!',
+  });
+  swift_language.add_sentence('delete', {
+    'en': 'Delete',
+    'es': 'Eliminar',
+  });
+  swift_language.add_sentence('no_entries', {
+    'en': 'No entries have been added!',
+    'es': 'No se han agregado entradas!',
+  });
+  swift_language.add_sentence('entry_sums_not_equal', {
+    'en': 'Sum of credit an debit entries is not equal!',
+    'es': 'Suma de entradas de credito y debito no es igual!',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -72,8 +96,8 @@ $(function(){
             <div class="form-group">
               <label for="journal-group-entry" class="control-label">@lang('accounting/journal.group_entry')</label>
               <select class="form-control" id="journal-group-entry">
-                <option value="detail">@lang('accounting/journal.detail')</option>
                 <option value="summary">@lang('accounting/journal.summary')</option>
+                <option value="detail">@lang('accounting/journal.detail')</option>
               </select>
             </div>
           </div>

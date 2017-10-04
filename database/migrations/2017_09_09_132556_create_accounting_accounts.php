@@ -15,11 +15,11 @@ class CreateAccountingAccounts extends Migration
     {
       Schema::create('accounting_accounts', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('retained_VAT_account', 10);
-          $table->string('advanced_VAT_account', 10);
-          $table->string('ISC_account', 10);
-          $table->string('advanced_IR_account', 10);
-          $table->string('retained_IR_account', 10);
+          $table->string('retained_VAT_account', 20);
+          $table->string('advanced_VAT_account', 20);
+          $table->string('ISC_account', 20);
+          $table->string('advanced_IR_account', 20);
+          $table->string('retained_IR_account', 20);
 
           $table->foreign('retained_VAT_account')->references('code')->on('accounts');
           $table->foreign('advanced_VAT_account')->references('code')->on('accounts');

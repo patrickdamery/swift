@@ -17,8 +17,8 @@ class CreateJournalEntriesBreakdown extends Migration
             $table->increments('id');
             $table->string('journal_entry_code', 10);
             $table->boolean('debit')->default(true);
-            $table->string('account_code', 10);
-            $table->string('description', 30);
+            $table->string('account_code', 20);
+            $table->string('description', 50);
             $table->double('amount');
             $table->double('balance');
 

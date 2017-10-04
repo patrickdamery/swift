@@ -50,9 +50,12 @@ return [
     'save' => 'Guardar',
     'isc' => 'Cuenta de Impuesto Selectivo al Consumo',
     'entries' => 'Entradas',
-    'period' => 'Periodo',
+    'summary_period' => 'Periodo Resumido',
+    'detailed_period' => 'Periodo Detallado',
     'account_code' => 'Codigo de Cuenta',
     'account_name' => 'Nombre de Cuenta',
     'initial' => 'Saldo Inicial',
     'final' => 'Saldo Final',
+    'balance' => 'Balance',
+    'description' => 'Descripcion',
 ];

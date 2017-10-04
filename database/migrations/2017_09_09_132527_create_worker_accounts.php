@@ -16,17 +16,17 @@ class CreateWorkerAccounts extends Migration
       Schema::create('worker_accounts', function (Blueprint $table) {
           $table->increments('id');
           $table->string('worker_code', 10);
-          $table->string('cashbox_account', 10);
-          $table->string('stock_account', 10);
-          $table->string('loan_account', 10);
-          $table->string('long_loan_account', 10);
-          $table->string('salary_account', 10);
-          $table->string('commission_account', 10);
-          $table->string('bonus_account', 10);
-          $table->string('antiquity_account', 10);
-          $table->string('holidays_account', 10);
-          $table->string('savings_account', 10);
-          $table->string('insurance_account', 10);
+          $table->string('cashbox_account', 20);
+          $table->string('stock_account', 20);
+          $table->string('loan_account', 20);
+          $table->string('long_loan_account', 20);
+          $table->string('salary_account', 20);
+          $table->string('commission_account', 20);
+          $table->string('bonus_account', 20);
+          $table->string('antiquity_account', 20);
+          $table->string('holidays_account', 20);
+          $table->string('savings_account', 20);
+          $table->string('insurance_account', 20);
           $table->json('reimbursement_accounts');
           $table->json('draw_accounts');
           $table->json('bank_accounts');

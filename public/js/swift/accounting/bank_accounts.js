@@ -458,7 +458,7 @@ BankAccount.prototype = {
           return;
         }
       }
-      //$('#create-cheque').modal('hide');
+      $('#create-cheque').modal('hide');
       $('.print_area').empty();
       $('.print_area').append(data);
       window.print();

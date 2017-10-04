@@ -22,7 +22,7 @@ class CreateAssets extends Migration
             $table->string('group_code', 10);
             $table->boolean('depreciates');
             $table->string('depreciation_option', 8);
-            $table->string('account_code', 10);
+            $table->string('account_code', 20);
         });
     }
 

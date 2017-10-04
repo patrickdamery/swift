@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
-use App\product;
+use App\Product;
 use App\JournalEntryBreakdown;
 class ProductController extends Controller
 {

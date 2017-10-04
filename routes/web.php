@@ -131,6 +131,12 @@ Route::prefix('swift')->group(function() {
     Route::post('suggest_parent_accounts', 'AccountController@suggest_parent_accounts');
     Route::post('suggest_child_accounts', 'AccountController@suggest_child_accounts');
     Route::post('delete_account', 'AccountController@delete_account');
+
+    // Journal Routes.
+    Route::post('search_entries', 'JournalController@search_entries');
+    Route::post('create_entries', 'JournalController@create_entries');
+    Route::get('download_entries', 'JournalController@download_entries');
+
   });
 
   // Configuration Routes.

@@ -50,9 +50,12 @@ return [
     'save' => 'Save',
     'isc' => 'Excise Tax Account',
     'entries' => 'Entries',
-    'period' => 'Period',
+    'summary_period' => 'Summary Period',
+    'detailed_period' => 'Detailed Period',
     'account_code' => 'Account Code',
     'account_name' => 'Account Name',
     'initial' => 'Initial Value',
     'final' => 'Final Value',
+    'description' => 'Description',
+    'balance' => 'Balance',
 ];

@@ -15,10 +15,10 @@ class CreateAccounts extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 10)->unique();
+            $table->string('code', 20)->unique();
             $table->string('type', 2);
             $table->string('name', 50);
-            $table->string('parent_account', 10);
+            $table->string('parent_account', 18);
             $table->boolean('has_children')->default(false);
             $table->double('amount');
 
