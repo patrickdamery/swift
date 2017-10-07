@@ -26,6 +26,9 @@ Menu.prototype={
     $('.crumb').html(language.get_sentence(id));
   },
   select_menu_option: function(e) {
+    // Clear any appended elements. (Datepicker, context menus, etc);
+    $('.daterangepicker').remove();
+    $('.context-menu-item').remove();
     var id = $(e.target).attr('id');
     var url = menu[id];
     this.load_selected_view(url, e);

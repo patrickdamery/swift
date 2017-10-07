@@ -326,6 +326,7 @@ class AccountsTest extends DuskTestCase
                     ->waitForText('Ver Cuentas')
                     ->rightClick('#account-111')
                     ->click('.context-menu-item')
+                    //->clickLink('Eliminar')
                     ->waitForText('Eliminar Cuenta')
                     ->assertSee('Eliminar Cuenta')
                     ->select('#delete-account-option', '1')

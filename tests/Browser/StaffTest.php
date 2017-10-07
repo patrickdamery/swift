@@ -69,6 +69,7 @@ class StaffTest extends DuskTestCase
                 ->click('.staff-job-edit')
                 ->type('.staff-change-job', 'New Job')
                 ->keys('.staff-change-job', ['{enter}'])
+                ->click('#view-staff-tab')
                 ->waitForText('Cambios guardados exitosamente!')
                 ->assertSee('Cambios guardados exitosamente!')
                 ->click('[data-target="#worker-user"]')

@@ -169,6 +169,15 @@
 i {
   pointer-events: none;
 }
+.variable-padding {
+  padding-top: 10px;
+  padding-left: 10px;
+}
+#journal-create-report-variables {
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
 // Loading Page CSS.
 @keyframes lds-square {

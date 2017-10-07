@@ -53,6 +53,50 @@ $(function(){
     'en': 'Sum of credit an debit entries is not equal!',
     'es': 'Suma de entradas de credito y debito no es igual!',
   });
+  swift_language.add_sentence('must_start_calc', {
+    'en': 'The content of the variable must start with a call to a calc() function!',
+    'es': 'El contenido de la variable debe comenzar con un llamado a la funcion calc()!',
+  });
+  swift_language.add_sentence('malformed_function', {
+    'en': 'There is at least one malformed function in the content of the variable!',
+    'es': 'Hay al menos una funcion mal formada en el contenido de la variable!',
+  });
+  swift_language.add_sentence('malformed_object', {
+    'en': 'There is at least one malformed object in the content of the variable!',
+    'es': 'Hay al menos un objecto mal formado en el contenido de la variable!',
+  });
+  swift_language.add_sentence('unrecognized_function', {
+    'en': 'Could not recognize the function ',
+    'es': 'No se pudo reconocer la funcion ',
+  });
+  swift_language.add_sentence('unrecognized_operation', {
+    'en': 'Could not recognize the operation ',
+    'es': 'No se pudo reconocer la operacion ',
+  });
+  swift_language.add_sentence('object_malformed', {
+    'en': 'An error exists in the following object ',
+    'es': 'Existe un error en el siguente objeto ',
+  });
+  swift_language.add_sentence('unexistent_variable', {
+    'en': 'Could not find the following variable: ',
+    'es': 'No se pudo encontrar la siguiente variable: ',
+  });
+  swift_language.add_sentence('unrecognized_type', {
+    'en': 'Could not recognize the following account type: ',
+    'es': 'No se pudo reconocer el siguiente tipo de cuenta: ',
+  });
+  swift_language.add_sentence('unrecognized_group', {
+    'en': 'Could not recognize the option for grouping!',
+    'es': 'No se pudo reconocer la opcion para agrupar!',
+  });
+  swift_language.add_sentence('no_variable_name', {
+    'en': 'Variable needs to have a name!',
+    'es': 'La variable debe tener un nombre!',
+  });
+  swift_language.add_sentence('blank_columns', {
+    'en': 'Columns can\'t be left blank and must be a numeric value not greater than 4!',
+    'es': 'Columnas no puede dejarse en blanco y debe ser un valor numerico no mayor que 4!',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -60,6 +104,7 @@ $(function(){
   }
 </script>
 @include('system.components.accounting.create_entry')
+@include('system.components.accounting.create_report_row')
 <section class="content-header">
   <h1>
     @lang('accounting/journal.title')
@@ -147,83 +192,160 @@ $(function(){
         </div>
       </div>
       <div class="tab-pane" id="journal-reports">
-        <div class="row form-inline">
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="journal-reports-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
-              <div class="input-group date">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control daterangepicker-sel" id="journal-reports-date-range">
+        <div class="hideable hide" id="journal-create-report">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <h3>@lang('accounting/journal.create_report')</h3>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-report-variable" class="control-label">@lang('accounting/journal.variable')</label>
+                <input type="text" class="form-control" id="journal-create-report-variable">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-report-content" class="control-label">@lang('accounting/journal.content')</label>
+                <input type="text" class="form-control" id="journal-create-report-content">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-create-report-add">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.add')
+                </button>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="journal-reports-report" class="control-label">@lang('accounting/journal.report')</label>
-              <select class="form-control" id="journal-reports-report">
-                @foreach(\App\Report::all() as $report)
-                  <option value="{{ $report->id }}">{{ $report->name }}</option>
-                @endforeach
-              </select>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-report-title" class="control-label">@lang('accounting/journal.report_title')</label>
+                <input type="text" class="form-control" id="journal-create-report-title">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label class="control-label">@lang('accounting/journal.variables')</label>
+                <div id="journal-create-report-variables">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-create-report-add-row" data-toggle="modal" data-target="#create-report-row">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.add_row')
+                </button>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="journal-reports-generate">
-                <i class="fa fa-cogs"></i> @lang('accounting/journal.generate')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space xs-top-space">
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-reports-print">
-                <i class="fa fa-print"></i> @lang('accounting/journal.print')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-reports-download">
-                <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 sm-top-space xs-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="journal-reports-create">
-                <i class="fa fa-plus"></i> @lang('accounting/journal.create')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6  sm-top-space xs-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-reports-edit">
-                <i class="fa fa-edit"></i> @lang('accounting/journal.edit')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/journal.date')</th>
-                      <th>@lang('accounting/journal.account_name')</th>
-                      <th>@lang('accounting/journal.debit')</th>
-                      <th>@lang('accounting/journal.credit')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+          <div class="row form-inline" style="padding-top: 15px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">@lang('accounting/journal.report')</h3>
+                </div>
+                <div class="box-body table-responsive no-padding swift-table">
+                  <table class="table table-hover">
+                    <tbody id="#report-layout">
 
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-create-report-create">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.create_report')
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showable">
+          <div class="row form-inline">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-reports-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control daterangepicker-sel" id="journal-reports-date-range">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-reports-report" class="control-label">@lang('accounting/journal.report')</label>
+                <select class="form-control" id="journal-reports-report">
+                  @foreach(\App\Report::all() as $report)
+                    <option value="{{ $report->id }}">{{ $report->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-reports-generate">
+                  <i class="fa fa-cogs"></i> @lang('accounting/journal.generate')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space xs-top-space">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-reports-print">
+                  <i class="fa fa-print"></i> @lang('accounting/journal.print')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-reports-download">
+                  <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 sm-top-space xs-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-reports-create">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.create')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6  sm-top-space xs-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-reports-edit">
+                  <i class="fa fa-edit"></i> @lang('accounting/journal.edit')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-top:15px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+              <div class="box">
+                <div class="box-body table-responsive no-padding swift-table">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>@lang('accounting/journal.date')</th>
+                        <th>@lang('accounting/journal.account_name')</th>
+                        <th>@lang('accounting/journal.debit')</th>
+                        <th>@lang('accounting/journal.credit')</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

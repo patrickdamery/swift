@@ -30,4 +30,5 @@ return [
     'parent_unexistent' => 'Could not find a valid account with the specified parent code!',
     'account_not_empty' => 'Account must be empty in order to be deleted!',
     'account_deleted' => 'Account deleted successfully!',
+    'account_code_unexistent' => 'Could not find an account with code ',
 ];

@@ -10,6 +10,40 @@ use App\Account;
 use App\JournalEntryBreakdown;
 class AccountController extends Controller
 {
+  public function check_account_code() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/account_controller.account_data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get account.
+    foreach(Input::get('codes') as $code) {
+      $account = Account::where('code', $code)->first();
+
+      // Make sure account is empty.
+      if(!$account) {
+        $response = array(
+          'state' => 'Error',
+          'error' => \Lang::get('controllers/account_controller.account_code_unexistent').$code
+        );
+        return response()->json($response);
+      }
+    }
+
+    $response = array(
+      'state' => 'Success',
+    );
+    return response()->json($response);
+  }
+
   public function delete_account() {
     $validator = Validator::make(Input::all(),
       array(

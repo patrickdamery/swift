@@ -115,7 +115,7 @@ class BankAccountTest extends DuskTestCase
                   ->click('#create-loan-create')
                   ->waitForText('Fecha inicial puede dejarse en blanco!')
                   ->assertSee('Fecha inicial puede dejarse en blanco!')
-                  ->type('#create-loan-start-date', '30-09-2017')
+                  ->type('#create-loan-start-date', date('d-m-Y', strtotime('+2 days')))
                   ->click('#create-loan-create')
                   ->waitForText('Tasa de Interes no puede dejarse en blanco y deben ser un valor numerico!')
                   ->assertSee('Tasa de Interes no puede dejarse en blanco y deben ser un valor numerico!')
