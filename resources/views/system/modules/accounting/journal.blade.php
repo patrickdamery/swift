@@ -97,6 +97,34 @@ $(function(){
     'en': 'Columns can\'t be left blank and must be a numeric value not greater than 4!',
     'es': 'Columnas no puede dejarse en blanco y debe ser un valor numerico no mayor que 4!',
   });
+  swift_language.add_sentence('add_row', {
+    'en': 'Add Rows',
+    'es': 'Agregar Filas',
+  });
+  swift_language.add_sentence('remove_row', {
+    'en': 'Remove Row',
+    'es': 'Remover Fila',
+  });
+  swift_language.add_sentence('add_sub_row', {
+    'en': 'Add Sub Rows',
+    'es': 'Agregar Sub Filas',
+  });
+  swift_language.add_sentence('max_sub_row', {
+    'en': 'Can\'t add any more sub rows here!',
+    'es': 'No se pueden agregar aqui mas sub filas!',
+  });
+  swift_language.add_sentence('reserved_period', {
+    'en': 'The variable name periodo is a reserved name. It makes reference to the period of time selected by'+
+      ' the user when generating a report!',
+    'es': 'El nombre periodo es un nombre de variable reservado. Hace referencia al periodo de tiempo seleccionado'+
+      ' por el usuario cuando genera un reporte!',
+  });
+  swift_language.add_sentence('calc_period', {
+    'en': 'The variable name periodo refers to the period of time selected by the user when making a report.'+
+      ' It cannot be used for a calculation, it can only be used in the report layout!',
+    'es': 'El nombre de la variable periodo se refiere al periodo de tiempo seleccionado por el usuario cuando genera un reporte'+
+      ' No puede ser utilizado para una calculacion, solo puede ser utilizado en el diseño del reporte!',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -233,13 +261,6 @@ $(function(){
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
-              <div class="form-group">
-                <button type="button" class="btn btn-info" id="journal-create-report-add-row" data-toggle="modal" data-target="#create-report-row">
-                  <i class="fa fa-plus"></i> @lang('accounting/journal.add_row')
-                </button>
-              </div>
-            </div>
           </div>
           <div class="row form-inline" style="padding-top: 15px;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
@@ -248,11 +269,11 @@ $(function(){
                   <h3 class="box-title">@lang('accounting/journal.report')</h3>
                 </div>
                 <div class="box-body table-responsive no-padding swift-table">
-                  <table class="table table-hover">
-                    <tbody id="#report-layout">
+                  <div class="table table-hover">
+                    <div id="report-layout">
 
-                    </tbody>
-                  </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

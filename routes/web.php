@@ -136,6 +136,7 @@ Route::prefix('swift')->group(function() {
     // Journal Routes.
     Route::post('search_entries', 'JournalController@search_entries');
     Route::post('create_entries', 'JournalController@create_entries');
+    Route::post('create_report', 'JournalController@create_report');
     Route::get('download_entries', 'JournalController@download_entries');
 
   });

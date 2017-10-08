@@ -29,4 +29,5 @@ return [
     'created_entries' => 'Entries created successfully!',
     'account_not_found' => 'At least one account could not be found!',
     'credit_debit_mismatch' => 'The sum of the credits and debits does not match!',
+    'report_created' => 'Report created successfully!',
 ];

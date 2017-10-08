@@ -16,7 +16,8 @@ class CreateReports extends Migration
       Schema::create('reports', function (Blueprint $table) {
         $table->increments('id');
         $table->string('name', 25);
-        $table->json('setup');
+        $table->json('variables');
+        $table->json('layout');
       });
     }
 

@@ -10,8 +10,39 @@ use DB;
 use App\JournalEntry;
 use App\JournalEntryBreakdown;
 use App\Account;
+use App\Report;
 class JournalController extends Controller
 {
+  public function create_report() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'name' => 'required',
+        'variables' => 'required',
+        'layout' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $report = Report::create(array(
+      'name' => Input::get('name'),
+      'variables' => json_encode(Input::get('variables')),
+      'layout' => json_encode(Input::get('layout'))
+    ));
+
+    $response = array(
+      'state' => 'Success',
+      'report' => $report,
+      'message' => \Lang::get('controllers/journal_controller.report_created')
+    );
+    return response()->json($response);
+  }
+
   public function create_entries() {
     $validator = Validator::make(Input::all(),
       array(

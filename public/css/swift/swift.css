@@ -178,6 +178,35 @@ i {
   overflow-y: auto;
   overflow-x: hidden;
 }
+#report-layout {
+  width: 100%;
+  min-height: 300px;
+}
+.report-row {
+  width: 100%;
+  height: auto;
+  clear: both;
+}
+.report-row > div {
+  float: left;
+}
+.w-i {
+  width: 100%;
+  text-align: center;
+}
+.w-1 {
+  width: 100%;
+}
+.w-2 {
+  width: 50%;
+}
+.w-3 {
+  width: 33.33%;
+}
+.w-4 {
+  width: 25%;
+}
+
 
 // Loading Page CSS.
 @keyframes lds-square {
