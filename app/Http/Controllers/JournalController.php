@@ -13,6 +13,122 @@ use App\Account;
 use App\Report;
 class JournalController extends Controller
 {
+  public function generate_report() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'report' => 'required',
+        'date_range' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $report = Report::where('id', Input::get('report'))->first();
+
+    if(!$report) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+      );
+      return response()->json($response);
+    }
+
+    // Explode date range.
+    $date_range = Input::get('date_range');
+    $date_range = explode(' - ', $date_range);
+    $date_range[0] = date('Y-m-d H:i:s', strtotime($date_range[0]));
+    $date_range[1] = date('Y-m-d H:i:s', strtotime($date_range[1].' 23:59:59'));
+
+    $report->layout = json_decode($report->layout);
+    $report->variables = json_decode($report->variables);
+
+    // Return view.
+    return view('system.components.accounting.report',
+     [
+       'report' => $report,
+       'date_range' => $date_range,
+    ]);
+  }
+
+  public function edit_report() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'report' => 'required',
+        'name' => 'required',
+        'variables' => 'required',
+        'layout' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // TODO: Do not rely on javascript checks.
+
+    $report = Report::where('id', Input::get('report'))->first();
+
+    if(!$report) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $report->name = Input::get('name');
+    $report->layout = json_encode(Input::get('layout'));
+    $report->variables = json_encode(Input::get('variables'));
+    $report->save();
+
+    $response = array(
+      'state' => 'Success',
+      'report' => $report,
+    );
+    return response()->json($response);
+  }
+
+  public function load_report() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'report' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $report = Report::where('id', Input::get('report'))->first();
+
+    if(!$report) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $report->layout = json_decode($report->layout);
+    $report->variables = json_decode($report->variables);
+    $response = array(
+      'state' => 'Success',
+      'report' => $report,
+    );
+    return response()->json($response);
+  }
+
   public function create_report() {
     $validator = Validator::make(Input::all(),
       array(
@@ -29,6 +145,7 @@ class JournalController extends Controller
       return response()->json($response);
     }
 
+    // TODO: We should not depend on JS checks.
     $report = Report::create(array(
       'name' => Input::get('name'),
       'variables' => json_encode(Input::get('variables')),

@@ -125,6 +125,22 @@ $(function(){
     'es': 'El nombre de la variable periodo se refiere al periodo de tiempo seleccionado por el usuario cuando genera un reporte'+
       ' No puede ser utilizado para una calculacion, solo puede ser utilizado en el diseño del reporte!',
   });
+  swift_language.add_sentence('create_report', {
+    'en': 'Create Report',
+    'es': 'Crear Reporte',
+  });
+  swift_language.add_sentence('create_report_button', {
+    'en': '<i class="fa fa-plus"></i> Create Report',
+    'es': '<i class="fa fa-plus"></i> Crear Reporte',
+  });
+  swift_language.add_sentence('edit_report', {
+    'en': 'Edit Report',
+    'es': 'Editar Reporte',
+  });
+  swift_language.add_sentence('edit_report_button', {
+    'en': '<i class="fa fa-edit"></i> Edit Report',
+    'es': '<i class="fa fa-edit"></i> Editar Reporte',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -153,7 +169,9 @@ $(function(){
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="journal-view-entries">
-        <div class="row form-inline">
+        <div class="
+    $('#journal-create-report-title').val(swift_language.get_sentence('create_report'));
+    $('#journal-create-report-create').html(swift_language.get_sentence('crate_report'));row form-inline">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
@@ -223,7 +241,7 @@ $(function(){
         <div class="hideable hide" id="journal-create-report">
           <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-              <h3>@lang('accounting/journal.create_report')</h3>
+              <h3 id="create-report-title">@lang('accounting/journal.create_report')</h3>
             </div>
           </div>
           <div class="row form-inline lg-top-space md-top-space sm-top-space">

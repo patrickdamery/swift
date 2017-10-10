@@ -4,6 +4,8 @@ function Journal() {
   report_variables = {};
   report_layouts = [];
   report_row = null;
+  create_report = true;
+  report_code = '';
 }
 
 Journal.prototype = {
@@ -133,6 +135,7 @@ Journal.prototype = {
     });
   },
   show_create_report: function() {
+    create_report = true;
     $('#journal-create-report').removeClass('hide');
     $('.showable').addClass('hide');
     report_variables = {};
@@ -140,6 +143,10 @@ Journal.prototype = {
     $('#journal-create-report-variables').empty();
     $('#journal-create-report-variable').val('');
     $('#journal-create-report-content').val('');
+    $('#journal-create-report-title').val('');
+    $('#report-layout').empty();
+    $('#create-report-title').html(swift_language.get_sentence('create_report'));
+    $('#journal-create-report-create').html(swift_language.get_sentence('create_report_button'));
   },
   add_variable: function(e) {
     // TODO: Revise this method, it can probably be optimized.
@@ -450,29 +457,164 @@ Journal.prototype = {
   },
   create_report: function(e) {
     var name = $('#journal-create-report-title').val();
+    if(create_report) {
+      var journal_ref = this;
+      var request = $.post('/swift/accounting/create_report', { name: name,
+        variables: report_variables, layout: report_layouts, _token: swift_utils.swift_token() });
+      request.done(function(data) {
+        swift_utils.free(e.target);
+        if(data.state != 'Success') {
+          swift_utils.display_error(data.error);
+          return;
+        }
+        swift_utils.display_success(data.message);
+        $('#journal-create-report').addClass('hide');
+        $('.showable').removeClass('hide');
+      });
+      request.fail(function(ev) {
+        swift_utils.free(e.target);
+        swift_utils.ajax_fail(ev);
+      });
+    } else {
+      var journal_ref = this;
+      var request = $.post('/swift/accounting/edit_report', { report: report_code, name: name,
+        variables: report_variables, layout: report_layouts, _token: swift_utils.swift_token() });
+      request.done(function(data) {
+        swift_utils.free(e.target);
+        if(data.state != 'Success') {
+          swift_utils.display_error(data.error);
+          return;
+        }
+        swift_utils.display_success(data.message);
+        $('#journal-create-report').addClass('hide');
+        $('.showable').removeClass('hide');
+      });
+      request.fail(function(ev) {
+        swift_utils.free(e.target);
+        swift_utils.ajax_fail(ev);
+      });
+    }
+  },
+  edit_report: function(e) {
+    var report = $('#journal-reports-report').val();
     var journal_ref = this;
-    var request = $.post('/swift/accounting/create_report', { name: name,
-      variables: report_variables, layout: report_layouts, _token: swift_utils.swift_token() });
+    var request = $.post('/swift/accounting/load_report', { report: report, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
         return;
       }
-      swift_utils.display_success(data.message);
-      $('#journal-create-report').addClass('hide');
-      $('.showable').removeClass('hide');
+      $('#journal-create-report-title').val(data.report.name);
+      report_variables = data.report.variables;
+      report_layouts = data.report.layout;
+      create_report = false;
+      report_code = data.report.id;
+      journal_ref.show_available_variables();
+      journal_ref.show_layout();
+
+      $('#create-report-title').html(swift_language.get_sentence('edit_report'));
+      $('#journal-create-report-create').html(swift_language.get_sentence('edit_report_button'));
+      $('#journal-create-report').removeClass('hide');
+      $('.showable').addClass('hide');
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
       swift_utils.ajax_fail(ev);
     });
   },
+  generate_report: function(e) {
+    var report = $('#journal-reports-report').val();
+    var date_range = $('#journal-reports-date-range').val();
+    var request = $.post('/swift/accounting/generate_report', { report: report,
+      date_range: date_range, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  print_report: function(e) {
+    var report = $('#journal-reports-report').val();
+    var date_range = $('#journal-reports-date-range').val();
+    var request = $.post('/swift/accounting/print_report', { report: report,
+      date_range: date_range, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  download_report: function(e) {
+    var report = $('#journal-reports-report').val();
+    var date_range = $('#journal-reports-date-range').val();
+    var report_data = {
+      'report': report,
+      'date_range': date_range
+    }
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host
+    window.open(baseUrl+'/swift/accounting/download_report?report_data='+JSON.stringify(report_data), '_blank')
+  },
 }
 
 var journal_js = new Journal();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#journal-reports-edit',
+  'click',
+  journal_js,
+  'edit_report');
+
+$(document).on('click', '#journal-reports-edit', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-reports-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-reports-download',
+  'click',
+  journal_js,
+  'download_report');
+
+$(document).on('click', '#journal-reports-download', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-reports-download');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-reports-print',
+  'click',
+  journal_js,
+  'print_report');
+
+$(document).on('click', '#journal-reports-print', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-reports-print');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-reports-generate',
+  'click',
+  journal_js,
+  'generate_report');
+
+$(document).on('click', '#journal-reports-generate', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-reports-generate');
+});
+
 swift_event_tracker.register_swift_event(
   '#journal-create-report-create',
   'click',
@@ -512,17 +654,6 @@ swift_event_tracker.register_swift_event(
 $(document).on('click', '#create-report-row-create', function(e) {
   swift_event_tracker.fire_event(e, '#create-report-row-create');
 });
-
-/*swift_event_tracker.register_swift_event(
-  '#journal-create-report-add-row',
-  'click',
-  journal_js,
-  'show_add_row');
-
-$(document).on('click', '#journal-create-report-add-row', function(e) {
-  swift_event_tracker.fire_event(e, '#journal-create-report-add-row');
-});
-*/
 
 swift_event_tracker.register_swift_event(
   '.variable-group > div > .btn-danger',

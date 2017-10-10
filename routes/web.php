@@ -137,8 +137,12 @@ Route::prefix('swift')->group(function() {
     Route::post('search_entries', 'JournalController@search_entries');
     Route::post('create_entries', 'JournalController@create_entries');
     Route::post('create_report', 'JournalController@create_report');
+    Route::post('generate_report', 'JournalController@generate_report');
+    Route::post('print_report', 'JournalController@print_report');
+    Route::post('load_report', 'JournalController@load_report');
+    Route::post('edit_report', 'JournalController@edit_report');
     Route::get('download_entries', 'JournalController@download_entries');
-
+    Route::get('download_report', 'JournalController@download_report');
   });
 
   // Configuration Routes.
