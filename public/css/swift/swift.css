@@ -189,6 +189,7 @@ i {
 }
 .report-row > div {
   float: left;
+  text-align: center;
 }
 .w-i {
   width: 100%;
@@ -206,7 +207,12 @@ i {
 .w-4 {
   width: 25%;
 }
-
+.w-5 {
+  width: 20%;
+}
+.w-6 {
+  width: 16.66%;
+}
 
 // Loading Page CSS.
 @keyframes lds-square {

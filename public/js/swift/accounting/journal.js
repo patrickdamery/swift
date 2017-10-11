@@ -530,11 +530,8 @@ Journal.prototype = {
       date_range: date_range, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
-      if(data.state != 'Success') {
-        swift_utils.display_error(data.error);
-        return;
-      }
-
+      $('#report-box').empty();
+      $('#report-box').append(data);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);

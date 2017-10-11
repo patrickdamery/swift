@@ -369,22 +369,7 @@ $(function(){
           </div>
           <div class="row" style="padding-top:15px;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-              <div class="box">
-                <div class="box-body table-responsive no-padding swift-table">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>@lang('accounting/journal.date')</th>
-                        <th>@lang('accounting/journal.account_name')</th>
-                        <th>@lang('accounting/journal.debit')</th>
-                        <th>@lang('accounting/journal.credit')</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                  </table>
-                </div>
+              <div class="box" id="report-box">
               </div>
             </div>
           </div>

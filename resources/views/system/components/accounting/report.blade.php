@@ -1,13 +1,4 @@
 @php
-
-  $entries = DB::table('journal_entries')
-    ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
-    ->select('journal_entries.*', 'journal_entries_breakdown.*')
-    ->whereBetween('journal_entries.entry_date', $date_range)->get();
-
-  $variables = {};
-  $max = 50;
-
   function get_account_type($type) {
     switch($type) {
       case 'activo':
@@ -33,7 +24,8 @@
 
   function get_results_period($period, $group_by) {
     $results = array();
-    switch($group_by) {
+    $group_parts = preg_split('/(\(|\))/', $group_by);
+    switch($group_parts[1]) {
       case 'resumen':
         array_push($results, array(
           'total' => 0
@@ -87,8 +79,8 @@
       foreach($children as $child) {
         if($child->has_children) {
           $child_accounts = get_accounts(array(
-            'codigo': $child->code,
-            'sub': 1
+            'codigo' => $child->code,
+            'sub' => 1
           ));
           foreach($child_accounts as $child_account) {
             array_push($accounts, $child_account->code);
@@ -102,7 +94,7 @@
   }
 
   function calculate_variation($entries, $data, $group_by, $period) {
-    $data = json_decode($data);
+    $data = json_decode($data, true);
 
     $accounts = array();
     $results = get_results_period($period, $group_by);
@@ -110,14 +102,16 @@
     if(array_key_exists('tipo', $data)) {
       $type = get_account_type($data['tipo']);
       $accounts_type = \App\Account::where('type', $type)->get();
-      foreach($accounts_type, $account) {
+      foreach($accounts_type as $account) {
         array_push($accounts, $account->code);
       }
 
+      $group_parts = preg_split('/(\(|\))/', $group_by);
+
       foreach($entries as $entry) {
-        switch($group_by) {
+        switch($group_parts[1]) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -135,7 +129,7 @@
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -153,7 +147,7 @@
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -171,7 +165,7 @@
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -189,7 +183,7 @@
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -211,9 +205,9 @@
     } else {
       $accounts = get_accounts($data);
       foreach($entries as $entry) {
-        switch($group_by) {
+        switch($group_parts[1]) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -231,7 +225,7 @@
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -249,7 +243,7 @@
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -267,7 +261,7 @@
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -285,7 +279,7 @@
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
                 if($entry->debit) {
@@ -317,42 +311,42 @@
     if(array_key_exists('tipo', $data)) {
       $type = get_account_type($data['tipo']);
       $accounts_type = \App\Account::where('type', $type)->get();
-      foreach($accounts_type, $account) {
+      foreach($accounts_type as $account) {
         array_push($accounts, $account->code);
       }
 
       foreach($entries as $entry) {
         switch($group_by) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
@@ -365,35 +359,35 @@
       foreach($entries as $entry) {
         switch($group_by) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
@@ -414,42 +408,42 @@
     if(array_key_exists('tipo', $data)) {
       $type = get_account_type($data['tipo']);
       $accounts_type = \App\Account::where('type', $type)->get();
-      foreach($accounts_type, $account) {
+      foreach($accounts_type as $account) {
         array_push($accounts, $account->code);
       }
 
       foreach($entries as $entry) {
         switch($group_by) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
@@ -462,35 +456,35 @@
       foreach($entries as $entry) {
         switch($group_by) {
           case 'resumen':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
           case 'dia':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'semana':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'mes':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
           case 'año':
-            if(in_array($entry->code, $accounts)) {
+            if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
@@ -510,21 +504,21 @@
     $results = get_results_period($period, $group_by);
 
     foreach($results as $key => $result) {
-      $results[$key]['total'] += $calculation[0][$key]['total'];
+      $results[$key]['total'] += $calculations[0][$key]['total'];
       $count = 1;
       foreach($operations as $operation) {
         switch($operation) {
           case '+':
-            $results[$key]['total'] += $calculation[$count][$key]['total'];
+            $results[$key]['total'] += $calculations[$count][$key]['total'];
             break;
           case '-':
-            $results[$key]['total'] -= $calculation[$count][$key]['total'];
+            $results[$key]['total'] -= $calculations[$count][$key]['total'];
             break;
           case '*':
-            $results[$key]['total'] *= $calculation[$count][$key]['total'];
+            $results[$key]['total'] *= $calculations[$count][$key]['total'];
             break;
           case '/':
-            $results[$key]['total'] /= $calculation[$count][$key]['total'];
+            $results[$key]['total'] /= $calculations[$count][$key]['total'];
             break;
         }
         $count++;
@@ -533,7 +527,7 @@
     return $results;
   }
 
-  function calculate_variable($reports, $period, $name, $data, $entries, $variables) {
+  function calculate_variable($reports, $period, $name, $data, $entries, &$variables) {
     $operations = array();
     $calculations = array();
     foreach($data['calc'] as $index => $calc) {
@@ -546,8 +540,8 @@
         // If it's a variable make sure it's calculated.
         if($entry_parts[0] == 'variable') {
           if(!array_key_exists($entry_parts[1], $variables)) {
-            calculate_variable($reports, $period, $entry_parts[1], $reports[$entry_parts[1]], $entries, $variables);
-            //calculate_variable($entry_parts[1], $reports[$data], $entries, $variables, $period)
+            $variables[$entry_parts[1]] = calculate_variable($reports, $period, $entry_parts[1], $reports['variables'][$entry_parts[1]], $entries, $variables);
+            array_push($calculations, $variables[$entry_parts[1]]);
           } else {
             array_push($calculations, $variables[$entry_parts[1]]);
           }
@@ -576,209 +570,76 @@
       }
     }
     // Finally make the calculation.
-    $variables[$name] = make_calculation($operations, $calculations, $period, $data['group_by']);
+    return make_calculation($operations, $calculations, $period, $data['group_by']);
   }
 
   // Calculate all required variables for report.
-  foreach($report->variables, $name => $data) {
+  $entries = DB::table('journal_entries')
+    ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+    ->select('journal_entries.*', 'journal_entries_breakdown.*')
+    ->whereBetween('journal_entries.entry_date', $date_range)
+    ->get();
+
+  $variables = array();
+
+  $report = json_decode(json_encode($report), true);
+  foreach($report['variables'] as $name => $data) {
     // Make sure we haven't already calculated this variable.
-    if(!array_key_exists($name, $variables) {
-      calculate_variable($report, $date_range, $name, $data, $entries, $variables);
+    if(!array_key_exists($name, $variables)) {
+      $variables[$name] = calculate_variable($report, $date_range, $name, $data, $entries, $variables);
     }
-  }
-
-
-
-
-
-
-
-
-
-
-
-  /* switch($type) {
-    case 'detail':
-      $report = DB::table('report_entries')
-        ->join('report_entries_breakdown', 'report_entries.code', 'report_entries_breakdown.report_entry_code')
-        ->select('report_entries.*', 'report_entries_breakdown.*')
-        ->whereBetween('report_entries.entry_date', $date_range);
-      break;
-    case 'summary':
-      $accounts = \App\Account::where('code', '!=', 0)
-        ->orderBy('code')
-        //->orderBy('type')
-        ->get();
-
-      foreach($accounts as $account) {
-        $report[$account->code] = array(
-            'name' => $account->name,
-            'initial' => $account->amount,
-            'final' => $account->amount,
-            'credit' => 0,
-            'debit' => 0,
-            'added' => (!$account->has_children) ? true : false,
-            'first_found' => false,
-            'type' => $account->type,
-            'children' => $account->has_children,
-            'parent' => $account->parent_account,
-          );
-      }
-
-      $entries = DB::table('report_entries')
-        ->join('report_entries_breakdown', 'report_entries.code', 'report_entries_breakdown.report_entry_code')
-        ->select('report_entries_breakdown.*')
-        ->whereBetween('report_entries.entry_date', $date_range)
-        ->get();variation
-
-      foreach($entries as $entry) {
-        // Check if this is the first time we found an entry for this account.
-        if(!$report[$entry->account_code]['first_found']) {
-          // Update it account data.
-          $report[$entry->account_code]['first_found'] = true;
-
-          // Check if it's a debit transaction and update account data based on
-          // Account type.
-          if($entry->debit) {
-            if(in_array($report[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-              $report[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
-            } else {
-              $report[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
-            }
-            $report[$entry->account_code]['debit'] += $entry->amount;
-          } else {
-            if(in_array($report[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-              $report[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
-            } else {
-              $report[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
-            }
-            $report[$entry->account_code]['credit'] += $entry->amount;
-          }
-          $report[$entry->account_code]['final'] = $entry->balance;
-        } else {
-          if($entry->debit) {
-            $report[$entry->account_code]['debit'] += $entry->amount;
-          } else {
-            $report[$entry->account_code]['credit'] += $entry->amount;
-          }
-          $report[$entry->account_code]['final'] = $entry->balance;
-        }
-      }
-
-      foreach($report as $code => $entry) {
-        if(!$report[$code]['added']) {
-          $sums = sum_children($report, $code);
-          $report[$code]['initial'] += $sums['initial'];
-          $report[$code]['final'] += $sums['final'];
-          $report[$code]['credit'] += $sums['credit'];
-          $report[$code]['debit'] += $sums['debit'];
-        }
-      }
-      break;
-  }*/
-
-  $records = count($result);
-  $pages = ceil($records/$max);
-
-  if($offset == 'first') {
-    $offset = 0;
-  } else if ($offset == 'last') {
-    $offset = $pages-1;
-  } else {
-    $offset--;
   }
 @endphp
 <div class="box-header">
-  <h3 class="box-title">@lang('accounting/report.entries')</h3>
+  <h3 class="box-title">{{ $report['name'] }}</h3>
   <br>
-  @if($type == 'detail')
-    <span>@lang('accounting/report.detailed_period')
-  @else
-    <span>@lang('accounting/report.summary_period')
-  @endif
-    {{ date('d-m-Y', strtotime($date_range[0])) }} - {{ date('d-m-Y', strtotime($date_range[1])) }}</span>
+  <span>@lang('swift_menu.bank_accounts')</span>
+  {{ date('d-m-Y', strtotime($date_range[0])) }} - {{ date('d-m-Y', strtotime($date_range[1])) }}</span>
 </div>
 <div class="box-body table-responsive no-padding swift-table">
-  <table class="table table-hover">
-    <thead>
-      @switch($type)
-        @case('detail')
-          <tr>
-            <th>@lang('accounting/report.date')</th>
-            <th>@lang('accounting/report.account_code')</th>
-            <th>@lang('accounting/report.description')</th>
-            <th>@lang('accounting/report.debit')</th>
-            <th>@lang('accounting/report.credit')</th>
-            <th>@lang('accounting/report.balance')</th>
-          </tr>
-          @break
-        @case('summary')
-          <tr>
-            <th>@lang('accounting/report.account_code')</th>
-            <th>@lang('accounting/report.account_name')</th>
-            <th>@lang('accounting/report.initial')</th>
-            <th>@lang('accounting/report.debit')</th>
-            <th>@lang('accounting/report.credit')</th>
-            <th>@lang('accounting/report.final')</th>
-          </tr>
-        @break
-      @endswitch
-    </thead>
-    <tbody>
-      @php
-        $count = 0;
-      @endphp
-      @switch($type)
-        @case('detail')
-          @foreach($report as $entry)
-            <tr class="report-entry-row" id="entry-{{ $entry->code }}">
-              <td>{{ date('d/m/Y h:i:s a', strtotime($entry->entry_date)) }}</td>
-              <td>{{ $entry->account_code }}</td>
-              <td>{{ $entry->description }}</td>
-              <td>{{ ($entry->debit) ? $entry->amount : '' }}</td>
-              <td>{{ (!$entry->debit) ? $entry->amount : '' }}</td>
-              <td>{{ $entry->balance }}</td>
-            </tr>
-          @endforeach
-          @break
-        @case('summary')
-          @foreach($report as $code => $entry)
-            @if($count > $offset*$max && $count < $max+($offset*$max))
-              <tr class="report-entry-row">
-                <td>{{ $code }}</td>
-                <td>{{ $entry['name'] }}</td>
-                <td>{{ $entry['initial'] }}</td>
-                <td>{{ $entry['debit'] }}</td>
-                <td>{{ $entry['credit'] }}</td>
-                <td>{{ $entry['final'] }}</td>
-              </tr>
-            @endif
+  <div class="table table-hover">
+    @foreach($report['layout'] as $key => $data)
+      <div class="report-row">
+        @foreach($data['columns'] as $i => $column)
+          <div class="w-{{ count($data['columns']) }}">
+            @if(is_array($column))
+              @foreach($column as $sub_i => $sub_column)
+                <div class="report-row">
+                  @php
+                    $entry_parts = preg_split('/(\(|\))/', $sub_column);
+                    if($entry_parts[0] == 'variable') {
+                      foreach($variables[$entry_parts[1]] as $key => $result) {
+                        @endphp
+                          <p>{{ $result['total'] }}</p>
+                        @php
+                      }
+                    } else {
+                      @endphp
+                        <p>{{ $sub_column }}</p>
+                      @php
+                    }
+                  @endphp
+                </div>
+              @endforeach
+            @else
             @php
-              $count++;
+              $entry_parts = preg_split('/(\(|\))/', $column);
+              if($entry_parts[0] == 'variable') {
+                foreach($variables[$entry_parts[1]] as $key => $result) {
+                  @endphp
+                    {{ $result['total'] }}
+                  @php
+                }
+              } else {
+                @endphp
+                  {{ $column }}
+                @php
+              }
             @endphp
-          @endforeach
-          @break
-      @endswitch
-    </tbody>
-  </table>
-</div>
-<div class="box-footer clearfix">
-  <ul class="pagination pagination-sm no-margin pull-right report-pagination">
-    <li><a href="#" id="report-pagination-first">«</a></li>
-    @if($offset+1 == 1)
-      <li><a href="#" id="report-pagination-1">1</a></li>
-      @for($i = 2; $i <= $pages; $i++)
-        @if($i < 4)
-          <li><a href="#" id="report-pagination-{{ $i }}">{{ $i }}</a></li>
-        @endif
-      @endfor
-    @else
-      <li><a href="#" id="report-pagination-{{ $offset }}">{{ $offset }}</a></li>
-      <li><a href="#" id="report-pagination-{{ $offset+1 }}">{{ $offset+1 }}</a></li>
-      @if($offset+2 <= $pages)
-        <li><a href="#" id="report-pagination-{{ $offset+2 }}">{{ $offset+2 }}</a></li>
-      @endif
-    @endif
-    <li><a href="#" id="report-pagination-last">»</a></li>
-  </ul>
+            @endif
+          </div>
+        @endforeach
+      </div>
+    @endforeach
+  </div>
 </div>
