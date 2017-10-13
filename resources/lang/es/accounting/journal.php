@@ -68,4 +68,5 @@ return [
     'create_row' => 'Crear Fila',
     'columns' => 'Columnas',
     'close' => 'Cerrar',
+    'period' => 'Periodo',
 ];

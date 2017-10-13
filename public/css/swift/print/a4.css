@@ -117,4 +117,15 @@
     left: 11vw;
     width: 85vw;
   }
+  /** A4 Sheet Margin **/
+  .a4-margin {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+  }
+  .box-header {
+    text-align: center;
+  }
+
 }

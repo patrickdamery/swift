@@ -134,7 +134,7 @@
   @else
     <span>@lang('accounting/journal.summary_period')
   @endif
-    {{ date('d-m-Y', strtotime($date_range[0])) }} - {{ date('d-m-Y', strtotime($date_range[1])) }}</span>
+    {{ date('d/m/Y', strtotime($date_range[0])) }} - {{ date('d/m/Y', strtotime($date_range[1])) }}</span>
 </div>
 <div class="box-body table-responsive no-padding swift-table">
   <table class="table table-hover">

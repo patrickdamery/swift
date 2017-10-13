@@ -25,7 +25,8 @@ class AccountController extends Controller
     }
 
     // Get account.
-    foreach(Input::get('codes') as $code) {
+    $codes = json_decode(json_encode(Input::get('code')), true);
+    foreach($codes as $code) {
       $account = Account::where('code', $code)->first();
 
       // Make sure account is empty.

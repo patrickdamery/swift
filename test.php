@@ -1,15 +1,11 @@
 <?php
-	$s = 'variable(activo)';
-
-	function moo($x) {
-		echo $x;
-		//echo $this->$s;
-	}
-	//$s = 'variable({"tipo":"activo"})';
-	//$entry_parts = preg_split('/(\(|\))/', $s);
-	//print_r($entry_parts);
-	moo('moo');
-
-
-	echo $s;
+$period = array('09/24/2017', '11/09/2017');
+$current = date('o-W', strtotime($period[0]));
+$current_timestamp = date('Y-m-d', strtotime($period[0]));
+while($current <= date('o-W', strtotime($period[1]))) {
+	echo $current;
+	$current_timestamp = date('Y-m-d', strtotime($current_timestamp.' +1 week'));
+	$current = date('o-W', strtotime($current_timestamp));
+	//$current = date('o-W', strtotime($period[1]));
+}
 ?>

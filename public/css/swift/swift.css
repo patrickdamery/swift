@@ -186,6 +186,8 @@ i {
   width: 100%;
   height: auto;
   clear: both;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .report-row > div {
   float: left;

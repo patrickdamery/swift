@@ -603,128 +603,130 @@
     }
   }
 @endphp
-<div class="box-header">
-  <h3 class="box-title">{{ $report['name'] }}</h3>
-  <br>
-  <span>@lang('accounting/journal.period')</span>
-  {{ date('d/m/Y', strtotime($date_range[0])) }} - {{ date('d/m/Y', strtotime($date_range[1])) }}</span>
-</div>
-<div class="box-body table-responsive no-padding swift-table">
-  <div class="table table-hover">
-    @foreach($report['layout'] as $index => $data)
-      <div class="report-row">
-        @foreach($data['columns'] as $i => $column)
-          <div class="w-{{ count($data['columns']) }}">
-            @if(is_array($column))
-              @foreach($column as $sub_i => $sub_column)
-                <div class="report-row">
-                  @php
-                    $entry_parts = preg_split('/(\(|\))/', $sub_column);
-                    if($entry_parts[0] == 'variable') {
-                      foreach($variables[$entry_parts[1]] as $key => $result) {
-                        if($key != 'total') {
-                          if($result['total'] < 0) {
-                            @endphp
+<div class="a4-margin">
+  <div class="box-header">
+    <h3 class="box-title">{{ $report['name'] }}</h3>
+    <br>
+    <span>@lang('accounting/journal.period')</span>
+    {{ date('d/m/Y', strtotime($date_range[0])) }} - {{ date('d/m/Y', strtotime($date_range[1])) }}</span>
+  </div>
+  <div class="box-body table-responsive no-padding swift-table">
+    <div class="table table-hover">
+      @foreach($report['layout'] as $index => $data)
+        <div class="report-row">
+          @foreach($data['columns'] as $i => $column)
+            <div class="w-{{ count($data['columns']) }}">
+              @if(is_array($column))
+                @foreach($column as $sub_i => $sub_column)
+                  <div class="report-row">
+                    @php
+                      $entry_parts = preg_split('/(\(|\))/', $sub_column);
+                      if($entry_parts[0] == 'variable') {
+                        foreach($variables[$entry_parts[1]] as $key => $result) {
+                          if($key != 'total') {
+                            if($result['total'] < 0) {
+                              @endphp
+                                <div class="report-row">
+                                  <div class="col-xs-6">
+                                    {{ $key }}
+                                  </div>
+                                  <div class="col-xs-6">
+                                    ({{ abs($result['total']) }})
+                                  </div>
+                                </div>
+                              @php
+                            } else {
+                              @endphp
                               <div class="report-row">
                                 <div class="col-xs-6">
                                   {{ $key }}
                                 </div>
                                 <div class="col-xs-6">
-                                  ({{ abs($result['total']) }})
+                                  {{ $result['total'] }}
                                 </div>
                               </div>
-                            @php
+                              @php
+                            }
                           } else {
-                            @endphp
+                            if($result['total'] < 0) {
+                              @endphp
+                                <div class="report-row">
+                                  ({{ abs($result['total']) }})
+                                </div>
+                              @php
+                            } else {
+                              @endphp
+                                <div class="report-row">
+                                  {{ $result['total'] }}
+                                </div>
+                              @php
+                            }
+                          }
+                        }
+                      } else {
+                        @endphp
+                          <p>{!! $sub_column !!}</p>
+                        @php
+                      }
+                    @endphp
+                  </div>
+                @endforeach
+              @else
+                @php
+                  $entry_parts = preg_split('/(\(|\))/', $column);
+                  if($entry_parts[0] == 'variable') {
+                    foreach($variables[$entry_parts[1]] as $key => $result) {
+                      if($key != 'total') {
+                        if($result['total'] < 0) {
+                          @endphp
                             <div class="report-row">
                               <div class="col-xs-6">
                                 {{ $key }}
                               </div>
                               <div class="col-xs-6">
-                                {{ $result['total'] }}
-                              </div>
-                            </div>
-                            @php
-                          }
-                        } else {
-                          if($result['total'] < 0) {
-                            @endphp
-                              <div class="report-row">
                                 ({{ abs($result['total']) }})
                               </div>
-                            @php
-                          } else {
-                            @endphp
-                              <div class="report-row">
-                                {{ $result['total'] }}
-                              </div>
-                            @php
-                          }
-                        }
-                      }
-                    } else {
-                      @endphp
-                        <p>{!! $sub_column !!}</p>
-                      @php
-                    }
-                  @endphp
-                </div>
-              @endforeach
-            @else
-              @php
-                $entry_parts = preg_split('/(\(|\))/', $column);
-                if($entry_parts[0] == 'variable') {
-                  foreach($variables[$entry_parts[1]] as $key => $result) {
-                    if($key != 'total') {
-                      if($result['total'] < 0) {
-                        @endphp
+                            </div>
+                          @php
+                        } else {
+                          @endphp
                           <div class="report-row">
                             <div class="col-xs-6">
                               {{ $key }}
                             </div>
                             <div class="col-xs-6">
-                              ({{ abs($result['total']) }})
+                              {{ $result['total'] }}
                             </div>
                           </div>
-                        @php
+                          @php
+                        }
                       } else {
-                        @endphp
-                        <div class="report-row">
-                          <div class="col-xs-6">
-                            {{ $key }}
-                          </div>
-                          <div class="col-xs-6">
-                            {{ $result['total'] }}
-                          </div>
-                        </div>
-                        @php
-                      }
-                    } else {
-                      if($result['total'] < 0) {
-                        @endphp
-                          <div class="report-row">
-                            ({{ abs($result['total']) }})
-                          </div>
-                        @php
-                      } else {
-                        @endphp
-                          <div class="report-row">
-                            {{ $result['total'] }}
-                          </div>
-                        @php
+                        if($result['total'] < 0) {
+                          @endphp
+                            <div class="report-row">
+                              ({{ abs($result['total']) }})
+                            </div>
+                          @php
+                        } else {
+                          @endphp
+                            <div class="report-row">
+                              {{ $result['total'] }}
+                            </div>
+                          @php
+                        }
                       }
                     }
+                  } else {
+                    @endphp
+                      {!! $column !!}
+                    @php
                   }
-                } else {
-                  @endphp
-                    {!! $column !!}
-                  @php
-                }
-              @endphp
-            @endif
-          </div>
-        @endforeach
-      </div>
-    @endforeach
+                @endphp
+              @endif
+            </div>
+          @endforeach
+        </div>
+      @endforeach
+    </div>
   </div>
 </div>
