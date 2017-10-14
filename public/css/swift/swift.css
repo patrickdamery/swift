@@ -55,6 +55,7 @@
 .swift-table {
    min-height: 300px;
    max-height: 600px;
+   overflow-y: auto;
 }
 .tab-pane {
   padding-top: 15px;

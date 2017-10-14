@@ -169,9 +169,7 @@ $(function(){
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="journal-view-entries">
-        <div class="
-    $('#journal-create-report-title').val(swift_language.get_sentence('create_report'));
-    $('#journal-create-report-create').html(swift_language.get_sentence('crate_report'));row form-inline">
+        <div class="row form-inline">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-date-range" class="control-label">@lang('accounting/journal.date_range')</label>

@@ -641,6 +641,7 @@ class JournalController extends Controller
 
     $variables = array();
 
+
     $report = json_decode(json_encode($report), true);
     foreach($report['variables'] as $name => $data) {
       // Make sure we haven't already calculated this variable.
@@ -649,44 +650,76 @@ class JournalController extends Controller
       }
     }
 
+    $row = 0;
+    $col = 0;
     $layout = array();
     foreach($report['layout'] as $index => $data) {
       foreach($data['columns'] as $i => $column) {
         if(is_array($column)) {
+          $current_row = $row;
           foreach($column as $sub_i => $sub_column) {
             $entry_parts = preg_split('/(\(|\))/', $sub_column);
             if($entry_parts[0] == 'variable') {
-              $count = 0;
               foreach($variables[$entry_parts[1]] as $key => $result) {
-                if($key == 'total') {
-                  $layout[$index][$i][$sub_i] = $result['total'];
-                } else {
-                  $layout[$index][$i][$sub_i][$count] = array($key, $result['total']);
+                for($i = 0; $i < $col; $i++) {
+                  if(!isset($layout[$current_row][$i])){
+                    $layout[$current_row][$i] = "";
+                  }
                 }
-                $count++;
+                if($key == 'total') {
+                  $layout[$current_row][$col] = $result['total'];
+                } else {
+                  $layout[$current_row][$col] = $key;
+                  $col++;
+                  $layout[$current_row][$col] = $result['total'];
+                }
+                $col = $i;
+                if(count($variables[$entry_parts[1]]) > 1) {
+                  $current_row++;
+                }
               }
             } else {
-              $layout[$index][$i][$sub_i] = $sub_column;
+              for($i = 0; $i < $col; $i++) {
+                if(!isset($layout[$current_row][$i])){
+                  $layout[$current_row][$i] = "";
+                }
+              }
+              $layout[$current_row][$col] = strip_tags($sub_column);
+              $current_row++;
             }
           }
         } else {
+          $current_row = $row;
           $entry_parts = preg_split('/(\(|\))/', $column);
           if($entry_parts[0] == 'variable') {
             $count = 0;
             foreach($variables[$entry_parts[1]] as $key => $result) {
-              if($key == 'total') {
-                $layout[$index][$i] = $result['total'];
-
-              } else {
-                  $layout[$index][$i][$count] = array($key, $result['total']);
+              for($i = 0; $i < $col; $i++) {
+                if(!isset($layout[$current_row][$i])){
+                  $layout[$current_row][$i] = "";
+                }
               }
-              $count++;
+              if($key == 'total') {
+                $layout[$current_row][$col] = $result['total'];
+              } else {
+                $layout[$current_row][$col] = $key;
+                $col++;
+                $layout[$current_row][$col] = $result['total'];
+              }
+              if(count($variables[$entry_parts[1]]) > 1) {
+                $current_row++;
+              }
+              $col = $i;
             }
           } else {
-            $layout[$index][$i] = $column;
+            $layout[$current_row][$col] = strip_tags($column);
           }
-         }
+        }
+        $col++;
+        $row = $current_row;
       }
+      $row++;
+      $col = 0;
     }
 
     // Prepare headers.
@@ -700,11 +733,10 @@ class JournalController extends Controller
 
     $callback = function() use ($layout, $report, $date_range) {
       $file = fopen('php://output', 'w');
-        array_walk_recursive($file, function($item) use ($layout) {
-          $result[] = $item;
-      });
-      fputcsv($file, $result);
-      //fputcsv($file, $layout);
+
+      foreach($layout as $row => $content) {
+        fputcsv($file, $content);
+      }
       fclose($file);
     };
 
