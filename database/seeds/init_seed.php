@@ -139,5 +139,18 @@ class init_seed extends Seeder
         'description' => 'Estandard',
         'data' => '{"monday":{"type":"work","day_start":"08:00","day_end":"05:00","lunch_start":"12:00","lunch_end":"01:00"},"tuesday":{"type":"work","day_start":"08:00","day_end":"05:00","lunch_start":"12:00","lunch_end":"01:00"},"wednesday":{"type":"work","day_start":"08:00","day_end":"05:00","lunch_start":"12:00","lunch_end":"01:00"},"thursday":{"type":"work","day_start":"08:00","day_end":"05:00","lunch_start":"12:00","lunch_end":"01:00"},"friday":{"type":"work","day_start":"08:00","day_end":"05:00","lunch_start":"12:00","lunch_end":"01:00"},"saturday":{"type":"free"},"sunday":{"type":"off"}}'
       ]);
+
+      DB::table('accounting_accounts')->insert([
+        'retained_VAT_Account' => '0',
+        'advanced_VAT_account' => '0',
+        'VAT_percentage' => '15',
+        'fixed_fee' => '0',
+        'ISC_acccount' => '0',
+        'retained_IT_account' => '0',
+        'advanced_IT_account' => '0',
+        'IT_percentage' => '1',
+        'IT_rules' => '{}',
+        'entity_type' => 'juridica',
+      ]);
     }
 }

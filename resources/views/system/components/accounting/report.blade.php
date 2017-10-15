@@ -664,7 +664,7 @@
                       }
                     } else {
                       @endphp
-                        <p>{!! $sub_column !!}</p>
+                        <p>{!! (isset($sub_column)) ? $sub_column : '' !!}</p>
                       @php
                     }
                   @endphp
@@ -717,7 +717,7 @@
                   }
                 } else {
                   @endphp
-                    {!! $column !!}
+                    {!! (isset($column)) ? $column : '' !!}
                   @php
                 }
               @endphp

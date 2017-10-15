@@ -69,4 +69,10 @@ return [
     'columns' => 'Columns',
     'close' => 'Close',
     'period' => 'Period',
+    'entity_type' => 'Entity Type',
+    'natural' => 'Natural',
+    'legal' => 'Legal',
+    'rules' => 'IT Rules',
+    'fixed_fee' => 'Fixed Fee',
+    'add_rule' => 'Add Rule',
 ];

@@ -6,6 +6,8 @@ function Journal() {
   report_row = null;
   create_report = true;
   report_code = '';
+  create_graph = true;
+  it_rules = {};
 }
 
 Journal.prototype = {
@@ -515,6 +517,8 @@ Journal.prototype = {
 
       $('#create-report-title').html(swift_language.get_sentence('edit_report'));
       $('#journal-create-report-create').html(swift_language.get_sentence('edit_report_button'));
+      $('#journal-create-report-variable').val('');
+      $('#journal-create-report-content').val('');
       $('#journal-create-report').removeClass('hide');
       $('.showable').addClass('hide');
     });
@@ -565,11 +569,103 @@ Journal.prototype = {
     var baseUrl = getUrl.protocol + "//" + getUrl.host
     window.open(baseUrl+'/swift/accounting/download_report?report_data='+JSON.stringify(report_data), '_blank')
   },
+  save_configuration: function(e) {
+    var entry_type = $('#journal-configuration-entry-type').val();
+    var retained_vat = $('#journal-configuration-retained-vat').val();
+    var advanced_vat = $('#journal-configuration-advanced-vat').val();
+    var vat_percentage = $('#journal-configuration-vat-percentage').val();
+    var fixed_fee = $('#journal-configuration-fixed-fee').val();
+    var retained_it = $('#journal-configuration-retained-it').val();
+    var advanced_it = $('#journal-configuration-advanced-it').val();
+    var it_percentage = $('#journal-configuration-it-percentage').val();
+    var isc = $('#journal-configuration-isc').val();
+
+    if(retained_vat == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_retained_vat'));
+      return;
+    }
+    if(advanced_vat == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_advanced_vat'));
+      return;
+    }
+    if(vat_percentage == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_vat_percentage'));
+      return;
+    }
+    if(retained_it == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_retained_it'));
+      return;
+    }
+    if(advanced_it == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_advanced_it'));
+      return;
+    }
+    if(it_percentage == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_it_percentage'));
+      return;
+    }
+    if(isc == '') {
+      swift_utils.display_error(swift_language.get_sentence('blank_isc'));
+      return;
+    }
+
+    var request = $.post('/swift/accounting/save_configuration', { retained_vat: retained_vat,
+      advanced_vat: advanced_vat, vat_percentage: vat_percentage,
+      retained_it: retained_it, advanced_it: advanced_it, it_percentage: it_percentage,
+      isc: isc, entry_type: entry_type, fixed_fee: fixed_fee,
+      it_rules: it_rules, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  set_it_rules: function(rules) {
+    it_rules = rules;
+  },
+  show_create_graph: function() {
+    create_graph = true;
+    $('#journal-create-graph').removeClass('hide');
+    $('.showable').addClass('hide');
+    graph_variables = {};
+    $('#journal-create-graph-variables').empty();
+    $('#journal-create-graph-variable').val('');
+    $('#journal-create-graph-content').val('');
+    $('#journal-create-graph-title').val('');
+    $('#create-graph-title').html(swift_language.get_sentence('create_graph'));
+    $('#journal-create-graph-create').html(swift_language.get_sentence('create_graph_button'));
+  },
 }
 
 var journal_js = new Journal();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#journal-graphs-create',
+  'click',
+  journal_js,
+  'show_create_graph');
+
+$(document).on('click', '#journal-graphs-create', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-graphs-create');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-configuration-save',
+  'click',
+  journal_js,
+  'save_configuration');
+
+$(document).on('click', '#journal-configuration-save', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-configuration-save');
+});
+
 swift_event_tracker.register_swift_event(
   '#journal-reports-edit',
   'click',

@@ -30,4 +30,7 @@ return [
     'account_not_found' => 'Al menos una cuenta no fue encontrada!',
     'credit_debit_mismatch' => 'La suma de los creditos y debitos no es igual!',
     'report_created' => 'Reporte creado exitosamente!',
+    'accounting_accounts_updated' => 'Configuracion actualizado exitosamente!',
+    'report_not_found' => 'Reporte no encontrado!',
+    'report_updated' => 'Reporte actualizado exitosamente!',
 ];

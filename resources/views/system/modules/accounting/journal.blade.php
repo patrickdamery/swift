@@ -141,6 +141,42 @@ $(function(){
     'en': '<i class="fa fa-edit"></i> Edit Report',
     'es': '<i class="fa fa-edit"></i> Editar Reporte',
   });
+  swift_language.add_sentence('blank_retained_vat', {
+    'en': 'Retained VAT Account can\'t be left blank!',
+    'es': 'Cuenta de IVA Retenido no puede dejarse en blanco!',
+  });
+  swift_language.add_sentence('blank_advanced_vat', {
+    'en': 'Advanced VAT Account can\'t be left blank!',
+    'es': 'Cuenta de IVA Adelantado no puede dejarse en blanco!',
+  });
+  swift_language.add_sentence('blank_vat_percentage', {
+    'en': 'VAT Percentage can\'t be left blank and must be a numeric value!',
+    'es': 'Porcentaje IVA no puede dejarse en blanco y debe ser un valor numerico!',
+  });
+  swift_language.add_sentence('blank_retained_it', {
+    'en': 'Retained IT Account can\'t be left blank!',
+    'es': 'Cuenta de IR Retenido no puede dejarse en blanco!',
+  });
+  swift_language.add_sentence('blank_advanced_it', {
+    'en': 'Advanced IT Account can\'t be left blank!',
+    'es': 'Cuenta de IR Adelantado no puede dejarse en blanco!',
+  });
+  swift_language.add_sentence('blank_it_percentage', {
+    'en': 'IT Percentage can\'t be left blank and must be a numeric value!',
+    'es': 'Porcentaje IR no puede dejarse en blanco y debe ser un valor numerico!',
+  });
+  swift_language.add_sentence('blank_isc', {
+    'en': 'Excise Tax Account can\'t be left blank!',
+    'es': 'Cuenta de Impuesto Selectivo al Consumo no puede dejarse en blanco!',
+  });
+  swift_language.add_sentence('create_graph', {
+    'en': 'Create Graph',
+    'es': 'Crear Grafico',
+  });
+  swift_language.add_sentence('create_graph_button', {
+    'en': '<i class="fa fa-plus"></i> Create Graph',
+    'es': '<i class="fa fa-plus"></i> Crear Grafico',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -368,95 +404,168 @@ $(function(){
           <div class="row" style="padding-top:15px;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
               <div class="box" id="report-box">
+                <div class="box-body table-responsive no-padding swift-table">
+                  <div class="table table-hover">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tab-pane" id="journal-graphs">
-        <div class="row form-inline">
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="journal-reports-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
-              <div class="input-group date">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text" class="form-control daterangepicker-sel" id="journal-graphs-date-range">
+        <div class="hideable hide" id="journal-create-graph">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <h3 id="create-graph-title">@lang('accounting/journal.create_graph')</h3>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-graph-variable" class="control-label">@lang('accounting/journal.variable')</label>
+                <input type="text" class="form-control" id="journal-create-graph-variable">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-graph-content" class="control-label">@lang('accounting/journal.content')</label>
+                <input type="text" class="form-control" id="journal-graph-report-content">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-create-graph-add">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.add')
+                </button>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="form-group">
-              <label for="journal-graphs-graph" class="control-label">@lang('accounting/journal.graph')</label>
-              <select class="form-control" id="journal-graphs-graph">
-                @foreach(\App\Graph::all() as $graph)
-                  <option value="{{ $graph->id }}">{{ $graph->name }}</option>
-                @endforeach
-              </select>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-graph-title" class="control-label">@lang('accounting/journal.report_title')</label>
+                <input type="text" class="form-control" id="journal-create-graph-title">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label class="control-label">@lang('accounting/journal.variables')</label>
+                <div id="journal-create-graph-variables">
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="journal-graphs-generate">
-                <i class="fa fa-cogs"></i> @lang('accounting/journal.generate')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row form-inline lg-top-space md-top-space sm-top-space xs-top-space">
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-graphs-print">
-                <i class="fa fa-print"></i> @lang('accounting/journal.print')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-graphs-download">
-                <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 sm-top-space xs-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-success" id="journal-graphs-create">
-                <i class="fa fa-plus"></i> @lang('accounting/journal.create')
-              </button>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6  sm-top-space xs-top-space">
-            <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-graphs-edit">
-                <i class="fa fa-edit"></i> @lang('accounting/journal.edit')
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
-            <div class="box">
-              <div class="box-body table-responsive no-padding swift-table">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>@lang('accounting/journal.date')</th>
-                      <th>@lang('accounting/journal.account_name')</th>
-                      <th>@lang('accounting/journal.debit')</th>
-                      <th>@lang('accounting/journal.credit')</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+          <div class="row form-inline" style="padding-top: 15px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">@lang('accounting/journal.graph')</h3>
+                </div>
+                <div class="box-body table-responsive no-padding swift-table">
+                  <div class="table table-hover">
+                    <div id="graph-layout">
 
-                  </tbody>
-                </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-create-report-create">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.create_report')
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showable">
+          <div class="row form-inline">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-reports-date-range" class="control-label">@lang('accounting/journal.date_range')</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control daterangepicker-sel" id="journal-graphs-date-range">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-graphs-graph" class="control-label">@lang('accounting/journal.graph')</label>
+                <select class="form-control" id="journal-graphs-graph">
+                  @foreach(\App\Graph::all() as $graph)
+                    <option value="{{ $graph->id }}">{{ $graph->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-graphs-generate">
+                  <i class="fa fa-cogs"></i> @lang('accounting/journal.generate')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space xs-top-space">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-graphs-print">
+                  <i class="fa fa-print"></i> @lang('accounting/journal.print')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-graphs-download">
+                  <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 sm-top-space xs-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="journal-graphs-create">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.create')
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6  sm-top-space xs-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-info" id="journal-graphs-edit">
+                  <i class="fa fa-edit"></i> @lang('accounting/journal.edit')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-top:15px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
+              <div class="box">
+                <div class="box-body table-responsive no-padding swift-table" id="journal-graph">
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tab-pane" id="journal-configuration">
+        <div class="row lg-top-space md-top-space sm-top-space">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="journal-configuration-entity_type" class="control-label">@lang('accounting/journal.entity_type')</label>
+              <select class="form-control" id="journal-configuration-entity-type">
+                <option value="natural">@lang('accounting/journal.natural')</option>
+                <option value="legal">@lang('accounting/journal.legal')</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
@@ -470,12 +579,20 @@ $(function(){
               <input type="text" class="form-control" id="journal-configuration-advanced-vat">
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space" id="vat-percentage-div">
             <div class="form-group">
               <label for="journal-configuration-vat-percentage" class="control-label">@lang('accounting/journal.vat_percentage')</label>
               <div class="input-group">
                 <input type="text" class="form-control" id="journal-configuration-vat-percentage">
                 <span class="input-group-addon">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space hide" id="fixed-fee-div">
+            <div class="form-group">
+              <label for="journal-configuration-fixed-fee" class="control-label">@lang('accounting/journal.vat_percentage')</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="journal-configuration-fixed-fee">
               </div>
             </div>
           </div>
@@ -493,13 +610,29 @@ $(function(){
               <input type="text" class="form-control" id="journal-configuration-advanced-it">
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space" id="it-percentage-div">
             <div class="form-group">
               <label for="journal-configuration-it-percentage" class="control-label">@lang('accounting/journal.it_percentage')</label>
               <div class="input-group">
                 <input type="text" class="form-control" id="journal-configuration-it-percentage">
                 <span class="input-group-addon">%</span>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row lg-top-space md-top-space sm-top-space hide" id="it-rules-div">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label class="control-label">@lang('accounting/journal.rules')</label>
+              <div id="journal-create-it-rules">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="journal-configuration-add-rule">
+                <i class="fa fa-plus"></i> @lang('accounting/journal.add_rule')
+              </button>
             </div>
           </div>
         </div>
@@ -510,6 +643,8 @@ $(function(){
               <input type="text" class="form-control" id="journal-configuration-isc">
             </div>
           </div>
+        </div>
+        <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <button type="button" class="btn btn-success" id="journal-configuration-save">

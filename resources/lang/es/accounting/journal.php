@@ -69,4 +69,10 @@ return [
     'columns' => 'Columnas',
     'close' => 'Cerrar',
     'period' => 'Periodo',
+    'entity_type' => 'Tipo de Entidad',
+    'natural' => 'Natural',
+    'legal' => 'Juridica',
+    'rules' => 'Reglas de IR',
+    'fixed_fee' => 'Cuota Fija',
+    'add_rule' => 'Agregar Reglas',
 ];

@@ -11,8 +11,120 @@ use App\JournalEntry;
 use App\JournalEntryBreakdown;
 use App\Account;
 use App\Report;
+use App\AccountingAccount;
 class JournalController extends Controller
 {
+  public function save_configuration() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'retained_vat' => 'required',
+        'advanced_vat' => 'required',
+        'retained_it' => 'required',
+        'advanced_it' => 'required',
+        'isc' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $accounting_accounts = AccountingAccount::where('id', 1)->first();
+
+    $account_check = Account::where('code', Input::get('retained_VAT_account'))->first();
+    if(!$account_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_VAT_account')
+      );
+      return response()->json($response);
+    }
+    if($account_check->type != 'li') {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_VAT_account')
+      );
+      return response()->json($response);
+    }
+
+    $account_check = Account::where('code', Input::get('advanced_VAT_account'))->first();
+    if(!$account_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_VAT_account')
+      );
+      return response()->json($response);
+    }
+    if($account_check->type != 'as') {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_VAT_account')
+      );
+      return response()->json($response);
+    }
+
+    $account_check = Account::where('code', Input::get('retained_IT_account'))->first();
+    if(!$account_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_IT_account')
+      );
+      return response()->json($response);
+    }
+    if($account_check->type != 'li') {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_IT_account')
+      );
+      return response()->json($response);
+    }
+
+    $account_check = Account::where('code', Input::get('advanced_IT_account'))->first();
+    if(!$account_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_IT_account')
+      );
+      return response()->json($response);
+    }
+    if($account_check->type != 'as') {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_IT_account')
+      );
+      return response()->json($response);
+    }
+
+    $accounting_accounts->retained_VAT_account = Input::get('retained_vat');
+    $accounting_accounts->advanced_VAT_account = Input::get('advanced_vat');
+    if(Input::get('vat_percentage')) {
+      $accounting_accounts->VAT_percentage = Input::get('vat_percentage');
+    }
+    if(Input::get('fixed_fee')) {
+      $accounting_accounts->fixed_fee = Input::get('fixed_fee');
+    }
+    $accounting_accounts->retained_IT_account = Input::get('retained_it');
+    $accounting_accounts->advanced_IT_account = Input::get('advanced_it');
+    if(Input::get('it_percentage')) {
+      $accounting_accounts->IT_percentage = Input::get('it_percentage');
+    }
+    if(Input::get('it_rules')) {
+      $accounting_accounts->IT_rules = json_encode(Input::get('it_rules'));
+    }
+    $accounting_accounts->ISC_account = Input::get('isc');
+    $accounting_accounts->entity_type = Input::get('entity_type');
+
+    $accounting_accounts->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/journal_controller.accounting_accounts_updated')
+    );
+    return response()->json($response);
+  }
 
   private function convert_account_type($type) {
     switch($type) {
@@ -652,6 +764,7 @@ class JournalController extends Controller
 
     $row = 0;
     $col = 0;
+    $max_row = 0;
     $layout = array();
     foreach($report['layout'] as $index => $data) {
       foreach($data['columns'] as $i => $column) {
@@ -660,6 +773,7 @@ class JournalController extends Controller
           foreach($column as $sub_i => $sub_column) {
             $entry_parts = preg_split('/(\(|\))/', $sub_column);
             if($entry_parts[0] == 'variable') {
+              $count = 0;
               foreach($variables[$entry_parts[1]] as $key => $result) {
                 for($i = 0; $i < $col; $i++) {
                   if(!isset($layout[$current_row][$i])){
@@ -668,14 +782,24 @@ class JournalController extends Controller
                 }
                 if($key == 'total') {
                   $layout[$current_row][$col] = $result['total'];
+                  $current_row++;
+                  if($current_row > $max_row) {
+                    $max_row = $current_row;
+                  }
                 } else {
                   $layout[$current_row][$col] = $key;
                   $col++;
                   $layout[$current_row][$col] = $result['total'];
+                  if(count($variables[$entry_parts[1]]) > 1) {
+                    $current_row++;
+                    if($current_row > $max_row) {
+                      $max_row = $current_row;
+                    }
+                  }
                 }
-                $col = $i;
-                if(count($variables[$entry_parts[1]]) > 1) {
-                  $current_row++;
+                $count++;
+                if($count != count($variables[$entry_parts[1]])) {
+                  $col = $i;
                 }
               }
             } else {
@@ -686,6 +810,9 @@ class JournalController extends Controller
               }
               $layout[$current_row][$col] = strip_tags($sub_column);
               $current_row++;
+              if($current_row > $max_row) {
+                $max_row = $current_row;
+              }
             }
           }
         } else {
@@ -708,16 +835,26 @@ class JournalController extends Controller
               }
               if(count($variables[$entry_parts[1]]) > 1) {
                 $current_row++;
+                if($current_row > $max_row) {
+                  $max_row = $current_row;
+                }
               }
-              $col = $i;
+              $count++;
+              if($count != count($variables[$entry_parts[1]])) {
+                $col = $i;
+              }
             }
           } else {
             $layout[$current_row][$col] = strip_tags($column);
+            $current_row++;
+            if($current_row > $max_row) {
+              $max_row = $current_row;
+            }
           }
         }
         $col++;
-        $row = $current_row;
       }
+      $row = $max_row;
       $row++;
       $col = 0;
     }
@@ -897,6 +1034,7 @@ class JournalController extends Controller
     $response = array(
       'state' => 'Success',
       'report' => $report,
+      'message' => \Lang::get('controllers/journal_controller.report_updated')
     );
     return response()->json($response);
   }
