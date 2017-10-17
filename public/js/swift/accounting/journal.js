@@ -7,7 +7,7 @@ function Journal() {
   create_report = true;
   report_code = '';
   create_graph = true;
-  it_rules = {};
+  it_rules = [];
 }
 
 Journal.prototype = {
@@ -570,7 +570,7 @@ Journal.prototype = {
     window.open(baseUrl+'/swift/accounting/download_report?report_data='+JSON.stringify(report_data), '_blank')
   },
   save_configuration: function(e) {
-    var entry_type = $('#journal-configuration-entry-type').val();
+    var entity_type = $('#journal-configuration-entity-type').val();
     var retained_vat = $('#journal-configuration-retained-vat').val();
     var advanced_vat = $('#journal-configuration-advanced-vat').val();
     var vat_percentage = $('#journal-configuration-vat-percentage').val();
@@ -612,7 +612,7 @@ Journal.prototype = {
     var request = $.post('/swift/accounting/save_configuration', { retained_vat: retained_vat,
       advanced_vat: advanced_vat, vat_percentage: vat_percentage,
       retained_it: retained_it, advanced_it: advanced_it, it_percentage: it_percentage,
-      isc: isc, entry_type: entry_type, fixed_fee: fixed_fee,
+      isc: isc, entity_type: entity_type, fixed_fee: fixed_fee,
       it_rules: it_rules, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
@@ -620,6 +620,7 @@ Journal.prototype = {
         swift_utils.display_error(data.error);
         return;
       }
+      swift_utils.display_success(data.message);
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
@@ -641,17 +642,167 @@ Journal.prototype = {
     $('#create-graph-title').html(swift_language.get_sentence('create_graph'));
     $('#journal-create-graph-create').html(swift_language.get_sentence('create_graph_button'));
   },
+  change_entity_type: function() {
+    var type = $('#journal-configuration-entity-type').val();
+    if(type == 'natural') {
+      $('#vat-percentage-div').addClass('hide');
+      $('#fixed-fee-div').removeClass('hide');
+      $('#it-percentage-div').addClass('hide');
+      $('#it-rules-div').removeClass('hide');
+    } else {
+      $('#vat-percentage-div').removeClass('hide');
+      $('#fixed-fee-div').addClass('hide');
+      $('#it-percentage-div').removeClass('hide');
+      $('#it-rules-div').addClass('hide');
+    }
+  },
+  display_it_rules: function() {
+    $('#journal-create-it-rules').empty();
+    $.each(it_rules, function(key, data) {
+      var variable = $([
+          '<div class="row journal-config-group" id="journal-config-'+key+'">',
+            '<div class="col-xs-10">',
+              '<p class="variable-padding">',
+                data['start']+' - '+data['end'],
+              '</p>',
+            '</div>',
+            '<div class="col-xs-1">',
+              '<button class="btn btn-danger">',
+                '<i class="fa fa-trash"></i>',
+              '</button>',
+            '</div>',
+          '</div>'].join("\n"));
+      $('#journal-create-it-rules').append(variable);
+    });
+  },
+  create_it_rule: function(e) {
+    var start = $('#add-configuration-rule-start').val();
+    var end = $('#add-configuration-rule-end').val();
+    var percentage = $('#add-configuration-rule-percentage').val();
+
+    it_rules.push({'start':start,'end':end,'percentage':percentage});
+
+    this.display_it_rules();
+    $('#add-configuration-rule').modal('hide');
+  },
+  clear_it_rule_form: function(e) {
+    $('#add-configuration-rule-start').val('');
+    $('#add-configuration-rule-end').val('');
+    $('#add-configuration-rule-percentage').val('');
+  },
+  delete_rule: function(e) {
+    var i = $(e.target).closest('.journal-config-group').attr('id').split('-')[2];
+    it_rules.splice(i, 1);
+    this.display_it_rules();
+  },
+  paint_graph: function(e) {
+    var ctx = document.getElementById("generated-graph").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Costos de Venta", "Ventas", "Papeleria", "Personal", "Gastos", "Impuestos"],
+            datasets: [{
+                label: 'Analisis',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+  },
 }
 
 var journal_js = new Journal();
 
 // Define Event Listeners.
 swift_event_tracker.register_swift_event(
+  '#journal-graphs-generate',
+  'click',
+  journal_js,
+  'paint_graph');
+
+$(document).on('click', '#journal-graphs-generate', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-graphs-generate');
+});
+
+swift_event_tracker.register_swift_event(
+  '.journal-config-group > div > .btn-danger',
+  'click',
+  journal_js,
+  'delete_rule');
+
+$(document).on('click', '.journal-config-group > div > .btn-danger', function(e) {
+  swift_event_tracker.fire_event(e, '.journal-config-group > div > .btn-danger');
+});
+
+swift_event_tracker.register_swift_event(
+  '#add-configuration-rule-add',
+  'click',
+  journal_js,
+  'create_it_rule');
+
+$(document).on('click', '#add-configuration-rule-add', function(e) {
+  swift_event_tracker.fire_event(e, '#add-configuration-rule-add');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-configuration-add-rule',
+  'click',
+  journal_js,
+  'clear_it_rule_form');
+
+$(document).on('click', '#journal-configuration-add-rule', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-configuration-add-rule');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-configuration-entity-type',
+  'change',
+  journal_js,
+  'change_entity_type');
+
+$(document).on('change', '#journal-configuration-entity-type', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-configuration-entity-type');
+});
+
+swift_event_tracker.register_swift_event(
   '#journal-graphs-create',
   'click',
   journal_js,
   'show_create_graph');
+swift_event_tracker.register_swift_event(
+  '.variable-group > div > .btn-danger',
+  'click',
+  journal_js,
+  'delete_variable');
 
+$(document).on('click', '.variable-group > div > .btn-danger', function(e) {
+  swift_event_tracker.fire_event(e, '.variable-group > div > .btn-danger');
+});
 $(document).on('click', '#journal-graphs-create', function(e) {
   swift_event_tracker.fire_event(e, '#journal-graphs-create');
 });
@@ -843,6 +994,78 @@ $(document).on('focus', '#create-entry-account', function(e) {
       // Get the suggestions.
       source: function (request, response) {
         $.post('/swift/accounting/suggest_accounts',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#journal-configuration-retained-vat', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_liability',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#journal-configuration-advanced-vat', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_asset',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#journal-configuration-retained-it', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_liability',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#journal-configuration-advanced-it', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_asset',
         { code: request.term,
           _token: swift_utils.swift_token()
         },

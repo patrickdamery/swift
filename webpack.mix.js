@@ -48,6 +48,7 @@ mix.styles([
     'public/js/jvectormap/jquery-jvectormap-world-mill-en.js',
     'public/js/jquery/knob/jquery.knob.min.js',
     'public/js/moment/moment.min.js',
+    'public/js/chartjs/chart.bundle.min.js',
     'public/js/bootstrap-datepicker/bootstrap-datepicker.js',
     'public/js/bootstrap-daterangepicker/daterangepicker.js',
     'public/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',

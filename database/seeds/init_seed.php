@@ -145,12 +145,12 @@ class init_seed extends Seeder
         'advanced_VAT_account' => '0',
         'VAT_percentage' => '15',
         'fixed_fee' => '0',
-        'ISC_acccount' => '0',
+        'ISC_account' => '0',
         'retained_IT_account' => '0',
         'advanced_IT_account' => '0',
         'IT_percentage' => '1',
-        'IT_rules' => '{}',
-        'entity_type' => 'juridica',
+        'IT_rules' => '[]',
+        'entity_type' => 'legal',
       ]);
     }
 }

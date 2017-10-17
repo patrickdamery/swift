@@ -216,6 +216,9 @@ i {
 .w-6 {
   width: 16.66%;
 }
+#graph-layout, #generated-graph {
+  width: 100%;
+}
 
 // Loading Page CSS.
 @keyframes lds-square {

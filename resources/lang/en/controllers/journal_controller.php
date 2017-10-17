@@ -33,4 +33,7 @@ return [
     'accounting_accounts_updated' => 'Configuration updated successfully!',
     'report_not_found' => 'Report not found!',
     'report_updated' => 'Report updated successfully!',
+    'account_code_not_found' => 'Could not find account with code: ',
+    'account_not_liability' => 'Account must be liability: ',
+    'account_not_asset' => 'Account must be asset: ',
 ];

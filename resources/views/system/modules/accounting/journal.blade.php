@@ -185,6 +185,7 @@ $(function(){
 </script>
 @include('system.components.accounting.create_entry')
 @include('system.components.accounting.create_report_row')
+@include('system.components.accounting.add_configuration_rule')
 <section class="content-header">
   <h1>
     @lang('accounting/journal.title')
@@ -414,6 +415,48 @@ $(function(){
         </div>
       </div>
       <div class="tab-pane" id="journal-graphs">
+        <script>
+          $(document).ready(function(){
+              journal_js.paint_graph();
+              /*var ctx = document.getElementById("graph-layout").getContext('2d');
+              var myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                      datasets: [{
+                          label: '# of Votes',
+                          data: [12, 19, 3, 5, 2, 3],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255,99,132,1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero:true
+                              }
+                          }]
+                      }
+                  }
+              });*/
+          });
+        </script>
         <div class="hideable hide" id="journal-create-graph">
           <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -463,11 +506,8 @@ $(function(){
                   <h3 class="box-title">@lang('accounting/journal.graph')</h3>
                 </div>
                 <div class="box-body table-responsive no-padding swift-table">
-                  <div class="table table-hover">
-                    <div id="graph-layout">
-
-                    </div>
-                  </div>
+                  <canvas id="graph-layout">
+                  </canvas>
                 </div>
               </div>
             </div>
@@ -546,8 +586,9 @@ $(function(){
           <div class="row" style="padding-top:15px;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
               <div class="box">
-                <div class="box-body table-responsive no-padding swift-table" id="journal-graph">
-
+                <div class="box-body table-responsive no-padding swift-table">
+                  <canvas id="generated-graph">
+                  </canvas>
                 </div>
               </div>
             </div>
@@ -555,13 +596,22 @@ $(function(){
         </div>
       </div>
       <div class="tab-pane" id="journal-configuration">
+        @php
+          $accounting_accounts = \App\AccountingAccount::where('id', 1)->first();
+        @endphp
+        <script>
+          $(document).ready(function(){
+              journal_js.set_it_rules({!! $accounting_accounts->IT_rules !!});
+              journal_js.display_it_rules();
+          });
+        </script>
         <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-entity_type" class="control-label">@lang('accounting/journal.entity_type')</label>
               <select class="form-control" id="journal-configuration-entity-type">
-                <option value="natural">@lang('accounting/journal.natural')</option>
-                <option value="legal">@lang('accounting/journal.legal')</option>
+                <option value="natural" {{ ($accounting_accounts->entity_type == 'natural') ? 'selected' : '' }}>@lang('accounting/journal.natural')</option>
+                <option value="legal" {{ ($accounting_accounts->entity_type == 'legal') ? 'selected' : '' }}>@lang('accounting/journal.legal')</option>
               </select>
             </div>
           </div>
@@ -570,30 +620,28 @@ $(function(){
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-retained-vat" class="control-label">@lang('accounting/journal.retained_vat')</label>
-              <input type="text" class="form-control" id="journal-configuration-retained-vat">
+              <input type="text" class="form-control" id="journal-configuration-retained-vat" value="{{ $accounting_accounts->retained_VAT_account }}">
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-advanced-vat" class="control-label">@lang('accounting/journal.advanced_vat')</label>
-              <input type="text" class="form-control" id="journal-configuration-advanced-vat">
+              <input type="text" class="form-control" id="journal-configuration-advanced-vat" value="{{ $accounting_accounts->advanced_VAT_account }}">
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space" id="vat-percentage-div">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space {{ ($accounting_accounts->entity_type == 'natural') ? 'hide' : '' }}" id="vat-percentage-div">
             <div class="form-group">
               <label for="journal-configuration-vat-percentage" class="control-label">@lang('accounting/journal.vat_percentage')</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="journal-configuration-vat-percentage">
+                <input type="text" class="form-control" id="journal-configuration-vat-percentage" value="{{ $accounting_accounts->VAT_percentage }}">
                 <span class="input-group-addon">%</span>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space hide" id="fixed-fee-div">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space {{ ($accounting_accounts->entity_type != 'natural') ? 'hide' : '' }}" id="fixed-fee-div">
             <div class="form-group">
-              <label for="journal-configuration-fixed-fee" class="control-label">@lang('accounting/journal.vat_percentage')</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="journal-configuration-fixed-fee">
-              </div>
+              <label for="journal-configuration-fixed-fee" class="control-label">@lang('accounting/journal.fixed_fee')</label>
+              <input type="text" class="form-control" id="journal-configuration-fixed-fee" value="{{ $accounting_accounts->fixed_fee }}">
             </div>
           </div>
         </div>
@@ -601,26 +649,26 @@ $(function(){
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-retained-it" class="control-label">@lang('accounting/journal.retained_it')</label>
-              <input type="text" class="form-control" id="journal-configuration-retained-it">
+              <input type="text" class="form-control" id="journal-configuration-retained-it" value="{{ $accounting_accounts->retained_IT_account }}">
             </div>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-advanced-it" class="control-label">@lang('accounting/journal.advanced_it')</label>
-              <input type="text" class="form-control" id="journal-configuration-advanced-it">
+              <input type="text" class="form-control" id="journal-configuration-advanced-it" value="{{ $accounting_accounts->advanced_IT_account }}">
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space" id="it-percentage-div">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space {{ ($accounting_accounts->entity_type == 'natural') ? 'hide' : '' }}" id="it-percentage-div">
             <div class="form-group">
               <label for="journal-configuration-it-percentage" class="control-label">@lang('accounting/journal.it_percentage')</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="journal-configuration-it-percentage">
+                <input type="text" class="form-control" id="journal-configuration-it-percentage" value="{{ $accounting_accounts->IT_percentage }}">
                 <span class="input-group-addon">%</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="row lg-top-space md-top-space sm-top-space hide" id="it-rules-div">
+        <div class="row lg-top-space md-top-space sm-top-space {{ ($accounting_accounts->entity_type != 'natural') ? 'hide' : '' }}" id="it-rules-div">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <label class="control-label">@lang('accounting/journal.rules')</label>
@@ -630,7 +678,7 @@ $(function(){
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="journal-configuration-add-rule">
+              <button type="button" class="btn btn-info" id="journal-configuration-add-rule" data-toggle="modal" data-target="#add-configuration-rule">
                 <i class="fa fa-plus"></i> @lang('accounting/journal.add_rule')
               </button>
             </div>
@@ -640,7 +688,7 @@ $(function(){
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="form-group">
               <label for="journal-configuration-isc" class="control-label">@lang('accounting/journal.isc')</label>
-              <input type="text" class="form-control" id="journal-configuration-isc">
+              <input type="text" class="form-control" id="journal-configuration-isc" value="{{ $accounting_accounts->ISC_account }}">
             </div>
           </div>
         </div>

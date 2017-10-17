@@ -33,4 +33,7 @@ return [
     'accounting_accounts_updated' => 'Configuracion actualizado exitosamente!',
     'report_not_found' => 'Reporte no encontrado!',
     'report_updated' => 'Reporte actualizado exitosamente!',
+    'account_code_not_found' => 'No se pudo encontrar la cuenta con codigo: ',
+    'account_not_liability' => 'Cuenta debe ser pasivo: ',
+    'account_not_asset' => 'Cuenta debe ser activo: ',
 ];

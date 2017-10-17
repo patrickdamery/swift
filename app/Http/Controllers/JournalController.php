@@ -34,84 +34,84 @@ class JournalController extends Controller
 
     $accounting_accounts = AccountingAccount::where('id', 1)->first();
 
-    $account_check = Account::where('code', Input::get('retained_VAT_account'))->first();
+    $account_check = Account::where('code', Input::get('retained_vat'))->first();
     if(!$account_check) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_VAT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_vat')
       );
       return response()->json($response);
     }
     if($account_check->type != 'li') {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_VAT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_vat')
       );
       return response()->json($response);
     }
 
-    $account_check = Account::where('code', Input::get('advanced_VAT_account'))->first();
+    $account_check = Account::where('code', Input::get('advanced_vat'))->first();
     if(!$account_check) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_VAT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_vat')
       );
       return response()->json($response);
     }
     if($account_check->type != 'as') {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_VAT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_vat')
       );
       return response()->json($response);
     }
 
-    $account_check = Account::where('code', Input::get('retained_IT_account'))->first();
+    $account_check = Account::where('code', Input::get('retained_it'))->first();
     if(!$account_check) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_IT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('retained_it')
       );
       return response()->json($response);
     }
     if($account_check->type != 'li') {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_IT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_not_liability').Input::get('retained_it')
       );
       return response()->json($response);
     }
 
-    $account_check = Account::where('code', Input::get('advanced_IT_account'))->first();
+    $account_check = Account::where('code', Input::get('advanced_it'))->first();
     if(!$account_check) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_IT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_code_not_found').Input::get('advanced_it')
       );
       return response()->json($response);
     }
     if($account_check->type != 'as') {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_IT_account')
+        'error' => \Lang::get('controllers/journal_controller.account_not_asset').Input::get('advanced_it')
       );
       return response()->json($response);
     }
 
     $accounting_accounts->retained_VAT_account = Input::get('retained_vat');
     $accounting_accounts->advanced_VAT_account = Input::get('advanced_vat');
-    if(Input::get('vat_percentage')) {
+    if(Input::get('entity_type') == 'legal') {
       $accounting_accounts->VAT_percentage = Input::get('vat_percentage');
     }
-    if(Input::get('fixed_fee')) {
+    if(Input::get('entity_type') == 'natural') {
       $accounting_accounts->fixed_fee = Input::get('fixed_fee');
     }
     $accounting_accounts->retained_IT_account = Input::get('retained_it');
     $accounting_accounts->advanced_IT_account = Input::get('advanced_it');
-    if(Input::get('it_percentage')) {
+    if(Input::get('entity_type') == 'legal') {
       $accounting_accounts->IT_percentage = Input::get('it_percentage');
     }
-    if(Input::get('it_rules')) {
+    if(Input::get('entity_type') == 'natural') {
       $accounting_accounts->IT_rules = json_encode(Input::get('it_rules'));
     }
     $accounting_accounts->ISC_account = Input::get('isc');

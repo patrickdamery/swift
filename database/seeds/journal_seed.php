@@ -16,7 +16,7 @@ class journal_seed extends Seeder
       $current_date = $begin_date;
 
       while($current_date != $end_date) {
-        for($i = 0; $i < 1000; $i++) {
+        for($i = 0; $i < 10000; $i++) {
           $total = rand(100, 1000);
           $last_entry = DB::table('journal_entries')
             ->orderBy('id', 'desc')
@@ -27,43 +27,83 @@ class journal_seed extends Seeder
           // Create Journal Entry.
           $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
           DB::table('journal_entries')->insert([
-            ['code' => $entry_code, 'state' => 1]
+            ['code' => $entry_code, 'entry_date' => $current_date, 'state' => 1]
           ]);
 
           // Now update the accounts.
-          DB::table('accounts')->where('code', $bank_account->account_code)
-            ->decrement('amount', Input::get('amount'));
-          $debit = DB::table('accounts')->where('code', $bank_account->account_code)
-            ->first()->amount;
+          if((rand(0,2) % 2) != 1) {
+            $bank_account = ((rand(0,2) % 2) != 1) ? '102.1' : '102.2';
+            DB::table('accounts')->where('code', $bank_account)
+              ->increment('amount', $total);
+            $credit = DB::table('accounts')->where('code', $bank_account)
+              ->first()->amount;
 
-          DB::table('accounts')->where('code', Input::get('account'))
-            ->decrement('amount', Input::get('amount'));
-          $credit = DB::table('accounts')->where('code', Input::get('account'))
-            ->first()->amount;
+            $account = ((rand(0,2) % 2) != 1) ? '444.2.1' : '444.2.2';
+            DB::table('accounts')->where('code', $account)
+              ->increment('amount', $total);
+            $debit = DB::table('accounts')->where('code', $account)
+              ->first()->amount;
 
-          // Make the entry breakdowns.
-          DB::table('journal_entries_breakdown')->insert([
-            [
-              'journal_entry_code' => $entry_code,
-              'debit' => 0,
-              'account_code' => $bank_account->account_code,
-              'description' => Input::get('description'),
-              'amount' => Input::get('amount'),
-              'balance' => $debit
-            ]
-          ]);
+            // Make the entry breakdowns.
+            DB::table('journal_entries_breakdown')->insert([
+              [
+                'journal_entry_code' => $entry_code,
+                'debit' => 0,
+                'account_code' => $bank_account,
+                'description' => 'Test Entry',
+                'amount' => $total,
+                'balance' => $credit
+              ]
+            ]);
 
-          DB::table('journal_entries_breakdown')->insert([
-            [
-              'journal_entry_code' => $entry_code,
-              'debit' => 1,
-              'account_code' => Input::get('account'),
-              'description' => Input::get('description'),
-              'amount' => Input::get('amount'),
-              'balance' => $credit
-            ]
-          ]);
+            DB::table('journal_entries_breakdown')->insert([
+              [
+                'journal_entry_code' => $entry_code,
+                'debit' => 1,
+                'account_code' => $account,
+                'description' => 'Test Entry',
+                'amount' => $total,
+                'balance' => $debit
+              ]
+            ]);
+          } else {
+            $bank_account = ((rand(0,2) % 2) != 1) ? '102.1' : '102.2';
+            DB::table('accounts')->where('code', $bank_account)
+              ->decrement('amount', $total);
+            $debit = DB::table('accounts')->where('code', $bank_account)
+              ->first()->amount;
+
+            $account = ((rand(0,2) % 2) != 1) ? '444.2.1' : '444.2.2';
+            DB::table('accounts')->where('code', $account)
+              ->decrement('amount', $total);
+            $credit = DB::table('accounts')->where('code', $account)
+              ->first()->amount;
+
+            // Make the entry breakdowns.
+            DB::table('journal_entries_breakdown')->insert([
+              [
+                'journal_entry_code' => $entry_code,
+                'debit' => 0,
+                'account_code' => $bank_account,
+                'description' => 'Test Entry',
+                'amount' => $total,
+                'balance' => $debit
+              ]
+            ]);
+
+            DB::table('journal_entries_breakdown')->insert([
+              [
+                'journal_entry_code' => $entry_code,
+                'debit' => 1,
+                'account_code' => $account,
+                'description' => 'Test Entry',
+                'amount' => $total,
+                'balance' => $credit
+              ]
+            ]);
+          }
         }
+        $current_date = date('Y-m-d H:i:s', strtotime($current_date.' +1 day'));
       }
     }
 }

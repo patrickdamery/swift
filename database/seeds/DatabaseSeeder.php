@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(init_seed::class);
         $this->call(test_seed::class);
+        //$this->call(journal_seed::class);
     }
 }
