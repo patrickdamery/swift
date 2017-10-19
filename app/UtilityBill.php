@@ -24,7 +24,7 @@ class UtilityBill extends Model
    */
   protected $fillable = [
       'utility_code', 'utility_date', 'bill_number', 'sub_total', 'discount',
-      'taxes', 'total', 'journal_entry_code',
+      'taxes', 'total', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

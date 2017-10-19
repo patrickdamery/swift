@@ -22,6 +22,7 @@ class CreateWorkerSavingsTransactions extends Migration
             $table->double('amount');
             $table->double('after');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->index('savings_code');
             $table->index('transaction_date');

@@ -7,6 +7,7 @@ function Journal() {
   create_report = true;
   report_code = '';
   create_graph = true;
+  graph_variables = {};
   it_rules = [];
 }
 
@@ -209,7 +210,7 @@ Journal.prototype = {
     var content_entries = calc_content.split(new RegExp('((?:\\+|\\-)|(?:\\*|\\/)).*?', 'g'));
 
     // Check that function calls are correct.
-    var rep_functions = ['variable', 'variacion', 'debito', 'credito', 'balance'];
+    var rep_functions = ['balance_inicial', 'balance_final', 'variable', 'variacion', 'debito', 'credito', 'balance'];
     var rep_operations = ['+', '-', '*', '/'];
     var count = 0;
     var check_accounts = [];
@@ -734,11 +735,204 @@ Journal.prototype = {
         }
     });
   },
+  add_graph_variable: function(e) {
+    // TODO: Revise this method, it can probably be optimized.
+    var name = $('#journal-graph-report-variable').val();
+    if(name == '') {
+      swift_utils.display_error(swift_language.get_sentence('no_variable_name'));
+      return;
+    }
+    if(name == 'periodo') {
+      swift_utils.display_error(swift_language.get_sentence('reserved_period'));
+      return;
+    }
+    var cont = $('#journal-graph-report-content').val();
+
+    // Make sure we start with a calc.
+    var journal_ref = this;
+    var calc_check = cont.search('calc');
+    if(calc_check != 0) {
+      swift_utils.display_error(swift_language.get_sentence('must_start_calc'));
+      return false;
+    }
+
+    // Make sure parenthesis match.
+    var parenthesis = cont.match(new RegExp('.*?(?:\\(|\\)).*?', 'g'));
+    var count = parenthesis ? parenthesis.length : 0;
+    if((count % 2) != 0) {
+      swift_utils.display_error(swift_language.get_sentence('malformed_function'));
+      return false;
+    }
+
+    // Make sure curly brackets match.
+    var curly_brackets = cont.match(new RegExp('.*?(?:\\{|\\}).*?', 'g'));
+    var count = curly_brackets ? curly_brackets.length : 0;
+    if((count % 2) != 0) {
+      swift_utils.display_error(swift_language.get_sentence('malformed_object'));
+      return false;
+    }
+
+    // Check calc contents.
+    var content_start = 5;
+    var content_parts = cont.slice(content_start).split('');
+    var parenthesis = 1;
+    var end = 0;
+    $.each(content_parts, function(key, data) {
+      if(parenthesis != 0) {
+        end++;
+        if(data == '(') {
+          parenthesis += 1;
+        } else if(data == ')') {
+          parenthesis -= 1;
+        }
+      }
+    });
+
+    // Get Calc function contents.
+    var content_end = content_start+end-1;
+    var calc_content = cont.slice(content_start, content_end);
+    var content_entries = calc_content.split(new RegExp('((?:\\+|\\-)|(?:\\*|\\/)).*?', 'g'));
+
+    // Check that function calls are correct.
+    var rep_functions = ['balance_inicial', 'balance_final', 'variable', 'variacion', 'debito', 'credito', 'balance'];
+    var rep_operations = ['+', '-', '*', '/'];
+    var count = 0;
+    var check_accounts = [];
+    var good = true;
+    $.each(content_entries, function(key, data) {
+      if((count % 2) == 0) {
+        // Get entry parts.
+        entry_parts = data.split(new RegExp('(?:\\(|\\)).*?', 'g'));
+
+        // Make sure function exists.
+        if(!rep_functions.includes(entry_parts[0])) {
+          swift_utils.display_error(swift_language.get_sentence('unrecognized_function')+entry_parts[0]);
+          good = false;
+        }
+
+        // Make sure JSON object is valid.
+        if(entry_parts[0] == 'variable') {
+          if(entry_parts[1] == 'periodo') {
+            swift_utils.display_error(swift_language.get_sentence('calc_period'));
+            good = false;
+          }
+          if(!report_variables.hasOwnProperty(entry_parts[1]) && good) {
+            swift_utils.display_error(swift_language.get_sentence('unexistent_variable')+entry_parts[1]);
+            good = false;
+          }
+        } else {
+          // Make sure object is formatted correctly.
+          try{
+            var json = JSON.parse(entry_parts[1]);
+            if(json.hasOwnProperty('tipo')) {
+              var tipos = ['activo', 'gasto', 'costo', 'pasivo', 'patrimonio', 'ingresos'];
+
+              if(!tipos.includes(json['tipo'])) {
+                swift_utils.display_error(swift_language.get_sentence('unrecognized_type')+json['tipo']);
+                good = false;
+              }
+            } else if(json.hasOwnProperty('codigo')) {
+              check_accounts.push(json['codigo']);
+            } else {
+              swift_utils.display_error(swift_language.get_sentence('object_malformed')+entry_parts[1]);
+              good = false;
+            }
+          } catch(e) {
+            swift_utils.display_error(swift_language.get_sentence('object_malformed')+entry_parts[1]);
+            good = false;
+          }
+        }
+      } else {
+        // Get operation.
+        if(!rep_operations.includes(data)) {
+          swift_utils.display_error(swift_language.get_sentence('unrecognized_operation')+data);
+          good = false;
+        }
+      }
+      count++;
+    });
+
+    var group_by = cont.slice((content_end+2));
+    var group_parts = group_by.split(new RegExp('(?:\\(|\\)).*?', 'g'));
+    var group_options = ['resumen', 'dia', 'semana', 'mes', 'año'];
+
+    if(!group_options.includes(group_options[1])) {
+      swift_utils.display_error(swift_language.get_sentence('unrecognized_group'));
+      good = false;
+    }
+
+    if(!good) {
+      return;
+    }
+
+    if(check_accounts.length > 0) {
+      swift_utils.busy(e.target);
+      var request = $.post('/swift/accounting/check_account_code', { code: check_accounts, _token: swift_utils.swift_token() });
+      request.done(function(data) {
+        swift_utils.free(e.target);
+        if(data.state != 'Success') {
+          journal_ref.remove_variable(name);
+          swift_utils.display_error(data.error);
+          return;
+        }
+
+        journal_ref.create_variable(name, cont);
+        journal_ref.show_available_variables();
+      });
+      request.fail(function(ev) {
+        swift_utils.free(e.target);
+        swift_utils.ajax_fail(ev);
+      });
+    } else {
+      journal_ref.create_graph_variable(name, cont);
+      journal_ref.show_graph_available_variables();
+    }
+  },
+  create_graph_variable: function(name, cont) {
+    var content_start = 5;
+    var content_parts = cont.slice(content_start).split('');
+    var parenthesis = 1;
+    var end = 0;
+    $.each(content_parts, function(key, data) {
+      if(parenthesis != 0) {
+        end++;
+        if(data == '(') {
+          parenthesis += 1;
+        } else if(data == ')') {
+          parenthesis -= 1;
+        }
+      }
+    });
+
+    // Get Calc function contents.
+    var content_end = content_start+end-1;
+    var calc_content = cont.slice(content_start, content_end);
+    var content_entries = calc_content.split(new RegExp('((?:\\+|\\-)|(?:\\*|\\/)).*?', 'g'));
+    var group_by = cont.slice((content_end+2));
+
+    // Save variable.
+    graph_variables[name] = {
+      'calc': content_entries,
+      'group_by': group_by
+    };
+    $('#journal-create-graph-variable').val('');
+    $('#journal-create-graph-content').val('');
+  },
 }
 
 var journal_js = new Journal();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#create-graph-add',
+  'change',
+  journal_js,
+  'add_graph_varible');
+
+$(document).on('change', '#create-graph-add', function(e) {
+  swift_event_tracker.fire_event(e, '#create-graph-add');
+});
+
 swift_event_tracker.register_swift_event(
   '#journal-graphs-generate',
   'click',

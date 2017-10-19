@@ -20,6 +20,7 @@ class CreateOtherExpenses extends Migration
             $table->text('reason');
             $table->double('value');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('type');

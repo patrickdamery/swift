@@ -16,7 +16,8 @@ class CreateSales extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('code', 10)->unique();
+            $table->string('branch_identifier', 2);
+            $table->string('code', 10);
             $table->string('worker_code', 10);
             $table->string('client_code', 10);
             $table->string('branch_code', 10);
@@ -37,6 +38,7 @@ class CreateSales extends Migration
             $table->index('client_code');
             $table->index('branch_code');
             $table->index('created');
+            $table->unique(['branch_identifier', 'code']);
             $table->foreign('client_code')->references('code')->on('clients');
             $table->foreign('branch_code')->references('code')->on('branches');
             $table->foreign('discount_code')->references('code')->on('discount_requests');

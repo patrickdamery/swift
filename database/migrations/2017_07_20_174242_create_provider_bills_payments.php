@@ -22,6 +22,7 @@ class CreateProviderBillsPayments extends Migration
             $table->double('payment');
             $table->double('debt');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('provider_bill_code');

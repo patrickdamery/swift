@@ -33,6 +33,7 @@ class CreateJourneys extends Migration
             $table->tinyInteger('state');
             $table->double('depreciation');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('vehicle_code');

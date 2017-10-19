@@ -16,6 +16,7 @@ class CreateSalesBreakdown extends Migration
         Schema::create('sales_breakdown', function (Blueprint $table) {
             $table->increments('id');
             $table->string('sales_code', 10);
+            $table->string('branch_identifier', 3);
             $table->string('product_code', 10);
             $table->string('discount_code', 10);
             $table->double('quantity');
@@ -24,8 +25,10 @@ class CreateSalesBreakdown extends Migration
             $table->json('extra_data');
 
             $table->index('sales_code');
+            $table->index('branch_identifier');
             $table->index('product_code');
             $table->foreign('sales_code')->references('code')->on('sales');
+            $table->foreign('branch_identifier')->references('branch_identifier')->on('sales');
             $table->foreign('product_code')->references('code')->on('products');
             $table->foreign('discount_code')->references('code')->on('discount_requests');
         });

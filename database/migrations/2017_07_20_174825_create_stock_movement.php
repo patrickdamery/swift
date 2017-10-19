@@ -17,19 +17,17 @@ class CreateStockMovement extends Migration
             $table->increments('id');
             $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('product_code', 10);
-            $table->double('quantity_before_movement');
-            $table->double('quantity_to_move');
-            $table->double('quantity_after_movement');
+            $table->double('amount');
             $table->tinyInteger('type');
             $table->string('reference_code', 10);
-            $table->double('taxes');
-            $table->double('total');
             $table->text('reason');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('product_code');
             $table->index('type');
+            $table->index('branch_identifier');
             $table->index('reference_code');
             $table->foreign('product_code')->references('code')->on('products');
         });

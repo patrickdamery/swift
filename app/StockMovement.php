@@ -23,9 +23,8 @@ class StockMovement extends Model
    * @var array
    */
   protected $fillable = [
-      'created', 'product_code', 'quanitity_before_movement', 'quantity_to_move',
-      'quantity_after_movement', 'type', 'reference_code', 'taxes', 'total', 'reason',
-      'reason', 'journal_entry_code',
+      'created', 'product_code', 'amount', 'type', 'reference_code', 'reason',
+      'reason', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

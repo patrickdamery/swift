@@ -21,7 +21,7 @@ class WorkerIncome extends Model
    */
   protected $fillable = [
       'code', 'income_date', 'branch_date', 'worker_code', 'income', 'type',
-      'payment_code', 'journal_entry_code',
+      'payment_code', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

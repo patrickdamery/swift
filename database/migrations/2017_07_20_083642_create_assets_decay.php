@@ -19,6 +19,7 @@ class CreateAssetsDecay extends Migration
             $table->timestamp('decayed_date');
             $table->double('value');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->index('asset_code');
             $table->foreign('asset_code')->references('code')->on('assets');

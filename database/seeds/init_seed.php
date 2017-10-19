@@ -69,6 +69,7 @@ class init_seed extends Seeder
       DB::table('configuration')->insert([
         'name' => '',
         'shortname' => '',
+        'main_server' => 'http://localhost',
         'ruc' => '',
         'dgi_auth' => '',
         'local_currency_code' => 'cord',

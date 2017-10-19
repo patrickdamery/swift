@@ -23,7 +23,7 @@ class DebitNote extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'client_code', 'state', 'amount', 'reason', 'journal_entry_code',
+      'code', 'client_code', 'state', 'amount', 'reason', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

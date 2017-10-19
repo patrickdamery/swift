@@ -20,7 +20,7 @@ class CashboxTransaction extends Model
    */
   protected $fillable = [
       'cashbox_code', 'code', 'transaction_time', 'type', 'amout',
-       'reason', 'journal_entry_code'
+       'reason', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

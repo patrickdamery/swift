@@ -25,7 +25,7 @@ class Reservation extends Model
   protected $fillable = [
       'created', 'code', 'worker_code', 'client_code', 'state', 'subtotal',
       'discount_code', 'taxes', 'total', 'transaction_type', 'transaction_code',
-      'deposit', 'journal_entry_code'
+      'deposit', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

@@ -160,7 +160,7 @@ class JournalController extends Controller
         break;
       case 'dia':
         $current = date('Y-m-d', strtotime($period[0]));
-        while($current != date('Y-m-d', strtotime($period[1]))) {
+        while($current <= date('Y-m-d', strtotime($period[1]))) {
           $results[$current] = array(
             'total' => 0
           );
@@ -746,9 +746,14 @@ class JournalController extends Controller
 
     // Calculate all required variables for report.
     $entries = DB::table('journal_entries')
-      ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+      //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+      ->join('journal_entries_breakdown', function($join) {
+        $join->on('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        $join->on('journal_entries_breakdown', 'journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier')
+      })
       ->select('journal_entries.*', 'journal_entries_breakdown.*')
       ->whereBetween('journal_entries.entry_date', $date_range)
+      ->orderBy('journal_entries.entry_date')
       ->get();
 
     $variables = array();
@@ -1113,6 +1118,9 @@ class JournalController extends Controller
       return response()->json($response);
     }
 
+    // Get branch identifier.
+    $branch_identifier = Worker::where('code', Auth::user()->worker_code)->first()->branch_identifier();
+
     $tries = 0;
     $complete = false;
     while($tries < 5 && !$complete) {
@@ -1120,6 +1128,7 @@ class JournalController extends Controller
         DB::beginTransaction();
         // First lock any data we will be working with.
         $last_entry = DB::table('journal_entries')
+          ->where('branch_identifier', $branch_identifier)
           ->orderBy('id', 'desc')
           ->limit(1)
           ->lockForUpdate()
@@ -1131,7 +1140,7 @@ class JournalController extends Controller
 
         $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
         DB::table('journal_entries')->insert([
-          ['code' => $entry_code, 'state' => 1]
+          ['code' => $entry_code, 'branch_identifier' => $branch_identifier, 'state' => 1]
         ]);
 
         // Create entry breakdown.
@@ -1164,11 +1173,11 @@ class JournalController extends Controller
           DB::table('journal_entries_breakdown')->insert([
             [
               'journal_entry_code' => $entry_code,
+              'branch_identifier' => $branch_identifier,
               'debit' => ($entry['type'] == 'debit') ? 1 : 0,
               'account_code' => $entry['account'],
               'description' => $entry['description'],
-              'amount' => $entry['amount'],
-              'balance' => $balance
+              'amount' => $entry['amount']
             ]
           ]);
         }
@@ -1289,7 +1298,11 @@ class JournalController extends Controller
     switch($type) {
       case 'detail':
         $journal = DB::table('journal_entries')
-          ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          ->join('journal_entries_breakdown', function($join){
+            $join->on('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+            $join->on('journal_entries_breakdown', 'journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier')
+          })
           ->select('journal_entries.*', 'journal_entries_breakdown.*')
           ->whereBetween('journal_entries.entry_date', $date_range)->get();
         break;
@@ -1315,7 +1328,11 @@ class JournalController extends Controller
         }
 
         $entries = DB::table('journal_entries')
-          ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          ->join('journal_entries_breakdown', function($join){
+            $join->on('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+            $join->on('journal_entries_breakdown', 'journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier')
+          })
           ->select('journal_entries_breakdown.*')
           ->whereBetween('journal_entries.entry_date', $date_range)
           ->get();

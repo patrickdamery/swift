@@ -16,6 +16,8 @@ class CreateBranchSettings extends Migration
         Schema::create('branch_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('branch_code', 10);
+            $table->string('identifier', 2);
+            $table->string('server_address', 20);
             $table->time('opening_time');
             $table->time('closing_time');
             $table->string('vehicle_group_code', 10);

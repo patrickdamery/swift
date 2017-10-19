@@ -21,7 +21,7 @@ class WorkerLoan extends Model
    */
   protected $fillable = [
       'code', 'worker_code', 'loan_date', 'amount', 'payment_code',
-      'journal_entry_code',
+      'journal_entry_code', 'branch_identifier',
   ];
 
   /**

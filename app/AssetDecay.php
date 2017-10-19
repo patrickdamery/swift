@@ -19,7 +19,7 @@ class AssetDecay extends Model
    * @var array
    */
   protected $fillable = [
-      'asset_code', 'decayed_date', 'value', 'journal_entry_code'
+      'asset_code', 'decayed_date', 'value', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

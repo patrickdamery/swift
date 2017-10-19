@@ -23,7 +23,7 @@ class Sale extends Model
    * @var array
    */
   protected $fillable = [
-      'created', 'code', 'worker_code', 'client_code', 'branch_code', 'credit_sale',
+      'created', 'branch_identifier', 'code', 'worker_code', 'client_code', 'branch_code', 'credit_sale',
       'subtotal', 'discount_code', 'taxes', 'total', 'pos_code', 'pos_commission',
       'transaction_type', 'transaction_code', 'state', 'journal_entry_code',
   ];

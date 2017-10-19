@@ -24,7 +24,7 @@ class ProviderBillPayment extends Model
    */
   protected $fillable = [
       'payment_date', 'provider_bill_code', 'transaction_code', 'transaction_type',
-      'payment', 'debt', 'journal_entry_code'
+      'payment', 'debt', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

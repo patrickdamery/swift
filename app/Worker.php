@@ -29,4 +29,11 @@ class Worker extends Model
    * Disable Timestamps.
    */
   public $timestamps = false;
+
+  /**
+   * Function to get workers branch identifier.
+   */
+  public function branch_identifier() {
+    $children = \App\BranchSetting::where('branch_code', $this->current_branch_code)->first()->identifier;
+  }  
 }

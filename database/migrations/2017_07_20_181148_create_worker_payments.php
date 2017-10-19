@@ -21,6 +21,7 @@ class CreateWorkerPayments extends Migration
             $table->json('payment_data');
             $table->double('total_paid');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->index('worker_code');
             $table->index('payment_date');

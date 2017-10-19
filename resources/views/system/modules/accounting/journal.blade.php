@@ -493,6 +493,16 @@ $(function(){
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
+                <label for="journal-create-graph-type" class="control-label">@lang('accounting/journal.graph_type')</label>
+                <select class="form-control" id="journal-create-graph-type">
+                  <option value="line">@lang('accounting/journal.line_graph')</option>
+                  <option value="bar">@lang('accounting/journal.bar_graph')</option>
+                  <option value="pie">@lang('accounting/journal.pie_chart')</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space xs-top-space">
+              <div class="form-group">
                 <label class="control-label">@lang('accounting/journal.variables')</label>
                 <div id="journal-create-graph-variables">
                 </div>
@@ -554,28 +564,14 @@ $(function(){
             </div>
           </div>
           <div class="row form-inline lg-top-space md-top-space sm-top-space xs-top-space">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <button type="button" class="btn btn-info" id="journal-graphs-print">
-                  <i class="fa fa-print"></i> @lang('accounting/journal.print')
-                </button>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <button type="button" class="btn btn-info" id="journal-graphs-download">
-                  <i class="fa fa-file-excel-o"></i> @lang('accounting/journal.descargar')
-                </button>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 sm-top-space xs-top-space">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <div class="form-group">
                 <button type="button" class="btn btn-success" id="journal-graphs-create">
                   <i class="fa fa-plus"></i> @lang('accounting/journal.create')
                 </button>
               </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6  sm-top-space xs-top-space">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <div class="form-group">
                 <button type="button" class="btn btn-info" id="journal-graphs-edit">
                   <i class="fa fa-edit"></i> @lang('accounting/journal.edit')

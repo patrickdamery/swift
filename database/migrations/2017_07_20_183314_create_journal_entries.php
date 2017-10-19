@@ -15,12 +15,14 @@ class CreateJournalEntries extends Migration
     {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 15)->unique();
+            $table->string('branch_identifier', 2);
+            $table->string('code', 15);
             $table->timestamp('entry_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('state');
             $table->softDeletes();
 
             $table->index('entry_date');
+            $table->unique(['branch_identifier', 'code']);
         });
     }
 

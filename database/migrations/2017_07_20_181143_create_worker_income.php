@@ -23,6 +23,7 @@ class CreateWorkerIncome extends Migration
             $table->tinyInteger('type');
             $table->string('payment_code', 10);
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->index('branch_code');
             $table->index('worker_code');

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use App\Account;
+use App\AccountBalanceHistory;
+use App\AccountBalanceHistoryBreakdown;
 use App\JournalEntryBreakdown;
 class AccountController extends Controller
 {
@@ -577,6 +579,33 @@ class AccountController extends Controller
       'amount' => Input::get('account')['amount'],
       'currency_code' => Input::get('account')['currency'],
     ));
+
+    // Check if we already have accounts_balance for this month.
+    $account_balance_history = AccountBalanceHistory::where('month', date('m'))
+      ->where('year', date('Y'))->first();
+    if($account_balance_history) {
+      AccountBalanceHistoryBreakdown::create(array(
+        'account_balance_history_code' => $account_balance_history->code,
+        'account_code' => $code,
+        'balance' => 0,
+      ));
+    } else {
+      $account_balance_code = AccountBalanceHistory::orderBy('id', 'desc')->first()->code;
+      $account_balance_code++;
+
+      $account_balance_history = AccountBalanceHistory::create(array(
+        'month' => date('m'),
+        'year' => date('Y'),
+        $code => $account_balance_code
+      ));
+
+      AccountBalanceHistoryBreakdown::create(array(
+        'account_balance_history_code' => $account_balance_history->code,
+        'account_code' => $code,
+        'balance' => 0,
+      ));
+    }
+
     $response = array(
       'state' => 'Success',
       'message' => \Lang::get('controllers/account_controller.account_created')

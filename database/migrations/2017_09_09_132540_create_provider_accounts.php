@@ -16,12 +16,12 @@ class CreateProviderAccounts extends Migration
       Schema::create('provider_accounts', function (Blueprint $table) {
           $table->increments('id');
           $table->string('code', 10)->unique();
-          $table->string('provider_code', 10);
-          $table->string('owed_account', 10);
-          $table->string('service_account', 10);
-          $table->string('stock_account', 10);
-          $table->string('intransit_account', 10);
-          $table->string('debt_account', 10);
+          $table->string('provider_code', 20);
+          $table->string('owed_account', 20);
+          $table->string('service_account', 20);
+          $table->string('stock_account', 20);
+          $table->string('intransit_account', 20);
+          $table->string('debt_account', 20);
 
           $table->foreign('provider_code')->references('code')->on('providers');
           $table->foreign('owed_account')->references('code')->on('accounts');

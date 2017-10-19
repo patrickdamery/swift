@@ -20,7 +20,7 @@ class BranchSetting extends Model
    */
   protected $fillable = [
       'branch_code', 'opening_time', 'closing_time', 'vehicle_group_code',
-       'worker_group_code'
+       'worker_group_code', 'server_address', 'identifier',
   ];
 
   /**

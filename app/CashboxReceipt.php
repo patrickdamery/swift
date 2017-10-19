@@ -20,7 +20,7 @@ class CashboxReceipt extends Model
    */
   protected $fillable = [
       'code', 'cashbox_transaction_code', 'client_code', 'receipt_time',
-       'amount', 'reason', 'journal_entry_code'
+       'amount', 'reason', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

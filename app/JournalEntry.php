@@ -23,7 +23,7 @@ class JournalEntry extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'state', 'entry_date'
+      'branch_identifier', 'code', 'state', 'entry_date'
   ];
 
   /**

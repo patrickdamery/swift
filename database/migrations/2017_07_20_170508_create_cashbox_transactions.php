@@ -22,6 +22,7 @@ class CreateCashboxTransactions extends Migration
             $table->double('amount');
             $table->text('reason');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->index('cashbox_code');
             $table->foreign('cashbox_code')->references('code')->on('cashboxes');

@@ -26,7 +26,7 @@ class Journey extends Model
       'code', 'journey_date', 'journey_time', 'vehicle_code', 'driver_code',
       'start_latitude', 'start_longitude', 'path_taken', 'end_latitude', 'end_longitude',
       'distance_travelled', 'end_address', 'journey_type', 'journey_reason_type',
-      'journey_reason_code', 'state', 'depreciation', 'journal_entry_code'
+      'journey_reason_code', 'state', 'depreciation', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

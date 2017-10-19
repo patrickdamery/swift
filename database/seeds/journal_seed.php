@@ -11,12 +11,12 @@ class journal_seed extends Seeder
      */
     public function run()
     {
-      $begin_date = date('Y-m-d H:i:s', strtotime('2 weeks ago'));
+      $begin_date = date('Y-m-d H:i:s', strtotime('3 weeks ago'));
       $end_date = date('Y-m-d H:i:s');
       $current_date = $begin_date;
 
       while($current_date != $end_date) {
-        for($i = 0; $i < 10000; $i++) {
+        for($i = 0; $i < 100000; $i++) {
           $total = rand(100, 1000);
           $last_entry = DB::table('journal_entries')
             ->orderBy('id', 'desc')

@@ -16,16 +16,18 @@ class CreateJournalEntriesBreakdown extends Migration
         Schema::create('journal_entries_breakdown', function (Blueprint $table) {
             $table->increments('id');
             $table->string('journal_entry_code', 10);
+            $table->string('branch_identifier', 3);
             $table->boolean('debit')->default(true);
             $table->string('account_code', 20);
             $table->string('description', 50);
             $table->double('amount');
-            $table->double('balance');
 
             $table->index('journal_entry_code');
+            $table->index('branch_identifier');
             $table->index('debit');
             $table->index('account_code');
             $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
+            $table->foreign('branch_identifier')->references('branch_identifier')->on('journal_entries');
             $table->foreign('account_code')->references('code')->on('accounts');
         });
     }

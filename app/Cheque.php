@@ -19,7 +19,7 @@ class Cheque extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'cheque_book_code', 'paid_to', 'cheque_number', 'journal_entry_code'
+      'code', 'cheque_book_code', 'paid_to', 'cheque_number', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

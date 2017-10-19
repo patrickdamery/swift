@@ -23,7 +23,7 @@ class OtherExpense extends Model
    * @var array
    */
   protected $fillable = [
-      'type', 'transaction_code', 'reason', 'value', 'journal_entry_code',
+      'type', 'transaction_code', 'reason', 'value', 'journal_entry_code', 'branch_identifier',
   ];
 
   /**

@@ -39,6 +39,15 @@ class test_seed extends Seeder
           'location_code' => $branch_location->code,
           'mayorship_account' => 0
       ]);
+      DB::table('branch_settings')->insert([
+          'branch_code' => '1',
+          'identifier' => 'a',
+          'server_address' => 'http://localhost',
+          'opening_time' => '07:00:00',
+          'closing_time' => '16:00:00',
+          'vehicle_group_code' => 0,
+          'worker_group_code' => 0,
+      ]);
 
       // Create some workers.
       $u = 1;

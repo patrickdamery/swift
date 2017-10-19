@@ -23,6 +23,7 @@ class CreateUtilityBills extends Migration
             $table->double('taxes');
             $table->double('total');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('utility_code');

@@ -20,8 +20,10 @@ class CreateCheques extends Migration
           $table->string('cheque_number', 10)->index();
           $table->string('paid_to', 60);
           $table->string('journal_entry_code', 15);
+          $table->string('branch_identifier', 3);
 
           $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
+          $table->foreign('branch_identifier')->references('branch_identifier')->on('journal_entries');
       });
     }
 

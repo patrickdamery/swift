@@ -23,11 +23,12 @@ class CreateReservations extends Migration
             $table->string('discount_code', 10);
             $table->double('taxes');
             $table->double('total');
-            $table->tinyInteger('transaction_type');   
+            $table->tinyInteger('transaction_type');
             $table->string('transaction_code', 10);
             $table->tinyInteger('state');
             $table->double('deposit');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('worker_code');

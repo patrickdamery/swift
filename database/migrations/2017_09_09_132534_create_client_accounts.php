@@ -16,9 +16,9 @@ class CreateClientAccounts extends Migration
       Schema::create('client_accounts', function (Blueprint $table) {
           $table->increments('id');
           $table->string('code', 10)->unique();
-          $table->string('client_code', 10);
-          $table->string('owed_account', 10);
-          $table->string('debt_account', 10);
+          $table->string('client_code', 20);
+          $table->string('owed_account', 20);
+          $table->string('debt_account', 20);
 
           $table->foreign('client_code')->references('code')->on('clients');
           $table->foreign('owed_account')->references('code')->on('accounts');

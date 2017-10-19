@@ -23,7 +23,7 @@ class Configuration extends Model
       'name', 'ruc', 'dgi_auth', 'local_currency_code', 'quote_life', 'reservation_life', 'charge_tip',
       'points_enabled', 'hourly_payment', 'points_percentage', 'current_version',
       'latest_version', 'auth_key', 'latest_key_chage', 'key_change_counter',
-      'base_url', 'modules', 'plugins'
+      'base_url', 'modules', 'plugins', 'main_address',
   ];
 
   /**

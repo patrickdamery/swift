@@ -23,7 +23,7 @@ class SaleBreakdown extends Model
    * @var array
    */
   protected $fillable = [
-      'sales_code', 'product_code', 'discount_code', 'quantity', 'cost',
+      'branch_identifier', 'sales_code', 'product_code', 'discount_code', 'quantity', 'cost',
       'price', 'extra_data'
   ];
 

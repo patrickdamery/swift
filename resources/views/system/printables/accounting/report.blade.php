@@ -33,7 +33,7 @@
         break;
       case 'dia':
         $current = date('Y-m-d', strtotime($period[0]));
-        while($current != date('Y-m-d', strtotime($period[1]))) {
+        while($current <= date('Y-m-d', strtotime($period[1]))) {
           $results[$current] = array(
             'total' => 0
           );
@@ -591,6 +591,7 @@
     ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
     ->select('journal_entries.*', 'journal_entries_breakdown.*')
     ->whereBetween('journal_entries.entry_date', $date_range)
+    ->orderBy('journal_entries.entry_date')
     ->get();
 
   $variables = array();
@@ -610,7 +611,7 @@
     <span>@lang('accounting/journal.period')</span>
     {{ date('d/m/Y', strtotime($date_range[0])) }} - {{ date('d/m/Y', strtotime($date_range[1])) }}</span>
   </div>
-  <div class="box-body table-responsive no-padding swift-table">
+  <div class="box-body">
     <div class="table table-hover">
       @foreach($report['layout'] as $index => $data)
         <div class="report-row">
