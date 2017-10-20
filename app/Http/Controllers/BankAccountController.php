@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Carbon;
 use DB;
+use Auth;
 
 use App\BankAccount;
 use App\Account;
@@ -15,6 +16,7 @@ use App\ChequeBook;
 use App\JournalEntry;
 use App\JournalEntryBreakdown;
 use App\BankLoan;
+use App\Worker;
 class BankAccountController extends Controller
 {
 

@@ -22,6 +22,7 @@ class CreateCashboxReceipt extends Migration
             $table->double('amount');
             $table->text('reason');
             $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
 
             $table->foreign('cashbox_transaction_code')->references('code')->on('cashbox_transactions');
         });

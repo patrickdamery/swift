@@ -20,7 +20,8 @@ class CreateCreditNotes extends Migration
             $table->tinyInteger('state')->default(0);
             $table->double('amount');
             $table->text('reason');
-            $table->string('journal_entry_code', 10);
+            $table->string('journal_entry_code', 15);
+            $table->string('branch_identifier', 3);
             $table->softDeletes();
 
             $table->index('client_code');

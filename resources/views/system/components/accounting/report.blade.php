@@ -588,7 +588,11 @@
 
   // Calculate all required variables for report.
   $entries = DB::table('journal_entries')
-    ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+    //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+    ->join('journal_entries_breakdown', function($join){
+      $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+      $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+    })
     ->select('journal_entries.*', 'journal_entries_breakdown.*')
     ->whereBetween('journal_entries.entry_date', $date_range)
     ->orderBy('journal_entries.entry_date')

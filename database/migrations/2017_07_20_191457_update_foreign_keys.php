@@ -145,6 +145,7 @@ class UpdateForeignKeys extends Migration
         });
         Schema::table('sales', function (Blueprint $table) {
             $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
+            $table->foreign('branch_identifier')->references('branch_identifier')->on('journal_entries');
             $table->foreign('pos_code')->references('code')->on('pos');
             $table->index('state');
             $table->index('credit_sale');
@@ -225,7 +226,8 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['account_code']);
         });
         Schema::table('assets_decay', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('bank_accounts', function (Blueprint $table) {
             $table->dropForeign(['account_code']);
@@ -245,16 +247,19 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['provider_code']);
         });
         Schema::table('utility_bills', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('cashboxes', function (Blueprint $table) {
             $table->dropForeign(['worker_code']);
         });
         Schema::table('cashbox_transactions', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('cashbox_receipt', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropForeign(['client_code']);
         });
         Schema::table('chat_messages', function (Blueprint $table) {
@@ -267,7 +272,8 @@ class UpdateForeignKeys extends Migration
             $table->dropIndex(['has_credit']);
         });
         Schema::table('credit_notes', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropIndex(['state']);
         });
         Schema::table('contracts', function (Blueprint $table) {
@@ -297,7 +303,8 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['currency_code']);
         });
         Schema::table('other_expenses', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('production_expenses', function (Blueprint $table) {
             $table->dropIndex(['stage']);
@@ -314,7 +321,8 @@ class UpdateForeignKeys extends Migration
             $table->dropIndex(['provider_type']);
         });
         Schema::table('provider_bills_payments', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropIndex(['transaction_type']);
         });
         Schema::table('quotations', function (Blueprint $table) {
@@ -331,12 +339,14 @@ class UpdateForeignKeys extends Migration
             $table->dropIndex(['created']);
         });
         Schema::table('reservations', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropIndex(['state']);
             $table->dropIndex(['created']);
         });
         Schema::table('sales', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropForeign(['pos_code']);
             $table->dropIndex(['state']);
             $table->dropIndex(['credit_sale']);
@@ -351,13 +361,15 @@ class UpdateForeignKeys extends Migration
             $table->dropIndex(['state']);
         });
         Schema::table('stock_movements', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('tabs', function (Blueprint $table) {
             $table->dropForeign(['discount_code']);
         });
         Schema::table('journeys', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
             $table->dropForeign(['driver_code']);
             $table->dropForeign(['vehicle_code']);
         });
@@ -370,7 +382,8 @@ class UpdateForeignKeys extends Migration
         });
         Schema::table('worker_loans', function (Blueprint $table) {
             $table->dropForeign(['payment_code']);
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('worker_savings', function (Blueprint $table) {
             $table->dropForeign(['account_code']);
@@ -380,10 +393,12 @@ class UpdateForeignKeys extends Migration
         });
         Schema::table('workers_income', function (Blueprint $table) {
             $table->dropForeign(['payment_code']);
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('worker_payments', function (Blueprint $table) {
-            $table->dropForeign(['journal_entry_code', 'branch_identifier']);
+            $table->dropForeign(['journal_entry_code']);
+            $table->dropForeign(['branch_identifier']);
         });
         Schema::table('importation_orders_breakdown', function (Blueprint $table) {
             $table->dropForeign(['product_code']);

@@ -13,10 +13,10 @@ class CreateAccountBalanceHistory extends Migration
      */
      public function up()
      {
-       Schema::create('account_balance_history', function (Blueprint $table) {
+       Schema::create('account_history', function (Blueprint $table) {
          $table->increments('id');
          $table->string('month', 3);
-         $table->string('year', 3);
+         $table->string('year', 4);
          $table->string('code', 10);
 
          $table->unique(['month', 'year']);
@@ -31,6 +31,6 @@ class CreateAccountBalanceHistory extends Migration
       */
      public function down()
      {
-       Schema::dropIfExists('account_balance_history');
+       Schema::dropIfExists('account_history');
      }
 }

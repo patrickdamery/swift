@@ -16,7 +16,7 @@ class CreateStockHistory extends Migration
        Schema::create('stock_history', function (Blueprint $table) {
          $table->increments('id');
          $table->string('month', 3);
-         $table->string('year', 3);
+         $table->string('year', 4);
          $table->string('code', 10);
 
          $table->unique(['month', 'year']);

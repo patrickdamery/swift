@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountBalanceHistoryBreakdown extends Model
+class AccountHistoryBreakdown extends Model
 {
   /**
    * The database table used by the model.
    *
    * @var string
    */
-  protected $table = 'account_balance_history_breakdown';
+  protected $table = 'account_history_breakdown';
 
   /**
    * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class AccountBalanceHistoryBreakdown extends Model
    * @var array
    */
   protected $fillable = [
-      'account_balance_history_code', 'account_code', 'balance'
+      'account_history_code', 'account_code', 'balance'
   ];
 
   /**

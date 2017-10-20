@@ -40,6 +40,7 @@
     case 'summary':
       $accounts = \App\Account::where('code', '!=', 0)
         ->orderBy('code')
+        ->withTrashed()
         //->orderBy('type')
         ->get();
 
@@ -55,7 +56,54 @@
             'type' => $account->type,
             'children' => $account->has_children,
             'parent' => $account->parent_account,
+            'deleted' => $account->deleted
           );
+      }
+
+      // Get Initial Balance
+      $initial_balance = DB::table('account_history_breakdown')
+        ->join('account_history', 'account_history_breakdown.account_history_code', 'account_history.code')
+        ->select('account_history.*', 'account_history_breakdown.*')
+        ->where('account_history.month', '<=', date('m', strtotime($date_range[0])))
+        ->where('account_history.year', '<=', date('Y', strtotime($date_range[0])))
+        ->get();
+
+      $month = '';
+      $year = '';
+      foreach($initial_balance as $balance) {
+        $journal[$balance->account_code]['initial'] = $balance->balance;
+        $month = $balance->month;
+        $year = $balance->year;
+      }
+
+      // Update intiial balance to whatever the start period was.
+      $entries = DB::table('journal_entries')
+        ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        ->select('journal_entries_breakdown.*')
+        ->whereBetween('journal_entries.entry_date', array(date('Y-m-d H:i:s', strtotime($year.'-'.$month.'-01')), $date_range[0]))
+        ->get();
+
+      foreach($entries as $entry) {
+        // Check if it's a debit transaction and update account data based on
+        // Account type.
+        if($entry->debit) {
+          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            $journal[$entry->account_code]['initial'] -= $entry->amount;
+          } else {
+            $journal[$entry->account_code]['initial'] += $entry->amount;
+          }
+        } else {
+          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            $journal[$entry->account_code]['initial'] += $entry->amount;
+          } else {
+            $journal[$entry->account_code]['initial'] -= $entry->amount;
+          }
+        }
+      }
+
+      // Now update final balance.
+      foreach($journal as $code => $entry) {
+        $journal[$code]['final'] = $journal[$code]['initial'];
       }
 
       $entries = DB::table('journal_entries')
@@ -74,37 +122,45 @@
           // Account type.
           if($entry->debit) {
             if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-              $journal[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
+              $journal[$entry->account_code]['final'] -= $entry->amount;
             } else {
-              $journal[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
+              $journal[$entry->account_code]['final'] += $entry->amount;
             }
             $journal[$entry->account_code]['debit'] += $entry->amount;
           } else {
             if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-              $journal[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
+              $journal[$entry->account_code]['final'] += $entry->amount;
             } else {
-              $journal[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
+              $journal[$entry->account_code]['final'] -= $entry->amount;
             }
             $journal[$entry->account_code]['credit'] += $entry->amount;
           }
-          $journal[$entry->account_code]['final'] = $entry->balance;
         } else {
           if($entry->debit) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+              $journal[$entry->account_code]['final'] -= $entry->amount;
+            } else {
+              $journal[$entry->account_code]['final'] += $entry->amount;
+            }
             $journal[$entry->account_code]['debit'] += $entry->amount;
           } else {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+              $journal[$entry->account_code]['final'] += $entry->amount;
+            } else {
+              $journal[$entry->account_code]['final'] -= $entry->amount;
+            }
             $journal[$entry->account_code]['credit'] += $entry->amount;
           }
-          $journal[$entry->account_code]['final'] = $entry->balance;
         }
       }
 
       foreach($journal as $code => $entry) {
         if(!$journal[$code]['added']) {
           $sums = sum_children($journal, $code);
-          $journal[$code]['initial'] += $sums['initial'];
-          $journal[$code]['final'] += $sums['final'];
-          $journal[$code]['credit'] += $sums['credit'];
-          $journal[$code]['debit'] += $sums['debit'];
+          $journal[$code]['initial'] = $sums['initial'];
+          $journal[$code]['final'] = $sums['final'];
+          $journal[$code]['credit'] = $sums['credit'];
+          $journal[$code]['debit'] = $sums['debit'];
         }
       }
       break;
@@ -147,7 +203,6 @@
             <th>@lang('accounting/journal.description')</th>
             <th>@lang('accounting/journal.debit')</th>
             <th>@lang('accounting/journal.credit')</th>
-            <th>@lang('accounting/journal.balance')</th>
           </tr>
           @break
         @case('summary')
@@ -175,13 +230,12 @@
               <td>{{ $entry->description }}</td>
               <td>{{ ($entry->debit) ? $entry->amount : '' }}</td>
               <td>{{ (!$entry->debit) ? $entry->amount : '' }}</td>
-              <td>{{ $entry->balance }}</td>
             </tr>
           @endforeach
           @break
         @case('summary')
           @foreach($journal as $code => $entry)
-            @if($count > $offset*$max && $count < $max+($offset*$max))
+            @if($count >= $offset*$max && $count < $max+($offset*$max))
               <tr class="journal-entry-row">
                 <td>{{ $code }}</td>
                 <td>{{ $entry['name'] }}</td>

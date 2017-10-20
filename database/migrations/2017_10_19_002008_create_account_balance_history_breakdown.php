@@ -13,13 +13,13 @@ class CreateAccountBalanceHistoryBreakdown extends Migration
      */
      public function up()
      {
-       Schema::create('account_balance_history_breakdown', function (Blueprint $table) {
+       Schema::create('account_history_breakdown', function (Blueprint $table) {
          $table->increments('id');
-         $table->string('account_balance_history_code', 10);
+         $table->string('account_history_code', 10);
          $table->string('account_code', 20);
          $table->double('balance');
 
-         $table->foreign('account_balance_history_code')->references('code')->on('account_balance_history');
+         $table->foreign('account_history_code')->references('code')->on('account_history');
          $table->foreign('account_code')->references('code')->on('accounts');
        });
      }
@@ -31,6 +31,6 @@ class CreateAccountBalanceHistoryBreakdown extends Migration
       */
      public function down()
      {
-       Schema::dropIfExists('account_balance_history_breakdown');
+       Schema::dropIfExists('account_history_breakdown');
      }
 }

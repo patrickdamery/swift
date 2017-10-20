@@ -15,8 +15,8 @@ class CreateJournalEntries extends Migration
     {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('branch_identifier', 2);
-            $table->string('code', 15);
+            $table->string('branch_identifier', 3)->index();
+            $table->string('code', 15)->index();
             $table->timestamp('entry_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->tinyInteger('state');
             $table->softDeletes();
