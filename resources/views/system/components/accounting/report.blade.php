@@ -540,7 +540,7 @@
     return $results;
   }
 
-  function calculate_variable($reports, $period, $name, $data, $entries, &$variables) {
+  function calculate_variable($reports, $group_by, $period, $name, $data, $entries, &$variables) {
     $operations = array();
     $calculations = array();
     foreach($data['calc'] as $index => $calc) {
@@ -553,7 +553,7 @@
         // If it's a variable make sure it's calculated.
         if($entry_parts[0] == 'variable') {
           if(!array_key_exists($entry_parts[1], $variables)) {
-            $variables[$entry_parts[1]] = calculate_variable($reports, $period, $entry_parts[1], $reports['variables'][$entry_parts[1]], $entries, $variables);
+            $variables[$entry_parts[1]] = calculate_variable($reports, $group_by, $period, $entry_parts[1], $reports['variables'][$entry_parts[1]], $entries, $variables);
             array_push($calculations, $variables[$entry_parts[1]]);
           } else {
             array_push($calculations, $variables[$entry_parts[1]]);
@@ -562,16 +562,16 @@
           // If it's not a variable make the calculation.
           switch($entry_parts[0]) {
             case 'variacion':
-              array_push($calculations, calculate_variation($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, calculate_variation($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'credito':
-              array_push($calculations, calculate_credit($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, calculate_credit($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'debito':
-              array_push($calculations, calculate_debit($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, calculate_debit($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'balance':
-              array_push($calculations, calculate_balance($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, calculate_balance($entries, $entry_parts[1], $group_by, $period));
               break;
             default:
               array_push($calculations, $calc);
@@ -583,7 +583,7 @@
       }
     }
     // Finally make the calculation.
-    return make_calculation($operations, $calculations, $period, $data['group_by']);
+    return make_calculation($operations, $calculations, $period, $group_by);
   }
 
   // Calculate all required variables for report.
@@ -604,7 +604,7 @@
   foreach($report['variables'] as $name => $data) {
     // Make sure we haven't already calculated this variable.
     if(!array_key_exists($name, $variables)) {
-      $variables[$name] = calculate_variable($report, $date_range, $name, $data, $entries, $variables);
+      $variables[$name] = calculate_variable($report, $group_by, $date_range, $name, $data, $entries, $variables);
     }
   }
 @endphp

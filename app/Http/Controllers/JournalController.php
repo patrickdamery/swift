@@ -923,6 +923,7 @@ class JournalController extends Controller
     return view('system.printables.accounting.report',
      [
        'report' => $report,
+       'group_by' => $report->group_by,
        'date_range' => $date_range,
     ]);
   }
@@ -965,6 +966,7 @@ class JournalController extends Controller
     return view('system.components.accounting.report',
      [
        'report' => $report,
+       'group_by' => $report->group_by,
        'date_range' => $date_range,
     ]);
   }
@@ -974,6 +976,7 @@ class JournalController extends Controller
       array(
         'report' => 'required',
         'name' => 'required',
+        'group_by' => 'required',
         'variables' => 'required',
         'layout' => 'required',
       )
@@ -999,6 +1002,7 @@ class JournalController extends Controller
     }
 
     $report->name = Input::get('name');
+    $report->group_by = Input::get('group_by');
     $report->layout = json_encode(Input::get('layout'));
     $report->variables = json_encode(Input::get('variables'));
     $report->save();
@@ -1044,12 +1048,121 @@ class JournalController extends Controller
     return response()->json($response);
   }
 
+  public function edit_graph() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'graph' => 'required',
+        'name' => 'required',
+        'group_by' => 'required',
+        'variables' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // TODO: Do not rely on javascript checks.
+
+    $graph = Graph::where('id', Input::get('graph'))->first();
+
+    if(!$report) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $graph->name = Input::get('name');
+    $graph->group_by = Input::get('group_by');
+    $graph->graph_type = json_encode(Input::get('layout'));
+    $graph->variables = json_encode(Input::get('variables'));
+    $graph->save();
+
+    $response = array(
+      'state' => 'Success',
+      'report' => $report,
+    );
+    return response()->json($response);
+  }
+
+  public function load_graph() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'graph' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $graph = Graph::where('id', Input::get('graph'))->first();
+
+    if(!$report) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+      );
+      return response()->json($response);
+    }
+
+    $graph->variables = json_decode($graph->variables);
+    $response = array(
+      'state' => 'Success',
+      'graph' => $graph,
+      'message' => \Lang::get('controllers/journal_controller.report_updated')
+    );
+    return response()->json($response);
+  }
+
+  public function create_graph() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'name' => 'required',
+        'variables' => 'required',
+        'type' => 'required',
+        'group_by' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // TODO: We should not depend on JS checks.
+    $report = Graph::create(array(
+      'name' => Input::get('name'),
+      'variables' => json_encode(Input::get('variables')),
+      'group_by' => Input::get('group_by'),
+      'group_type' => Input::get('type'),
+    ));
+
+    $response = array(
+      'state' => 'Success',
+      'report' => $report,
+      'message' => \Lang::get('controllers/journal_controller.report_created')
+    );
+    return response()->json($response);
+  }
+
   public function create_report() {
     $validator = Validator::make(Input::all(),
       array(
         'name' => 'required',
         'variables' => 'required',
         'layout' => 'required',
+        'group_by' => 'required',
       )
     );
     if($validator->fails()) {
@@ -1064,7 +1177,8 @@ class JournalController extends Controller
     $report = Report::create(array(
       'name' => Input::get('name'),
       'variables' => json_encode(Input::get('variables')),
-      'layout' => json_encode(Input::get('layout'))
+      'group_by' => Input::get('group_by'),
+      'layout' => json_encode(Input::get('layout')),
     ));
 
     $response = array(

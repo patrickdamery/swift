@@ -19,7 +19,7 @@ class Graph extends Model
    * @var array
    */
   protected $fillable = [
-      'name', 'setup'
+      'name', 'group_by', 'graph_type', 'variablers',
   ];
 
   /**

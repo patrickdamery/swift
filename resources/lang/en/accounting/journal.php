@@ -75,4 +75,13 @@ return [
     'rules' => 'IT Rules',
     'fixed_fee' => 'Fixed Fee',
     'add_rule' => 'Add Rule',
+    'graph_type' => 'Graph Type',
+    'line_graph' => 'Line',
+    'bar_graph' => 'Bar',
+    'pie_chart' => 'Pie',
+    'group_by' => 'Group By',
+    'day' => 'Day',
+    'week' => 'Week',
+    'month' => 'Month',
+    'year' => 'Year',
 ];

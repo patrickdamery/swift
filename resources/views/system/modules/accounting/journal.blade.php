@@ -303,11 +303,22 @@ $(function(){
           <div class="row form-inline lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
+                <label for="journal-create-report-group" class="control-label">@lang('accounting/journal.group_by')</label>
+                <select class="form-control" id="journal-create-report-group">
+                  <option value="day">@lang('accounting/journal.day')</option>
+                  <option value="week">@lang('accounting/journal.week')</option>
+                  <option value="month">@lang('accounting/journal.month')</option>
+                  <option value="year">@lang('accounting/journal.year')</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
                 <label for="journal-create-report-title" class="control-label">@lang('accounting/journal.report_title')</label>
                 <input type="text" class="form-control" id="journal-create-report-title">
               </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
               <div class="form-group">
                 <label class="control-label">@lang('accounting/journal.variables')</label>
                 <div id="journal-create-report-variables">
@@ -487,8 +498,13 @@ $(function(){
           <div class="row form-inline lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
-                <label for="journal-create-graph-title" class="control-label">@lang('accounting/journal.report_title')</label>
-                <input type="text" class="form-control" id="journal-create-graph-title">
+                <label for="journal-create-graph-group" class="control-label">@lang('accounting/journal.group_by')</label>
+                <select class="form-control" id="journal-create-graph-group">
+                  <option value="day">@lang('accounting/journal.day')</option>
+                  <option value="week">@lang('accounting/journal.week')</option>
+                  <option value="month">@lang('accounting/journal.month')</option>
+                  <option value="year">@lang('accounting/journal.year')</option>
+                </select>
               </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -506,6 +522,14 @@ $(function(){
                 <label class="control-label">@lang('accounting/journal.variables')</label>
                 <div id="journal-create-graph-variables">
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-graph-title" class="control-label">@lang('accounting/journal.report_title')</label>
+                <input type="text" class="form-control" id="journal-create-graph-title">
               </div>
             </div>
           </div>

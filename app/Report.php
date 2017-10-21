@@ -19,7 +19,7 @@ class Report extends Model
    * @var array
    */
   protected $fillable = [
-      'name', 'variables', 'layout',
+      'name', 'group_by', 'variables', 'layout',
   ];
 
   /**

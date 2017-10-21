@@ -16,7 +16,9 @@ class CreateGraphs extends Migration
       Schema::create('graphs', function (Blueprint $table) {
         $table->increments('id');
         $table->string('name', 25);
-        $table->json('setup');
+        $table->string('group_by', 7);
+        $table->string('graph_type', 7);
+        $table->json('variables');
       });
     }
 

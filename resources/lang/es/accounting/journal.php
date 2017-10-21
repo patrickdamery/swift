@@ -75,4 +75,13 @@ return [
     'rules' => 'Reglas de IR',
     'fixed_fee' => 'Cuota Fija',
     'add_rule' => 'Agregar Reglas',
+    'graph_type' => 'Tipo de Grafico',
+    'line_graph' => 'Linea',
+    'bar_graph' => 'Barras',
+    'pie_chart' => 'Circular',
+    'group_by' => 'Agrupar',
+    'day' => 'Dia',
+    'week' => 'Semana',
+    'month' => 'Mes',
+    'year' => 'Año',
 ];
