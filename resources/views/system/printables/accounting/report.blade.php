@@ -24,14 +24,13 @@
 
   function get_results_period($period, $group_by) {
     $results = array();
-    $group_parts = preg_split('/(\(|\))/', $group_by);
-    switch($group_parts[1]) {
+    switch($group_by) {
       case 'resumen':
         array_push($results, array(
           'total' => 0
         ));
         break;
-      case 'dia':
+      case 'day':
         $current = date('Y-m-d', strtotime($period[0]));
         while($current <= date('Y-m-d', strtotime($period[1]))) {
           $results[$current] = array(
@@ -40,18 +39,18 @@
           $current = date('Y-m-d', strtotime($current.' +1 day'));
         }
         break;
-      case 'semana':
+      case 'week':
         $current = date('o-W', strtotime($period[0]));
-        $current_timestamp = date('Y-m-d', strtotime($period[0]));
+        $current_timonthtamp = date('Y-m-d', strtotime($period[0]));
         while($current <= date('o-W', strtotime($period[1]))) {
           $results[$current] = array(
             'total' => 0
           );
-          $current_timestamp = date('Y-m-d', strtotime($current_timestamp.' +1 week'));
-          $current = date('o-W', strtotime($current_timestamp));
+          $current_timonthtamp = date('Y-m-d', strtotime($current_timonthtamp.' +1 week'));
+          $current = date('o-W', strtotime($current_timonthtamp));
         }
         break;
-      case 'mes':
+      case 'month':
         $current = date('Y-m', strtotime($period[0]));
         while($current <= date('Y-m', strtotime($period[1]))) {
           $results[$current] = array(
@@ -60,7 +59,7 @@
           $current = date('Y-m', strtotime($current.' +1 month'));
         }
         break;
-      case 'año':
+      case 'year':
         $current = date('Y', strtotime($period[0]));
         while($current <= date('Y', strtotime($period[1]))) {
           $results[$current] = array(
@@ -105,7 +104,6 @@
 
     $accounts = array();
     $results = get_results_period($period, $group_by);
-    $group_parts = preg_split('/(\(|\))/', $group_by);
 
     if(array_key_exists('tipo', $data)) {
       $type = convert_account_type($data['tipo']);
@@ -115,7 +113,7 @@
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
@@ -134,7 +132,7 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -152,7 +150,7 @@
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -170,7 +168,7 @@
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -188,7 +186,7 @@
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -212,7 +210,7 @@
       $accounts = get_accounts($data);
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
@@ -231,7 +229,7 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -249,7 +247,7 @@
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -267,7 +265,7 @@
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -285,7 +283,7 @@
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -315,8 +313,6 @@
     $accounts = array();
     $results = get_results_period($period, $group_by);
 
-    $group_parts = preg_split('/(\(|\))/', $group_by);
-
     if(array_key_exists('tipo', $data)) {
       $type = convert_account_type($data['tipo']);
       $accounts_type = \App\Account::where('type', $type)->get();
@@ -325,7 +321,7 @@
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
@@ -333,28 +329,28 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -367,7 +363,7 @@
       $accounts = get_accounts($data);
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
@@ -375,28 +371,28 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -415,8 +411,6 @@
     $accounts = array();
     $results = get_results_period($period, $group_by);
 
-    $group_parts = preg_split('/(\(|\))/', $group_by);
-
     if(array_key_exists('tipo', $data)) {
       $type = convert_account_type($data['tipo']);
       $accounts_type = \App\Account::where('type', $type)->get();
@@ -425,7 +419,7 @@
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
@@ -433,28 +427,28 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -467,7 +461,7 @@
       $accounts = get_accounts($data);
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
+        switch($group_by) {
           case 'resumen':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
@@ -475,28 +469,28 @@
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;

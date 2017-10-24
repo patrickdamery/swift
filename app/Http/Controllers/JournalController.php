@@ -11,6 +11,7 @@ use App\JournalEntry;
 use App\JournalEntryBreakdown;
 use App\Account;
 use App\Report;
+use App\Graph;
 use App\AccountingAccount;
 class JournalController extends Controller
 {
@@ -149,16 +150,54 @@ class JournalController extends Controller
     }
   }
 
+  private function get_graph_labels($period, $group_by) {
+    $results = array();
+
+    switch($group_by) {
+      case 'day':
+        $current = date('Y-m-d', strtotime($period[0]));
+        while($current <= date('Y-m-d', strtotime($period[1]))) {
+          array_push($results, $current);
+          $current = date('Y-m-d', strtotime($current.' +1 day'));
+        }
+        break;
+      case 'week':
+        $current = date('o-W', strtotime($period[0]));
+        $current_timonthtamp = date('Y-m-d', strtotime($period[0]));
+        while($current <= date('o-W', strtotime($period[1]))) {
+          array_push($results, $current);
+          $current_timonthtamp = date('Y-m-d', strtotime($current_timonthtamp.' +1 week'));
+          $current = date('o-W', strtotime($current_timonthtamp));
+        }
+        break;
+      case 'month':
+        $current = date('Y-m', strtotime($period[0]));
+        while($current <= date('Y-m', strtotime($period[1]))) {
+          array_push($results, $current);
+          $current = date('Y-m', strtotime($current.' +1 month'));
+        }
+        break;
+      case 'year':
+        $current = date('Y', strtotime($period[0]));
+        while($current <= date('Y', strtotime($period[1]))) {
+          array_push($results, $current);
+          $current = date('Y', strtotime($current.' +1 year'));
+        }
+        break;
+    }
+    return $results;
+  }
+
   private function get_results_period($period, $group_by) {
     $results = array();
-    $group_parts = preg_split('/(\(|\))/', $group_by);
-    switch($group_parts[1]) {
-      case 'resumen':
+
+    switch($group_by) {
+      case 'summary':
         array_push($results, array(
           'total' => 0
         ));
         break;
-      case 'dia':
+      case 'day':
         $current = date('Y-m-d', strtotime($period[0]));
         while($current <= date('Y-m-d', strtotime($period[1]))) {
           $results[$current] = array(
@@ -167,18 +206,18 @@ class JournalController extends Controller
           $current = date('Y-m-d', strtotime($current.' +1 day'));
         }
         break;
-      case 'semana':
+      case 'week':
         $current = date('o-W', strtotime($period[0]));
-        $current_timestamp = date('Y-m-d', strtotime($period[0]));
+        $current_timonthtamp = date('Y-m-d', strtotime($period[0]));
         while($current <= date('o-W', strtotime($period[1]))) {
           $results[$current] = array(
             'total' => 0
           );
-          $current_timestamp = date('Y-m-d', strtotime($current_timestamp.' +1 week'));
-          $current = date('o-W', strtotime($current_timestamp));
+          $current_timonthtamp = date('Y-m-d', strtotime($current_timonthtamp.' +1 week'));
+          $current = date('o-W', strtotime($current_timonthtamp));
         }
         break;
-      case 'mes':
+      case 'month':
         $current = date('Y-m', strtotime($period[0]));
         while($current <= date('Y-m', strtotime($period[1]))) {
           $results[$current] = array(
@@ -187,7 +226,7 @@ class JournalController extends Controller
           $current = date('Y-m', strtotime($current.' +1 month'));
         }
         break;
-      case 'año':
+      case 'year':
         $current = date('Y', strtotime($period[0]));
         while($current <= date('Y', strtotime($period[1]))) {
           $results[$current] = array(
@@ -232,7 +271,7 @@ class JournalController extends Controller
 
     $accounts = array();
     $results = $this->get_results_period($period, $group_by);
-    $group_parts = preg_split('/(\(|\))/', $group_by);
+
 
     if(array_key_exists('tipo', $data)) {
       $type = $this->convert_account_type($data['tipo']);
@@ -242,8 +281,8 @@ class JournalController extends Controller
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -261,7 +300,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -279,7 +318,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -297,7 +336,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -315,7 +354,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -339,8 +378,8 @@ class JournalController extends Controller
       $accounts = $this->get_accounts($data);
       $type = $this->get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -358,7 +397,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -376,7 +415,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -394,7 +433,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -412,7 +451,7 @@ class JournalController extends Controller
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -442,7 +481,7 @@ class JournalController extends Controller
     $accounts = array();
     $results = $this->get_results_period($period, $group_by);
 
-    $group_parts = preg_split('/(\(|\))/', $group_by);
+
 
     if(array_key_exists('tipo', $data)) {
       $type = $this->convert_account_type($data['tipo']);
@@ -452,36 +491,36 @@ class JournalController extends Controller
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -494,36 +533,36 @@ class JournalController extends Controller
       $accounts = $this->get_accounts($data);
       $type = $this->get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -542,7 +581,7 @@ class JournalController extends Controller
     $accounts = array();
     $results = $this->get_results_period($period, $group_by);
 
-    $group_parts = preg_split('/(\(|\))/', $group_by);
+
 
     if(array_key_exists('tipo', $data)) {
       $type = $this->convert_account_type($data['tipo']);
@@ -552,36 +591,36 @@ class JournalController extends Controller
       }
 
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -594,36 +633,36 @@ class JournalController extends Controller
       $accounts = $this->get_accounts($data);
       $type = $this->get_account_type($data['codigo']);
       foreach($entries as $entry) {
-        switch($group_parts[1]) {
-          case 'resumen':
+        switch($group_by) {
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
               }
             }
             break;
-          case 'dia':
+          case 'day':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m-d', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'semana':
+          case 'week':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-W', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'mes':
+          case 'month':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y-m', strtotime($entry->entry_date))]['total'] += $entry->amount;
               }
             }
             break;
-          case 'año':
+          case 'year':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[date('Y', strtotime($entry->entry_date))]['total'] += $entry->amount;
@@ -663,7 +702,7 @@ class JournalController extends Controller
     return $results;
   }
 
-  private function calculate_variable($reports, $period, $name, $data, $entries, &$variables) {
+  private function calculate_variable($reports, $group_by, $period, $name, $data, $entries, &$variables) {
     $operations = array();
     $calculations = array();
     foreach($data['calc'] as $index => $calc) {
@@ -685,16 +724,16 @@ class JournalController extends Controller
           // If it's not a variable make the calculation.
           switch($entry_parts[0]) {
             case 'variacion':
-              array_push($calculations, $this->calculate_variation($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, $this->calculate_variation($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'credito':
-              array_push($calculations, $this->calculate_credit($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, $this->calculate_credit($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'debito':
-              array_push($calculations, $this->calculate_debit($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, $this->calculate_debit($entries, $entry_parts[1], $group_by, $period));
               break;
             case 'balance':
-              array_push($calculations, $this->calculate_balance($entries, $entry_parts[1], $data['group_by'], $period));
+              array_push($calculations, $this->calculate_balance($entries, $entry_parts[1], $group_by, $period));
               break;
             default:
               array_push($calculations, $calc);
@@ -706,7 +745,7 @@ class JournalController extends Controller
       }
     }
     // Finally make the calculation.
-    return $this->make_calculation($operations, $calculations, $period, $data['group_by']);
+    return $this->make_calculation($operations, $calculations, $period, $group_by);
   }
 
   public function download_report() {
@@ -763,7 +802,7 @@ class JournalController extends Controller
     foreach($report['variables'] as $name => $data) {
       // Make sure we haven't already calculated this variable.
       if(!array_key_exists($name, $variables)) {
-        $variables[$name] = $this->calculate_variable($report, $date_range, $name, $data, $entries, $variables);
+        $variables[$name] = $this->calculate_variable($report, $report['group_by'], $date_range, $name, $data, $entries, $variables);
       }
     }
 
@@ -928,6 +967,172 @@ class JournalController extends Controller
     ]);
   }
 
+  private function rgba($rgb, $a) {
+    return 'rgba('.$rgb->r.','.$rgb->g.','.$rgb->b.','.$a.')';
+  }
+
+  public function generate_graph() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'graph' => 'required',
+        'date_range' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $graph = Graph::where('id', Input::get('graph'))->first();
+
+    if(!$graph) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.graph_not_found')
+      );
+      return response()->json($response);
+    }
+
+    // Explode date range.
+    $date_range = Input::get('date_range');
+    $date_range = explode(' - ', $date_range);
+    $date_range[0] = date('Y-m-d H:i:s', strtotime($date_range[0]));
+    $date_range[1] = date('Y-m-d H:i:s', strtotime($date_range[1].' 23:59:59'));
+
+    $graph->variables = json_decode($graph->variables);
+
+    // Calculate all required variables for report.
+    $entries = DB::table('journal_entries')
+      //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+      ->join('journal_entries_breakdown', function($join) {
+        $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+        $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+      })
+      ->select('journal_entries.*', 'journal_entries_breakdown.*')
+      ->whereBetween('journal_entries.entry_date', $date_range)
+      ->orderBy('journal_entries.entry_date')
+      ->get();
+
+    $variables = array();
+
+    $graph = json_decode(json_encode($graph), true);
+    foreach($graph['variables'] as $name => $data) {
+      // Make sure we haven't already calculated this variable.
+      if(!array_key_exists($name, $variables)) {
+        $variables[$name] = $this->calculate_variable($graph, $graph['group_by'], $date_range, $name, $data, $entries, $variables);
+      }
+    }
+
+    switch($graph['graph_type']) {
+      case 'line':
+        $graph_setup = array(
+          'type' => 'line',
+          'data' => array(
+            'labels' => $this->get_graph_labels($date_range, $graph['group_by']),
+            'datasets' => array()
+          )
+        );
+        $graph['graphed_variables'] = json_decode($graph['graphed_variables']);
+        $graph['colors'] = json_decode($graph['colors']);
+        foreach($graph['graphed_variables'] as $key => $data) {
+          $graph_data = array();
+          foreach($graph_setup['data']['labels'] as $index => $date) {
+            array_push($graph_data, $variables[$data][$date]['total']);
+          }
+          array_push($graph_setup['data']['datasets'], array(
+            'label' => $data,
+            'data' => $graph_data,
+            'backgroundColor' => $this->rgba($graph['colors']->$data, '0.2'),
+            'borderColor' => $this->rgba($graph['colors']->$data, '1'),
+            'borderWidth' => 1,
+          ));
+        }
+        break;
+      case 'bar':
+
+        if($graph['group_by'] == 'summary') {
+          $graph['graphed_variables'] = json_decode($graph['graphed_variables']);
+          $graph_setup = array(
+            'type' => 'bar',
+            'data' => array(
+              'labels' => $graph['graphed_variables'],
+              'datasets' => array()
+            )
+          );
+          $graph['colors'] = json_decode($graph['colors']);
+          foreach($graph['graphed_variables'] as $key => $data) {
+            $graph_data = array();
+            array_push($graph_data, $variables[$data][0]['total']);
+            array_push($graph_setup['data']['datasets'], array(
+              'label' => $data,
+              'data' => $graph_data,
+              'backgroundColor' => $this->rgba($graph['colors']->$data, '0.2'),
+              'borderColor' => $this->rgba($graph['colors']->$data, '1'),
+              'borderWidth' => 1,
+            ));
+          }
+        } else {
+          $graph_setup = array(
+            'type' => 'bar',
+            'data' => array(
+              'labels' => $this->get_graph_labels($date_range, $graph['group_by']),
+              'datasets' => array()
+            )
+          );
+          $graph['graphed_variables'] = json_decode($graph['graphed_variables']);
+          $graph['colors'] = json_decode($graph['colors']);
+          foreach($graph['graphed_variables'] as $key => $data) {
+            $graph_data = array();
+            foreach($graph_setup['data']['labels'] as $index => $date) {
+              array_push($graph_data, $variables[$data][$date]['total']);
+            }
+            array_push($graph_setup['data']['datasets'], array(
+              'label' => $data,
+              'data' => $graph_data,
+              'backgroundColor' => $this->rgba($graph['colors']->$data, '0.2'),
+              'borderColor' => $this->rgba($graph['colors']->$data, '1'),
+              'borderWidth' => 1,
+            ));
+          }
+        }
+        break;
+      case 'pie':
+        $graph['graphed_variables'] = json_decode($graph['graphed_variables']);
+        $graph_setup = array(
+          'type' => 'pie',
+          'data' => array(
+            'labels' => $graph['graphed_variables'],
+            'datasets' => array()
+          )
+        );
+        $graph['colors'] = json_decode($graph['colors']);
+        $backgroundColors = array();
+        $borderColors = array();
+        $graph_data = array();
+        foreach($graph['graphed_variables'] as $key => $data) {
+          array_push($graph_data, $variables[$data][0]['total']);
+          array_push($backgroundColors, $this->rgba($graph['colors']->$data, '0.2'));
+          array_push($borderColors, $this->rgba($graph['colors']->$data, '1'));
+        }
+        array_push($graph_setup['data']['datasets'], array(
+          'data' => $graph_data,
+          'backgroundColor' => $backgroundColors,
+          'borderColor' => $borderColors,
+          'borderWidth' => 1,
+        ));
+        break;
+    }
+
+    $response = array(
+      'state' => 'Success',
+      'setup' => $graph_setup
+    );
+    return response()->json($response);
+  }
+
   public function generate_report() {
     $validator = Validator::make(Input::all(),
       array(
@@ -1010,6 +1215,7 @@ class JournalController extends Controller
     $response = array(
       'state' => 'Success',
       'report' => $report,
+      'message' => \Lang::get('controllers/journal_controller.report_updated')
     );
     return response()->json($response);
   }
@@ -1043,7 +1249,6 @@ class JournalController extends Controller
     $response = array(
       'state' => 'Success',
       'report' => $report,
-      'message' => \Lang::get('controllers/journal_controller.report_updated')
     );
     return response()->json($response);
   }
@@ -1055,6 +1260,8 @@ class JournalController extends Controller
         'name' => 'required',
         'group_by' => 'required',
         'variables' => 'required',
+        'colors' => 'required',
+        'graphed_variables' => 'required'
       )
     );
     if($validator->fails()) {
@@ -1069,23 +1276,26 @@ class JournalController extends Controller
 
     $graph = Graph::where('id', Input::get('graph'))->first();
 
-    if(!$report) {
+    if(!$graph) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+        'error' => \Lang::get('controllers/journal_controller.graph_not_found')
       );
       return response()->json($response);
     }
 
     $graph->name = Input::get('name');
     $graph->group_by = Input::get('group_by');
-    $graph->graph_type = json_encode(Input::get('layout'));
+    $graph->graph_type = Input::get('type');
     $graph->variables = json_encode(Input::get('variables'));
+    $graph->colors = json_encode(Input::get('colors'));
+    $graph->graphed_variables = json_encode(Input::get('graphed_variables'));
     $graph->save();
 
     $response = array(
       'state' => 'Success',
-      'report' => $report,
+      'graph' => $graph,
+      'message' => \Lang::get('controllers/journal_controller.graph_updated')
     );
     return response()->json($response);
   }
@@ -1106,19 +1316,20 @@ class JournalController extends Controller
 
     $graph = Graph::where('id', Input::get('graph'))->first();
 
-    if(!$report) {
+    if(!$graph) {
       $response = array(
         'state' => 'Error',
-        'error' => \Lang::get('controllers/journal_controller.report_not_found')
+        'error' => \Lang::get('controllers/journal_controller.graph_not_found')
       );
       return response()->json($response);
     }
 
     $graph->variables = json_decode($graph->variables);
+    $graph->colors = json_decode($graph->colors);
+    $graph->graphed_variables = json_decode($graph->graphed_variables);
     $response = array(
       'state' => 'Success',
       'graph' => $graph,
-      'message' => \Lang::get('controllers/journal_controller.report_updated')
     );
     return response()->json($response);
   }
@@ -1130,6 +1341,8 @@ class JournalController extends Controller
         'variables' => 'required',
         'type' => 'required',
         'group_by' => 'required',
+        'colors' => 'required',
+        'graphed_variables' => 'required',
       )
     );
     if($validator->fails()) {
@@ -1141,17 +1354,19 @@ class JournalController extends Controller
     }
 
     // TODO: We should not depend on JS checks.
-    $report = Graph::create(array(
+    $graph = Graph::create(array(
       'name' => Input::get('name'),
       'variables' => json_encode(Input::get('variables')),
       'group_by' => Input::get('group_by'),
-      'group_type' => Input::get('type'),
+      'graph_type' => Input::get('type'),
+      'colors' => json_encode(Input::get('colors')),
+      'graphed_variables' => json_encode(Input::get('graphed_variables')),
     ));
 
     $response = array(
       'state' => 'Success',
-      'report' => $report,
-      'message' => \Lang::get('controllers/journal_controller.report_created')
+      'graph' => $graph,
+      'message' => \Lang::get('controllers/journal_controller.graph_created')
     );
     return response()->json($response);
   }

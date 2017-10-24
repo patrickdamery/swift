@@ -84,4 +84,6 @@ return [
     'week' => 'Semana',
     'month' => 'Mes',
     'year' => 'Año',
+    'graph_title' => 'Titulo de Grafico',
+    'graphed_variables' => 'Variables A Graficar',
 ];

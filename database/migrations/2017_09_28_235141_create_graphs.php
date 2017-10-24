@@ -19,6 +19,8 @@ class CreateGraphs extends Migration
         $table->string('group_by', 7);
         $table->string('graph_type', 7);
         $table->json('variables');
+        $table->json('colors');
+        $table->json('graphed_variables');
       });
     }
 

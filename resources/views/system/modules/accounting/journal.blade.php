@@ -177,6 +177,14 @@ $(function(){
     'en': '<i class="fa fa-plus"></i> Create Graph',
     'es': '<i class="fa fa-plus"></i> Crear Grafico',
   });
+  swift_language.add_sentence('edit_graph', {
+    'en': 'Edit Graph',
+    'es': 'Editar Grafico',
+  });
+  swift_language.add_sentence('edit_graph_button', {
+    'en': '<i class="fa fa-edit"></i> Edit Graph',
+    'es': '<i class="fa fa-edit"></i> Editar Grafico',
+  });
 
   // Check if we have already loaded the staff configuration JS file.
   if(typeof journal_js === 'undefined') {
@@ -305,6 +313,7 @@ $(function(){
               <div class="form-group">
                 <label for="journal-create-report-group" class="control-label">@lang('accounting/journal.group_by')</label>
                 <select class="form-control" id="journal-create-report-group">
+                  <option value="summary">@lang('accounting/journal.summary')</option>
                   <option value="day">@lang('accounting/journal.day')</option>
                   <option value="week">@lang('accounting/journal.week')</option>
                   <option value="month">@lang('accounting/journal.month')</option>
@@ -319,7 +328,7 @@ $(function(){
               </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
-              <div class="form-group">
+              <div>
                 <label class="control-label">@lang('accounting/journal.variables')</label>
                 <div id="journal-create-report-variables">
                 </div>
@@ -484,7 +493,7 @@ $(function(){
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
                 <label for="journal-create-graph-content" class="control-label">@lang('accounting/journal.content')</label>
-                <input type="text" class="form-control" id="journal-graph-report-content">
+                <input type="text" class="form-control" id="journal-create-graph-content">
               </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
@@ -500,6 +509,7 @@ $(function(){
               <div class="form-group">
                 <label for="journal-create-graph-group" class="control-label">@lang('accounting/journal.group_by')</label>
                 <select class="form-control" id="journal-create-graph-group">
+                  <option value="summary">@lang('accounting/journal.summary')</option>
                   <option value="day">@lang('accounting/journal.day')</option>
                   <option value="week">@lang('accounting/journal.week')</option>
                   <option value="month">@lang('accounting/journal.month')</option>
@@ -518,7 +528,7 @@ $(function(){
               </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space xs-top-space">
-              <div class="form-group">
+              <div>
                 <label class="control-label">@lang('accounting/journal.variables')</label>
                 <div id="journal-create-graph-variables">
                 </div>
@@ -528,8 +538,15 @@ $(function(){
           <div class="row form-inline lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
-                <label for="journal-create-graph-title" class="control-label">@lang('accounting/journal.report_title')</label>
+                <label for="journal-create-graph-title" class="control-label">@lang('accounting/journal.graph_title')</label>
                 <input type="text" class="form-control" id="journal-create-graph-title">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="journal-create-graph-graphed-variables" class="control-label">@lang('accounting/journal.graphed_variables')</label>
+                <select class="form-control" id="journal-create-graph-graphed-variables" multiple>
+                </select>
               </div>
             </div>
           </div>
@@ -539,7 +556,7 @@ $(function(){
                 <div class="box-header">
                   <h3 class="box-title">@lang('accounting/journal.graph')</h3>
                 </div>
-                <div class="box-body table-responsive no-padding swift-table">
+                <div class="box-body table-responsive no-padding swift-table" id="graph-layout-container">
                   <canvas id="graph-layout">
                   </canvas>
                 </div>
@@ -549,8 +566,8 @@ $(function(){
           <div class="row lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
-                <button type="button" class="btn btn-success" id="journal-create-report-create">
-                  <i class="fa fa-plus"></i> @lang('accounting/journal.create_report')
+                <button type="button" class="btn btn-success" id="journal-create-graph-create">
+                  <i class="fa fa-plus"></i> @lang('accounting/journal.create_graph')
                 </button>
               </div>
             </div>
@@ -606,7 +623,7 @@ $(function(){
           <div class="row" style="padding-top:15px;">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block">
               <div class="box">
-                <div class="box-body table-responsive no-padding swift-table">
+                <div class="box-body table-responsive no-padding swift-table" id="generated-graph-container">
                   <canvas id="generated-graph">
                   </canvas>
                 </div>

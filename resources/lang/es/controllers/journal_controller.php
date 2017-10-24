@@ -36,4 +36,8 @@ return [
     'account_code_not_found' => 'No se pudo encontrar la cuenta con codigo: ',
     'account_not_liability' => 'Cuenta debe ser pasivo: ',
     'account_not_asset' => 'Cuenta debe ser activo: ',
+    'graph_created' => 'Grafico creado exitosamente!',
+    'graph_not_found' => 'Grafico no encontrado!',
+    'graph_updated' => 'Grafico actualizado exitosamente!',
+
 ];

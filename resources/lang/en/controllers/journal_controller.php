@@ -36,4 +36,8 @@ return [
     'account_code_not_found' => 'Could not find account with code: ',
     'account_not_liability' => 'Account must be liability: ',
     'account_not_asset' => 'Account must be asset: ',
+    'graph_created' => 'Graph created successfully!',
+    'graph_not_found' => 'Graph not found!',
+    'graph_updated' => 'Graph updated successfully!',
+    'graphed_variables' => 'Variables To Graph',
 ];

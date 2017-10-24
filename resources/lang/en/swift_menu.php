@@ -72,6 +72,7 @@ return [
     'accounts' => 'Accounts',
     'bank_accounts' => 'Bank Accounts',
     'journal' => 'Journal',
+    'depreciating_assets' => 'Depreciating Assets',
     'income_statement' => 'Income Statement',
     'closing_tax' => 'Closing Tax',
     'balance_sheet' => 'Balance Sheet',

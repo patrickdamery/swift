@@ -72,6 +72,7 @@ return [
     'bank_accounts' => 'Cuentas de Banco',
     'accounts' => 'Cuentas',
     'journal' => 'Diario',
+    'depreciating_assets' => 'Activos Depreciables',
     'income_statement' => 'Estado de Resultado',
     'closing_tax' => 'Cierre Fiscal',
     'balance_sheet' => 'Hoja de Balance',

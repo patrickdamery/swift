@@ -17,12 +17,9 @@ class CreateAssets extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('description', 50);
-            $table->double('value');
-            $table->float('lifespan');
-            $table->string('group_code', 10);
-            $table->boolean('depreciates');
-            $table->string('depreciation_option', 8);
-            $table->string('account_code', 20);
+            $table->double('depreciation');
+            $table->string('asset_code', 20);
+            $table->string('depreciation_code', 20);
         });
     }
 

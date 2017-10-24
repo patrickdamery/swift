@@ -84,4 +84,5 @@ return [
     'week' => 'Week',
     'month' => 'Month',
     'year' => 'Year',
+    'graph_title' => 'Graph Title',
 ];

@@ -16,8 +16,6 @@ class CreateAssetsDecay extends Migration
         Schema::create('assets_decay', function (Blueprint $table) {
             $table->increments('id');
             $table->string('asset_code', 10);
-            $table->timestamp('decayed_date');
-            $table->double('value');
             $table->string('journal_entry_code', 15);
             $table->string('branch_identifier', 3);
 

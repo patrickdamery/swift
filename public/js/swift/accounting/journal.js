@@ -8,6 +8,9 @@ function Journal() {
   report_code = '';
   create_graph = true;
   graph_variables = {};
+  graph_colors = {};
+  graphed_variables = [];
+  graph_code = '';
   it_rules = [];
 }
 
@@ -361,17 +364,17 @@ Journal.prototype = {
     $.each(report_variables, function(key, data){
       var variable = $([
           '<div class="row variable-group" id="variable-'+key+'">',
-            '<div class="col-xs-9">',
+            '<div class="col-xs-7 col-lg-8">',
               '<p class="variable-padding">',
                 key,
               '</p>',
             '</div>',
-            '<div class="col-xs-1">',
+            '<div class="col-xs-2 col-lg-1">',
               '<button class="btn btn-info">',
                 '<i class="fa fa-search"></i>',
               '</button>',
             '</div>',
-            '<div class="col-xs-1">',
+            '<div class="col-xs-1 col-lg-1">',
               '<button class="btn btn-danger">',
                 '<i class="fa fa-trash"></i>',
               '</button>',
@@ -703,44 +706,18 @@ Journal.prototype = {
     it_rules.splice(i, 1);
     this.display_it_rules();
   },
-  paint_graph: function(e) {
+  paint_graph: function(setup) {
+    // Clear current graph canvas.
+    $('#generated-graph').remove();
+    $('#generated-graph-container').append('<canvas id="generated-graph"></canvas>');
     var ctx = document.getElementById("generated-graph").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Costos de Venta", "Ventas", "Papeleria", "Personal", "Gastos", "Impuestos"],
-            datasets: [{
-                label: 'Analisis',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
-    });
+    new Chart(ctx, setup);
+  },
+  paint_create_graph: function(setup) {
+    $('#graph-layout').remove();
+    $('#graph-layout-container').append('<canvas id="graph-layout"></canvas>');
+    var ctx = document.getElementById("graph-layout").getContext('2d');
+    new Chart(ctx, setup);
   },
   add_graph_variable: function(e) {
     // TODO: Revise this method, it can probably be optimized.
@@ -753,7 +730,7 @@ Journal.prototype = {
       swift_utils.display_error(swift_language.get_sentence('reserved_period'));
       return;
     }
-    var cont = $('#journal-graph-report-content').val();
+    var cont = $('#journal-create-graph-content').val();
 
     // Make sure we start with a calc.
     var journal_ref = this;
@@ -859,15 +836,6 @@ Journal.prototype = {
       count++;
     });
 
-    /*var group_by = cont.slice((content_end+2));
-    var group_parts = group_by.split(new RegExp('(?:\\(|\\)).*?', 'g'));
-    var group_options = ['resumen', 'dia', 'semana', 'mes', 'año'];
-
-    if(!group_options.includes(group_options[1])) {
-      swift_utils.display_error(swift_language.get_sentence('unrecognized_group'));
-      good = false;
-    }*/
-
     if(!good) {
       return;
     }
@@ -922,32 +890,51 @@ Journal.prototype = {
       'calc': content_entries,
       //'group_by': group_by
     };
-    console.log(graph_variables);
+    if(!graph_colors.hasOwnProperty(name)) {
+      graph_colors[name] = {
+        r: 0,
+        g: 0,
+        b: 0,
+      };
+    }
     $('#journal-create-graph-variable').val('');
     $('#journal-create-graph-content').val('');
   },
   show_graph_available_variables: function() {
     $('#journal-create-graph-variables').empty();
+    $('#journal-create-graph-graphed-variables').empty();
+    var journal_ref = this;
     $.each(graph_variables, function(key, data){
       var variable = $([
           '<div class="row graph-variable-group" id="variable-'+key+'">',
-            '<div class="col-xs-9">',
+            '<div class="col-xs-5 col-sm-5 col-lg-5">',
               '<p class="variable-padding">',
                 key,
               '</p>',
             '</div>',
-            '<div class="col-xs-1">',
+            '<div class="col-xs-3 col-sm-2 col-lg-2">',
+              '<input type="color" class="form-control" value="'+journal_ref.rgb_to_hex(graph_colors[key])+'" />',
+            '</div>',
+            '<div class="col-xs-2 col-sm-2 col-lg-1">',
               '<button class="btn btn-info">',
                 '<i class="fa fa-search"></i>',
               '</button>',
             '</div>',
-            '<div class="col-xs-1">',
+            '<div class="col-xs-1 col-sm-1 col-lg-1">',
               '<button class="btn btn-danger">',
                 '<i class="fa fa-trash"></i>',
               '</button>',
             '</div>',
           '</div>'].join("\n"));
       $('#journal-create-graph-variables').append(variable);
+
+      var selected = ($.inArray(key, graphed_variables) > -1) ? 'selected' : '';
+      var option = $([
+        '<option value="'+key+'" '+selected+'>',
+          key,
+        '</option>',
+      ].join("\n"));
+      $('#journal-create-graph-graphed-variables').append(option);
     });
   },
   delete_graph_variable: function(e) {
@@ -964,8 +951,8 @@ Journal.prototype = {
     content += ')';
     //content += ').'+report_variables[name]['group_by'];
 
-    $('#journal-create-report-variable').val(name);
-    $('#journal-create-report-content').val(content);
+    $('#journal-create-graph-variable').val(name);
+    $('#journal-create-graph-content').val(content);
   },
   remove_graph_variable: function(name) {
     // Check if there is any other variable that is dependent on this variable.
@@ -983,16 +970,19 @@ Journal.prototype = {
       });
     });
     delete graph_variables[name];
+    delete graph_colors[name];
   },
   create_graph: function(e) {
     var name = $('#journal-create-graph-title').val();
     var group_by = $('#journal-create-graph-group').val();
     var type = $('#journal-create-graph-type').val();
+    var graphed_variables = $('#journal-create-graph-graphed-variables').val();
     if(create_graph) {
       var journal_ref = this;
       var request = $.post('/swift/accounting/create_graph', { name: name,
         variables: graph_variables, group_by: group_by,
-         type: type, _token: swift_utils.swift_token() });
+         type: type, graphed_variables: graphed_variables,
+         colors: graph_colors, _token: swift_utils.swift_token() });
       request.done(function(data) {
         swift_utils.free(e.target);
         if(data.state != 'Success') {
@@ -1009,9 +999,10 @@ Journal.prototype = {
       });
     } else {
       var journal_ref = this;
-      var request = $.post('/swift/accounting/edit_graph', { report: report_code, name: name,
+      var request = $.post('/swift/accounting/edit_graph', { graph: graph_code, name: name,
         variables: graph_variables, group_by: group_by,
-         type: type, _token: swift_utils.swift_token() });
+         type: type, graphed_variables: graphed_variables,
+         colors: graph_colors, _token: swift_utils.swift_token() });
       request.done(function(data) {
         swift_utils.free(e.target);
         if(data.state != 'Success') {
@@ -1042,8 +1033,8 @@ Journal.prototype = {
       graph_variables = data.graph.variables;
       create_graph = false;
       graph_code = data.graph.id;
-      journal_ref.show_graph_available_variables();
-
+      graph_colors = data.graph.colors;
+      graphed_variables = data.graph.graphed_variables;
       $('#create-graph-title').html(swift_language.get_sentence('edit_graph'));
       $('#journal-create-graph-create').html(swift_language.get_sentence('edit_graph_button'));
       $('#journal-create-graph-variable').val('');
@@ -1052,14 +1043,195 @@ Journal.prototype = {
       $('#journal-create-graph-type').val(data.graph.graph_type);
       $('#journal-create-graph').removeClass('hide');
       $('.showable').addClass('hide');
+
+      journal_ref.show_graph_available_variables();
+      journal_ref.change_graph();
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);
       swift_utils.ajax_fail(ev);
     });
   },
-  generate_graph: function(e) {
+  update_graphed_variables: function(e) {
+    graphed_variables = $(e.target).val();
+    this.change_graph();
+  },
+  get_graph_labels: function() {
+    var group_by = $('#journal-create-graph-group').val();
+    switch(group_by) {
+      case 'summary':
+        var labels = [];
+        $.each(graphed_variables, function(key, data) {
+          labels.push(data);
+        });
+        return labels;
+        break;
+      case 'day':
+        return ['01/01/2017', '02/01/2017','03/01/2017', '04/01/2017', '05/01/2017'];
+        break;
+      case 'week':
+        return ['01/2017', '02/2017','03/2017', '04/2017', '05/01/2017'];
+        break;
+      case 'month':
+        return ['01/2017', '02/2017','03/2017', '04/2017', '05/01/2017'];
+        break;
+      case 'year':
+        return ['2017', '2018','2019', '2020'];
+        break;
+    }
+  },
+  change_graph: function() {
+    var type = $('#journal-create-graph-type').val();
+    var journal_ref = this;
+    switch(type) {
+      case 'line':
+      if($('#journal-create-graph-group').val() == 'summary') {
+        $('#journal-create-graph-group').val('day');
+      }
+        // First define the basic setup of the graph.
+        var graph_setup = {
+          type: 'line',
+          data: {
+            labels: journal_ref.get_graph_labels(),
+            datasets: [],
+          }
+        };
 
+        $.each(graphed_variables, function(key, data){
+          var graph_data = [];
+          for(var i = 0; i < graph_setup.data.labels.length; i++) {
+            graph_data.push(Math.random() * (100 - 10) + 10);
+          }
+          graph_setup.data.datasets.push({
+            label: data,
+            data: graph_data,
+            backgroundColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 0.2)',
+            borderColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 1)',
+            borderWidth: 1
+          });
+        });
+
+        journal_ref.paint_create_graph(graph_setup);
+        break;
+      case 'bar':
+        // First define the basic setup of the graph.
+        var graph_setup = {
+          type: 'bar',
+          data: {
+            labels: journal_ref.get_graph_labels(),
+            datasets: [],
+          }
+        };
+        // TODO: Fix hover label bug.
+        if($('#journal-create-graph-group').val() == 'summary') {
+          var count = 0;
+          $.each(graphed_variables, function(key, data){
+            var graph_data = [];
+            graph_data.push(Math.random() * (100 - 10) + 10);
+            graph_setup.data.datasets.push({
+              label: data,
+              data: graph_data,
+              backgroundColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 0.2)',
+              borderColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 1)',
+              borderWidth: 1
+            });
+            count++;
+          });
+        } else {
+          $.each(graphed_variables, function(key, data){
+            var graph_data = [];
+            for(var i = 0; i < graph_setup.data.labels.length; i++) {
+              graph_data.push(Math.random() * (100 - 10) + 10);
+            }
+            graph_setup.data.datasets.push({
+              label: data,
+              data: graph_data,
+              backgroundColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 0.2)',
+              borderColor: 'rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 1)',
+              borderWidth: 1
+            });
+          });
+        }
+
+        journal_ref.paint_create_graph(graph_setup);
+        break;
+      case 'pie':
+        // First define the basic setup of the graph.
+        if($('#journal-create-graph-group').val() != 'summary') {
+          $('#journal-create-graph-group').val('summary');
+        }
+        var graph_setup = {
+          type: 'pie',
+          data: {
+            labels: journal_ref.get_graph_labels(),
+            datasets: [],
+          }
+        };
+
+        var graph_data = [];
+        for(var i = 0; i < graph_setup.data.labels.length; i++) {
+          graph_data.push(Math.random() * (100 - 10) + 10);
+        }
+        var backgroundColors = [];
+        var borderColors = [];
+        $.each(graphed_variables, function(key, data){
+          backgroundColors.push('rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 0.2)');
+          borderColors.push('rgba('+graph_colors[data].r+', '+graph_colors[data].g+', '+graph_colors[data].b+', 1)');
+        });
+
+        graph_setup.data.datasets.push({
+          //label: journal_ref.get_graph_labels(),
+          data: graph_data,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 1
+        });
+
+        journal_ref.paint_create_graph(graph_setup);
+        break;
+    }
+  },
+  generate_graph: function(e) {
+    var graph = $('#journal-graphs-graph').val();
+    var date_range = $('#journal-graphs-date-range').val();
+    swift_utils.busy(e.target);
+    var journal_ref = this;
+    var request = $.post('/swift/accounting/generate_graph', { graph: graph, date_range: date_range, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      journal_ref.paint_graph(data.setup);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  change_color: function(e) {
+    var name = $(e.target).closest('.graph-variable-group').attr('id').split('-')[1];
+    var rgb = this.hex_to_rgb($(e.target).val());
+    graph_colors[name] = rgb;
+    this.change_graph();
+  },
+  rgb_to_hex: function(rgb) {
+    return "#" + ((1 << 24) + (parseInt(rgb.r) << 16) + (parseInt(rgb.g) << 8) + parseInt(rgb.b)).toString(16).slice(1);
+  },
+  hex_to_rgb: function(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
   },
 }
 
@@ -1067,13 +1239,53 @@ var journal_js = new Journal();
 
 // Define Event Listeners.
 swift_event_tracker.register_swift_event(
-  '#journal-graph-edit',
+  '#journal-create-graph-group',
+  'change',
+  journal_js,
+  'change_graph');
+
+$(document).on('change', '#journal-create-graph-group', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-create-graph-group');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-create-graph-type',
+  'change',
+  journal_js,
+  'change_graph');
+
+$(document).on('change', '#journal-create-graph-type', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-create-graph-type');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-create-graph-graphed-variables',
+  'change',
+  journal_js,
+  'update_graphed_variables');
+
+$(document).on('change', '#journal-create-graph-graphed-variables', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-create-graph-graphed-variables');
+});
+
+swift_event_tracker.register_swift_event(
+  '.graph-variable-group > div > input',
+  'change',
+  journal_js,
+  'change_color');
+
+$(document).on('change', '.graph-variable-group > div > input', function(e) {
+  swift_event_tracker.fire_event(e, '.graph-variable-group > div > input');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-graphs-edit',
   'click',
   journal_js,
   'edit_graph');
 
-$(document).on('click', '#journal-graph-edit', function(e) {
-  swift_event_tracker.fire_event(e, '#journal-graph-edit');
+$(document).on('click', '#journal-graphs-edit', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-graphs-edit');
 });
 
 swift_event_tracker.register_swift_event(
@@ -1120,7 +1332,7 @@ swift_event_tracker.register_swift_event(
   '#journal-graphs-generate',
   'click',
   journal_js,
-  'paint_graph');
+  'generate_graph');
 
 $(document).on('click', '#journal-graphs-generate', function(e) {
   swift_event_tracker.fire_event(e, '#journal-graphs-generate');
@@ -1523,7 +1735,6 @@ swift_event_tracker.register_swift_event(
   'context_option',
   journal_js,
   'remove_row');
-
 
 
 swift_event_tracker.register_swift_event('#journal-view-entries-tab', 'click', swift_menu, 'select_submenu_option');

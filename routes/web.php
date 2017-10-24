@@ -133,6 +133,9 @@ Route::prefix('swift')->group(function() {
     Route::post('delete_account', 'AccountController@delete_account');
     Route::post('check_account_code', 'AccountController@check_account_code');
 
+    // Depreciating Assets.
+
+
     // Journal Routes.
     Route::post('search_entries', 'JournalController@search_entries');
     Route::post('create_entries', 'JournalController@create_entries');
@@ -145,6 +148,7 @@ Route::prefix('swift')->group(function() {
     Route::post('create_graph', 'JournalController@create_graph');
     Route::post('load_graph', 'JournalController@load_graph');
     Route::post('edit_graph', 'JournalController@edit_graph');
+    Route::post('generate_graph', 'JournalController@generate_graph');
     Route::get('download_entries', 'JournalController@download_entries');
     Route::get('download_report', 'JournalController@download_report');
   });
@@ -272,6 +276,9 @@ Route::prefix('swift')->group(function() {
     });
     Route::post('accounts', function() {
         return view('system.modules.accounting.accounts');
+    });
+    Route::post('depreciating_assets', function() {
+        return view('system.modules.accounting.depreciating_assets');
     });
     Route::post('journal', function() {
         return view('system.modules.accounting.journal');
