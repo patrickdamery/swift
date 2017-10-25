@@ -134,7 +134,9 @@ Route::prefix('swift')->group(function() {
     Route::post('check_account_code', 'AccountController@check_account_code');
 
     // Depreciating Assets.
-
+    Route::post('create_depreciating_account', 'DepreciatingAccountsController@create_depreciating_account');
+    Route::post('search_depreciating_account', 'DepreciatingAccountsController@search_depreciating_account');
+    Route::post('save_depreciating_account', 'DepreciatingAccountsController@save_depreciating_account');
 
     // Journal Routes.
     Route::post('search_entries', 'JournalController@search_entries');

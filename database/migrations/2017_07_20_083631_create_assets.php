@@ -16,6 +16,7 @@ class CreateAssets extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->unique();
+            $table->string('name', 15);
             $table->string('description', 50);
             $table->double('depreciation');
             $table->string('asset_code', 20);

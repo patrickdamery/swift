@@ -43,7 +43,7 @@
     'depreciating_assets': '/swift/system/depreciating_assets'
   };
   swift_menu.register_menu_option(option);
-  swift_event_tracker.register_swift_event('#journal', 'click', swift_menu, 'select_menu_option');
+  swift_event_tracker.register_swift_event('#depreciating_assets', 'click', swift_menu, 'select_menu_option');
   $(document).on('click', '#depreciating_assets', function(e) {
     e.preventDefault();
     swift_event_tracker.fire_event(e, '#depreciating_assets');
@@ -76,7 +76,7 @@
     @if($access->accounting->accounts->has)
       <li><a href="#accounts" id="accounts"><i class="fa fa-square"></i> @lang('swift_menu.accounts')</a></li>
     @endif
-    <li><a href="#depreciating_assets" id="depreciating_assets"><i class="fa fa-book"></i> @lang('swift_menu.depreciating_assets')</a></li>
+    <li><a href="#depreciating_assets" id="depreciating_assets"><i class="fa fa-car"></i> @lang('swift_menu.depreciating_assets')</a></li>
     @if($access->accounting->journal->has)
       <li><a href="#journal" id="journal"><i class="fa fa-book"></i> @lang('swift_menu.journal')</a></li>
     @endif

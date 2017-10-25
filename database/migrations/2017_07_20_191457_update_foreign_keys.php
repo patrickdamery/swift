@@ -22,7 +22,8 @@ class UpdateForeignKeys extends Migration
             $table->foreign('product_code')->references('code')->on('products');
         });
         Schema::table('assets', function (Blueprint $table) {
-            $table->foreign('account_code')->references('code')->on('accounts');
+          $table->foreign('asset_code')->references('code')->on('accounts');
+          $table->foreign('depreciation_code')->references('code')->on('accounts');
         });
         Schema::table('assets_decay', function (Blueprint $table) {
             $table->foreign('journal_entry_code')->references('code')->on('journal_entries');
@@ -223,7 +224,8 @@ class UpdateForeignKeys extends Migration
             $table->dropForeign(['product_code']);
         });
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropForeign(['account_code']);
+            $table->dropForeign(['asset_code']);
+            $table->dropForeign(['depreciation_code']);
         });
         Schema::table('assets_decay', function (Blueprint $table) {
             $table->dropForeign(['journal_entry_code']);

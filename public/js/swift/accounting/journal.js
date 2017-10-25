@@ -800,7 +800,7 @@ Journal.prototype = {
             swift_utils.display_error(swift_language.get_sentence('calc_period'));
             good = false;
           }
-          if(!report_variables.hasOwnProperty(entry_parts[1]) && good) {
+          if(!graph_variables.hasOwnProperty(entry_parts[1]) && good) {
             swift_utils.display_error(swift_language.get_sentence('unexistent_variable')+entry_parts[1]);
             good = false;
           }

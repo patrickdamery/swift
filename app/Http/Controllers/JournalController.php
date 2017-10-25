@@ -715,7 +715,7 @@ class JournalController extends Controller
         // If it's a variable make sure it's calculated.
         if($entry_parts[0] == 'variable') {
           if(!array_key_exists($entry_parts[1], $variables)) {
-            $variables[$entry_parts[1]] = $this->calculate_variable($reports, $period, $entry_parts[1], $reports['variables'][$entry_parts[1]], $entries, $variables);
+            $variables[$entry_parts[1]] = $this->calculate_variable($reports, $group_by, $period, $entry_parts[1], $reports['variables'][$entry_parts[1]], $entries, $variables);
             array_push($calculations, $variables[$entry_parts[1]]);
           } else {
             array_push($calculations, $variables[$entry_parts[1]]);
