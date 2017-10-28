@@ -21,7 +21,8 @@ return [
     'description' => 'Descripcion',
     'depreciation' => 'Depreciacion Mensual',
     'asset_account' => 'Cuenta de Activo',
-    'depreciation_account' => 'Cuenta de Depreciacion',
+    'depreciation_expense_account' => 'Cuenta de Gasto por Depreciacion',
+    'accumulated_depreciation_account' => 'Cuenta de Depreciacion Acumulada',
     'save' => 'Guardar',
     'view_assets' => 'Ver Activos',
 ];

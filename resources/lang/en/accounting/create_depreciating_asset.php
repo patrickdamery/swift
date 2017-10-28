@@ -18,7 +18,8 @@ return [
     'create' => 'Create',
     'name' => 'Name',
     'asset_account' => 'Asset Account',
-    'depreciation_account' => 'Depreciating Account',
+    'depreciation_account' => 'Accumulated Depreciation Account',
+    'expense_account' => 'Depreciation Expense Account',
     'description' => 'Description',
-    'depreciation' => 'Depreciation',
+    'depreciation' => 'Monthly Depreciation',
 ];

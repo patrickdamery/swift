@@ -19,7 +19,7 @@ class Asset extends Model
    * @var array
    */
   protected $fillable = [
-      'name', 'description', 'depreciation', 'asset_code', 'depreciation_code'
+      'code', 'name', 'description', 'depreciation', 'asset_code', 'expense_code', 'depreciation_code', 'state'
   ];
 
   /**

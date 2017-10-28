@@ -18,6 +18,7 @@ return [
     'account_reports' => 'Account Reports',
     'type' => 'Account Type',
     'asset' => 'Asset',
+    'contra_asset' => 'Contra Asset',
     'draw' => 'Draw',
     'expense' => 'Expense',
     'liability' => 'Liability',

@@ -28,6 +28,7 @@
             <label for="create-account-type" class="control-label">@lang('accounting/create_account.type')</label>
             <select class="form-control" id="create-account-type">
               <option value="as">@lang('accounting/accounts.asset')</option>
+              <option value="ca">@lang('accounting/accounts.contra_asset')</option>
               <option value="dr">@lang('accounting/accounts.draw')</option>
               <option value="ex">@lang('accounting/accounts.expense')</option>
               <option value="li">@lang('accounting/accounts.liability')</option>

@@ -85,4 +85,5 @@ return [
     'month' => 'Month',
     'year' => 'Year',
     'graph_title' => 'Graph Title',
+    'processes' => 'Processes',
 ];

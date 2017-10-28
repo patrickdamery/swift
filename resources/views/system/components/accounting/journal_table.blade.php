@@ -76,7 +76,7 @@
         $year = $balance->year;
       }
 
-      // Update intiial balance to whatever the start period was.
+      // Update intial balance to whatever the start period was.
       $entries = DB::table('journal_entries')
         ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
         ->select('journal_entries_breakdown.*')

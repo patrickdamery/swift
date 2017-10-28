@@ -19,6 +19,9 @@
       case 'ingresos':
         return 're';
         break;
+      case 'contra activo':
+        return 'ca';
+        break;
     }
   }
 

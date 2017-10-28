@@ -24,6 +24,10 @@ $(function(){
                                         'en': 'Graphs',
                                         'es': 'Graficos',
                                       });
+  swift_menu.get_language().add_sentence('journal-processes-tab', {
+                                        'en': 'Processes',
+                                        'es': 'Procesos',
+                                      });
   swift_menu.get_language().add_sentence('journal-configuration-tab', {
                                         'en': 'Configuration',
                                         'es': 'Configuracion',
@@ -210,6 +214,7 @@ $(function(){
       <li class="active"><a href="#journal-view-entries" id="journal-view-entries-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.view_entries')</a></li>
       <li><a href="#journal-reports" id="journal-reports-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.reports')</a></li>
       <li><a href="#journal-graphs" id="journal-graphs-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.graphs')</a></li>
+      <li><a href="#journal-processes" id="journal-processes-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.processes')</a></li>
       <li><a href="#journal-configuration" id="journal-configuration-tab" data-toggle="tab" aria-expanded="true">@lang('accounting/journal.configuration')</a></li>
     </ul>
     <div class="tab-content">
@@ -435,47 +440,6 @@ $(function(){
         </div>
       </div>
       <div class="tab-pane" id="journal-graphs">
-        <script>
-          $(document).ready(function(){
-              journal_js.paint_graph();
-              /*var ctx = document.getElementById("graph-layout").getContext('2d');
-              var myChart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                      datasets: [{
-                          label: '# of Votes',
-                          data: [12, 19, 3, 5, 2, 3],
-                          backgroundColor: [
-                              'rgba(255, 99, 132, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)'
-                          ],
-                          borderColor: [
-                              'rgba(255,99,132,1)',
-                              'rgba(54, 162, 235, 1)',
-                              'rgba(255, 206, 86, 1)',
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)',
-                              'rgba(255, 159, 64, 1)'
-                          ],
-                          borderWidth: 1
-                      }]
-                  },
-                  options: {
-                      scales: {
-                          yAxes: [{
-                              ticks: {
-                                  beginAtZero:true
-                              }
-                          }]
-                      }
-                  }
-              });*/
-          });
         </script>
         <div class="hideable hide" id="journal-create-graph">
           <div class="row">
@@ -631,6 +595,9 @@ $(function(){
             </div>
           </div>
         </div>
+      </div>
+      <div class="tab-pane" id="journal-processes">
+
       </div>
       <div class="tab-pane" id="journal-configuration">
         @php

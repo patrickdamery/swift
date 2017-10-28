@@ -18,15 +18,19 @@
           </div>
         </div>
         <div class="row" style="padding-top:15px;">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <label for="create-depreciating-asset-description" class="control-label">@lang('accounting/create_depreciating_asset.description')</label>
             <textarea class="form-control" id="create-depreciating-asset-description"></textarea>
           </div>
-        </div>
-        <div class="row form-inline" style="padding-top:15px;">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <label for="create-depreciating-asset-account" class="control-label">@lang('accounting/create_depreciating_asset.asset_account')</label>
             <input type="text" class="form-control" id="create-depreciating-asset-account">
+          </div>
+        </div>
+        <div class="row" style="padding-top:15px;">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <label for="create-depreciating-expense-account" class="control-label">@lang('accounting/create_depreciating_asset.expense_account')</label>
+            <input type="text" class="form-control" id="create-depreciating-expense-account">
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 sm-top-space">
             <label for="create-depreciating-depreciation-account" class="control-label">@lang('accounting/create_depreciating_asset.depreciation_account')</label>

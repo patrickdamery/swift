@@ -17,10 +17,12 @@ class CreateAssets extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('name', 15);
-            $table->string('description', 50);
+            $table->longText('description');
             $table->double('depreciation');
             $table->string('asset_code', 20);
+            $table->string('expense_code', 20);
             $table->string('depreciation_code', 20);
+            $table->smallInteger('state');
         });
     }
 

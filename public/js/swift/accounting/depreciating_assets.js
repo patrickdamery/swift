@@ -9,12 +9,13 @@ DepreciatingAssets.prototype = {
     var depreciation = $('#create-depreciating-asset-depreciation').val();
     var description = $('#create-depreciating-asset-description').val();
     var asset_account = $('#create-depreciating-asset-account').val();
+    var expense_account = $('#create-depreciating-expense-account').val();
     var depreciation_account = $('#create-depreciating-depreciation-account').val();
 
     swift_utils.busy(e.target);
     var request = $.post('/swift/accounting/create_depreciating_account', { name: name,
       depreciation: depreciation, description: description, asset_account: asset_account,
-      depreciation_account: depreciation_account, _token: swift_utils.swift_token() });
+      depreciation_account: depreciation_account, expense_account: expense_account, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
@@ -36,14 +37,15 @@ DepreciatingAssets.prototype = {
   save_depreciating_account: function(e) {
     var name = $('#depreciating-assets-name').val();
     var depreciation = $('#depreciating-assets-depreciation').val();
-    var descripcion = $('#depreciating-assets-description').val();
+    var description = $('#depreciating-assets-description').val();
     var asset_account = $('#depreciating-assets-asset-account').val();
     var depreciation_account = $('#depreciating-assets-depreciation-account').val();
+    var expense_account = $('#depreciating-assets-depreciation-expense-account').val();
 
     swift_utils.busy(e.target);
     var request = $.post('/swift/accounting/save_depreciating_account', { code: code,
-      name: name, depreciation: depreciation, asset_account: asset_account,
-      depreciation_account: depreciation_account, _token: swift_utils.swift_token() });
+      name: name, description: description, depreciation: depreciation, asset_account: asset_account,
+      depreciation_account: depreciation_account, expense_account: expense_account, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
@@ -71,8 +73,9 @@ DepreciatingAssets.prototype = {
       $('#depreciating-assets-name').val(data.asset.name);
       $('#depreciating-assets-depreciation').val(data.asset.depreciation);
       $('#depreciating-assets-description').val(data.asset.description);
-      $('#depreciating-assets-asset-account').val(data.asset.asset_account);
-      $('#depreciating-assets-depreciation-account').val(data.asset.depreciation_account);
+      $('#depreciating-assets-asset-account').val(data.asset.asset_code);
+      $('#depreciating-assets-depreciation-account').val(data.asset.depreciation_code);
+      $('#depreciating-assets-depreciation-expense-account').val(data.asset.expense_code);
 
     });
     request.fail(function(ev) {
@@ -86,6 +89,7 @@ DepreciatingAssets.prototype = {
     $('#create-depreciating-asset-description').val('');
     $('#create-depreciating-asset-account').val('');
     $('#create-depreciating-depreciation-account').val('');
+    $('#depreciating-assets-depreciation-expense-account').val('');
   },
 }
 
@@ -151,6 +155,78 @@ $(document).on('focus', '#create-depreciating-asset-account', function(e) {
 });
 
 $(document).on('focus', '#create-depreciating-depreciation-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_contra_asset',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#create-depreciating-expense-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_expense',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#depreciating-assets-asset-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_asset',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#depreciating-assets-depreciation-account', function(e) {
+  if(!$(this).data('autocomplete')) {
+    $(this).autocomplete({
+      // Get the suggestions.
+      source: function (request, response) {
+        $.post('/swift/accounting/suggest_contra_asset',
+        { code: request.term,
+          _token: swift_utils.swift_token()
+        },
+        function (data) {
+            response(data);
+        });
+      },
+      minLength: 2
+    })
+  }
+});
+
+$(document).on('focus', '#depreciating-assets-depreciation-expense-account', function(e) {
   if(!$(this).data('autocomplete')) {
     $(this).autocomplete({
       // Get the suggestions.

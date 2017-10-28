@@ -1755,6 +1755,12 @@ $(document).on('click', '#journal-graphs-tab', function(e) {
   $('.showable').removeClass('hide');
   swift_event_tracker.fire_event(e, '#journal-graphs-tab');
 });
+swift_event_tracker.register_swift_event('#journal-processes-tab', 'click', swift_menu, 'select_submenu_option');
+$(document).on('click', '#journal-processes-tab', function(e) {
+  $('.hideable').addClass('hide');
+  $('.showable').removeClass('hide');
+  swift_event_tracker.fire_event(e, '#journal-processes-tab');
+});
 swift_event_tracker.register_swift_event('#journal-configuration-tab', 'click', swift_menu, 'select_submenu_option');
 $(document).on('click', '#journal-configuration-tab', function(e) {
   $('.hideable').addClass('hide');

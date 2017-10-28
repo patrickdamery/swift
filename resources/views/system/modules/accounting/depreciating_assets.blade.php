@@ -16,8 +16,8 @@ $(function(){
   });
   swift_menu.new_submenu();
   swift_menu.get_language().add_sentence('depreciating-assets-view-accounts-tab', {
-                                        'en': 'View Accounts',
-                                        'es': 'Ver Cuentas'
+                                        'en': 'View Assets',
+                                        'es': 'Ver Activos'
                                       });
 
   // Define Feedback Messages.
@@ -107,10 +107,18 @@ if(typeof depreciating_assets_js === 'undefined') {
         <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
-              <label for="depreciating-assets-depreciation-account" class="control-label">@lang('accounting/depreciating_assets.depreciation_account')</label>
+              <label for="depreciating-assets-depreciation-expense-account" class="control-label">@lang('accounting/depreciating_assets.depreciation_expense_account')</label>
+              <input id="depreciating-assets-depreciation-expense-account" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="depreciating-assets-depreciation-account" class="control-label">@lang('accounting/depreciating_assets.accumulated_depreciation_account')</label>
               <input id="depreciating-assets-depreciation-account" class="form-control">
             </div>
           </div>
+        </div>
+        <div class="row lg-top-space md-top-space sm-top-space">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <button type="button" class="btn btn-info" id="depreciating-assets-save">

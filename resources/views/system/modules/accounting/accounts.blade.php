@@ -73,6 +73,7 @@ $(function(){
               <select class="form-control" id="account-type">
                 <option value="all">@lang('accounting/accounts.all')</option>
                 <option value="as">@lang('accounting/accounts.asset')</option>
+                <option value="ca">@lang('accounting/accounts.contra_asset')</option>
                 <option value="dr">@lang('accounting/accounts.draw')</option>
                 <option value="ex">@lang('accounting/accounts.expense')</option>
                 <option value="li">@lang('accounting/accounts.liability')</option>

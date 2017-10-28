@@ -18,6 +18,7 @@ return [
     'account_reports' => 'Reportes de Cuentas',
     'type' => 'Tipo de Cuenta',
     'asset' => 'Activo',
+    'contra_asset' => 'Contra Activo',
     'draw' => 'Gasto',
     'expense' => 'Costo',
     'liability' => 'Pasivo',

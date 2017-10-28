@@ -21,7 +21,8 @@ return [
     'description' => 'Description',
     'depreciation' => 'Monthly Depreciation',
     'asset_account' => 'Asset Account',
-    'depreciation_account' => 'Depreciation Account',
+    'depreciation_expense_account' => 'Depreciation Expense Account',
+    'accumulated_depreciation_account' => 'Accumulated Depreciation Account',
     'save' => 'Save',
     'view_assets' => 'View Assets',
 ];

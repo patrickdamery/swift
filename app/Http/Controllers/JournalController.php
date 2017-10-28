@@ -147,6 +147,9 @@ class JournalController extends Controller
       case 'ingresos':
         return 're';
         break;
+      case 'contra activo':
+        return 'ca';
+        break;
     }
   }
 
@@ -1273,7 +1276,6 @@ class JournalController extends Controller
     }
 
     // TODO: Do not rely on javascript checks.
-
     $graph = Graph::where('id', Input::get('graph'))->first();
 
     if(!$graph) {

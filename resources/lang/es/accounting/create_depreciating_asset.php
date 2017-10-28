@@ -18,7 +18,8 @@ return [
     'create' => 'Crear',
     'name' => 'Nombre',
     'asset_account' => 'Cuenta de Activo',
-    'depreciation_account' => 'Cuenta de Depreciacion',
+    'depreciation_account' => 'Cuenta de Depreciacion Acumulada',
+    'expense_account' => 'Cuenta de Gasto por Depreciacion',
     'description' => 'Descripcion',
-    'depreciation' => 'Depreciacion',
+    'depreciation' => 'Depreciacion Mensual',
 ];

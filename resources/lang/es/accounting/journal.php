@@ -86,4 +86,5 @@ return [
     'year' => 'Año',
     'graph_title' => 'Titulo de Grafico',
     'graphed_variables' => 'Variables A Graficar',
+    'processes' => 'Procesos',
 ];

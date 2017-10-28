@@ -13,7 +13,7 @@ class CreateAssetsDecay extends Migration
      */
     public function up()
     {
-        Schema::create('assets_decay', function (Blueprint $table) {
+        Schema::create('assets_depreciation', function (Blueprint $table) {
             $table->increments('id');
             $table->string('asset_code', 10);
             $table->string('journal_entry_code', 15);
@@ -31,6 +31,6 @@ class CreateAssetsDecay extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assets_decay');
+        Schema::dropIfExists('assets_depreciation');
     }
 }

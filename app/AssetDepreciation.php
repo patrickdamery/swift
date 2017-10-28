@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-class AssetDecay extends Model
+class AssetDepreciation extends Model
 {
 
   /**
@@ -11,7 +11,7 @@ class AssetDecay extends Model
    *
    * @var string
    */
-  protected $table = 'asset_decay';
+  protected $table = 'assets_depreciation';
 
   /**
    * The attributes that are mass assignable.
