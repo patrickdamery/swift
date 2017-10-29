@@ -15,6 +15,110 @@ use App\Graph;
 use App\AccountingAccount;
 class JournalController extends Controller
 {
+  public function make_closing_entry() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'date' => 'required',
+        'closing_account' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get list of accounts to be used.
+    $used_accounts = array();
+    $accounts = Account::where('type', 're')->orWhere('type', 'ex')->get();
+    foreach($accounts as $account) {
+      array_push($used_accounts, $account->code);
+    }
+
+    // Make sure specified account is an equity account.
+    $account_check = Account::where('code', Input::get('closing_account'))->first();
+    if(!$account_check) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_found').Input::get('closing_account')
+      );
+      return response()->json($response);
+    }
+    if($account_check->type != 'eq') {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/journal_controller.account_not_equity')
+      );
+      return response()->json($response);
+    }
+
+    $tries = 0;
+    $complete = false;
+    while($tries < 5 && !$complete) {
+      try {
+        DB::beginTransaction();
+        // First lock any data we will be working with.
+        $last_entry = DB::table('journal_entries')
+          ->where('branch_identifier', 'ai')
+          ->orderBy('id', 'desc')
+          ->lockForUpdate()
+          ->get();
+
+        $debit_account = DB::table('accounts')
+          ->where('code', $asset->expense_code)
+          ->first();
+        $credit_account = DB::table('accounts')
+          ->where('code', $asset->depreciation_code)
+          ->lockForUpdate()
+          ->get();
+
+        // Now create the journal entry.
+        $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
+
+        DB::table('journal_entries')->insert([
+          ['code' => $entry_code, 'branch_identifier' => 'ai', 'state' => 1]
+        ]);
+
+        // Now update the accounts.
+        DB::table('accounts')->where('code', $asset->depreciation_code)
+          ->increment('amount', $asset->depreciation;
+
+        DB::table('accounts')->where('code', $asset->expense_code)
+          ->increment('amount', $asset->depreciation);
+
+        DB::table('journal_entries_breakdown')->insert([
+          [
+            'journal_entry_code' => $entry_code,
+            'branch_identifier' => 'ai',
+            'debit' => 0,
+            'account_code' => $asset->depreciation_code,
+            'description' => 'Depreciacion del mes '.date('Y-m').' de '.$asset->name,
+            'amount' => $asset->depreciation
+          ]
+        ]);
+
+        DB::table('journal_entries_breakdown')->insert([
+          [
+            'journal_entry_code' => $entry_code,
+            'branch_identifier' => 'ai',
+            'debit' => 1,
+            'account_code' => $asset->expense_code,
+            'description' => 'Depreciacion del mes '.date('Y-m').' de '.$asset->name,
+            'amount' => $asset->depreciation
+          ]
+        ]);
+        DB::commit();
+        $complete = true;
+      } catch(\Exception $e) {
+        $tries++;
+        if($tries == 5) {
+          // TODO: Create Notification to Administrator.
+        }
+      }
+    }
+  }
   public function save_configuration() {
     $validator = Validator::make(Input::all(),
       array(

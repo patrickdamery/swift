@@ -86,4 +86,7 @@ return [
     'year' => 'Year',
     'graph_title' => 'Graph Title',
     'processes' => 'Processes',
+    'closing_date' => 'Closing Date',
+    'closing_account' => 'Closing Account',
+    'make_closing_entry' => 'Make Closing Entry',
 ];

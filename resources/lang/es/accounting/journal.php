@@ -87,4 +87,7 @@ return [
     'graph_title' => 'Titulo de Grafico',
     'graphed_variables' => 'Variables A Graficar',
     'processes' => 'Procesos',
+    'closing_date' => 'Fecha de Cierre',
+    'closing_account' => 'Cuenta de Cierre',
+    'make_closing_entry' => 'Realizar Entrada de Cierre',
 ];

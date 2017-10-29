@@ -81,12 +81,27 @@ class DepreciateAssets extends Command
                   ->lockForUpdate()
                   ->get();
 
+                $debit_account = DB::table('accounts')
+                  ->where('code', $asset->expense_code)
+                  ->first();
+                $credit_account = DB::table('accounts')
+                  ->where('code', $asset->depreciation_code)
+                  ->lockForUpdate()
+                  ->get();
+
                 // Now create the journal entry.
                 $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
 
                 DB::table('journal_entries')->insert([
                   ['code' => $entry_code, 'branch_identifier' => 'ai', 'state' => 1]
                 ]);
+
+                // Now update the accounts.
+                DB::table('accounts')->where('code', $asset->depreciation_code)
+                  ->increment('amount', $asset->depreciation;
+
+                DB::table('accounts')->where('code', $asset->expense_code)
+                  ->increment('amount', $asset->depreciation);
 
                 DB::table('journal_entries_breakdown')->insert([
                   [

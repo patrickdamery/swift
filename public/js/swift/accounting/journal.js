@@ -1233,11 +1233,62 @@ Journal.prototype = {
         b: parseInt(result[3], 16)
     } : null;
   },
+  make_closing_entry: function(e) {
+    var confirmation = $('#make-closing-entry-confirmation').val();
+    if(confirmation == 0) {
+      return;
+      $('#make-closing-entry').modal('hide');
+    }
+
+    var date = $('#journal-processes-date').val();
+    var closing_account = $('#journal-processes-closing-account').val();
+
+    swift_utils.busy(e.target);
+    var journal_ref = this;
+    var request = $.post('/swift/accounting/make_closing_entry', { date: date,
+      closing_account: closing_account, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      swift_utils.display_success(data.message);
+      $('#make-closing-entry').modal('hide');
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  show_closing_entry: function() {
+    $('#make-closing-entry-confirmation').val(0);
+  },
 }
 
 var journal_js = new Journal();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '#make-closing-entry-confirm',
+  'click',
+  journal_js,
+  'make_closing_entry');
+
+$(document).on('click', '#make-closing-entry-confirm', function(e) {
+  swift_event_tracker.fire_event(e, '#make-closing-entry-confirm');
+});
+
+swift_event_tracker.register_swift_event(
+  '#journal-processes-close',
+  'click',
+  journal_js,
+  'show_closing_entry');
+
+$(document).on('click', '#journal-processes-close', function(e) {
+  swift_event_tracker.fire_event(e, '#journal-processes-close');
+});
+
 swift_event_tracker.register_swift_event(
   '#journal-create-graph-group',
   'change',

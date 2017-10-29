@@ -151,6 +151,7 @@ Route::prefix('swift')->group(function() {
     Route::post('create_graph', 'JournalController@create_graph');
     Route::post('load_graph', 'JournalController@load_graph');
     Route::post('edit_graph', 'JournalController@edit_graph');
+    Route::post('make_closing_entry', 'JournalController@make_closing_entry');
     Route::post('generate_graph', 'JournalController@generate_graph');
     Route::get('download_entries', 'JournalController@download_entries');
     Route::get('download_report', 'JournalController@download_report');

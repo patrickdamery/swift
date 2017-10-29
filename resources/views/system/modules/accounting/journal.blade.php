@@ -6,10 +6,13 @@
   $modules = json_decode($config->modules);
  ?>
 <script>
-$(function(){
- $('.daterangepicker-sel').daterangepicker({
-        format: 'dd-mm-yyyy'
-      });
+ $(function(){
+   $('.daterangepicker-sel').daterangepicker({
+          format: 'dd-mm-yyyy'
+        });
+    $('.datepicker-sel').datepicker({
+           format: 'dd-mm-yyyy'
+         });
   });
   swift_menu.new_submenu();
   swift_menu.get_language().add_sentence('journal-view-entries-tab', {
@@ -198,6 +201,7 @@ $(function(){
 @include('system.components.accounting.create_entry')
 @include('system.components.accounting.create_report_row')
 @include('system.components.accounting.add_configuration_rule')
+@include('system.components.accounting.make_closing_entry')
 <section class="content-header">
   <h1>
     @lang('accounting/journal.title')
@@ -597,7 +601,32 @@ $(function(){
         </div>
       </div>
       <div class="tab-pane" id="journal-processes">
-
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="journal-processes-date" class="control-label">@lang('accounting/journal.closing_date')</label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control datepicker-sel" id="journal-processes-date">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="journal-processes-closing-account" class="control-label">@lang('accounting/journal.closing_account')</label>
+              <input class="form-control" id="journal-processes-closing-account">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="journal-processes-close" data-toggle="modal" data-target="#make-closing-entry">
+                <i class="fa fa-close"></i> @lang('accounting/journal.make_closing_entry')
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="tab-pane" id="journal-configuration">
         @php
