@@ -4,6 +4,9 @@
       case 'activo':
         return 'as';
         break;
+      case 'contra activo':
+        return 'ca';
+        break;
       case 'gasto':
         return 'dr';
         break;

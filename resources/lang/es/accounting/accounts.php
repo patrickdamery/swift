@@ -48,4 +48,5 @@ return [
     'ledger_report' => 'Reporte Libro Mayor',
     'ledger_account' => 'Cuenta',
     'currency' => 'Moneda',
+    'counter_asset' => 'Contra Activo',
 ];

@@ -4,6 +4,9 @@
       case 'as':
         return \Lang::get('accounting/accounts.asset');
       break;
+      case 'ca':
+        return \Lang::get('accounting/accounts.counter_asset');
+      break;
       case 'dr':
         return \Lang::get('accounting/accounts.draw');
       break;

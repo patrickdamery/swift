@@ -47,6 +47,23 @@ class Account extends Model
     } else {
       return $this->amount;
     }
-      return Worker::find($this->WorkerId);
+  }
+
+  /**
+   * Function to get codes of all children accounts.
+   */
+  public function children_codes() {
+    $codes = array($this->code);
+    if($this->has_children) {
+      $children = \App\Account::where('parent_account', $this->code)->get();
+      $total = 0;
+      foreach($children as $child) {
+        $codes = array_merge($codes, $child->children_codes());
+      }
+
+      return $codes;
+    } else {
+      return $codes;
+    }
   }
 }

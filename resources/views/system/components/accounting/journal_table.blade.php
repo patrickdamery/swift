@@ -33,9 +33,14 @@
   switch($type) {
     case 'detail':
       $journal = DB::table('journal_entries')
-        ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        ->join('journal_entries_breakdown', function($join){
+          $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+          $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+        })
         ->select('journal_entries.*', 'journal_entries_breakdown.*')
-        ->whereBetween('journal_entries.entry_date', $date_range);
+        ->whereBetween('journal_entries.entry_date', $date_range)
+        ->orderBy('journal_entries.entry_date');
       break;
     case 'summary':
       $accounts = \App\Account::where('code', '!=', 0)
@@ -47,8 +52,8 @@
       foreach($accounts as $account) {
         $journal[$account->code] = array(
             'name' => $account->name,
-            'initial' => $account->amount,
-            'final' => $account->amount,
+            'initial' => 0,
+            'final' => 0,
             'credit' => 0,
             'debit' => 0,
             'added' => (!$account->has_children) ? true : false,
@@ -66,6 +71,7 @@
         ->select('account_history.*', 'account_history_breakdown.*')
         ->where('account_history.month', '<=', date('m', strtotime($date_range[0])))
         ->where('account_history.year', '<=', date('Y', strtotime($date_range[0])))
+        ->where('account_history.year', '>', date('Y', strtotime($date_range[0].' -1 year')))
         ->get();
 
       $month = '';
@@ -75,25 +81,30 @@
         $month = $balance->month;
         $year = $balance->year;
       }
+      //print_r($journal);
 
       // Update intial balance to whatever the start period was.
       $entries = DB::table('journal_entries')
-        ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        ->join('journal_entries_breakdown', function($join){
+          $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+          $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+        })
         ->select('journal_entries_breakdown.*')
         ->whereBetween('journal_entries.entry_date', array(date('Y-m-d H:i:s', strtotime($year.'-'.$month.'-01')), $date_range[0]))
         ->get();
-
+      //print_r($entries);
       foreach($entries as $entry) {
         // Check if it's a debit transaction and update account data based on
         // Account type.
         if($entry->debit) {
-          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
             $journal[$entry->account_code]['initial'] -= $entry->amount;
           } else {
             $journal[$entry->account_code]['initial'] += $entry->amount;
           }
         } else {
-          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+          if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
             $journal[$entry->account_code]['initial'] += $entry->amount;
           } else {
             $journal[$entry->account_code]['initial'] -= $entry->amount;
@@ -107,7 +118,11 @@
       }
 
       $entries = DB::table('journal_entries')
-        ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+        ->join('journal_entries_breakdown', function($join){
+          $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+          $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+        })
         ->select('journal_entries_breakdown.*')
         ->whereBetween('journal_entries.entry_date', $date_range)
         ->get();
@@ -121,14 +136,14 @@
           // Check if it's a debit transaction and update account data based on
           // Account type.
           if($entry->debit) {
-            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
               $journal[$entry->account_code]['final'] -= $entry->amount;
             } else {
               $journal[$entry->account_code]['final'] += $entry->amount;
             }
             $journal[$entry->account_code]['debit'] += $entry->amount;
           } else {
-            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
               $journal[$entry->account_code]['final'] += $entry->amount;
             } else {
               $journal[$entry->account_code]['final'] -= $entry->amount;
@@ -137,14 +152,14 @@
           }
         } else {
           if($entry->debit) {
-            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
               $journal[$entry->account_code]['final'] -= $entry->amount;
             } else {
               $journal[$entry->account_code]['final'] += $entry->amount;
             }
             $journal[$entry->account_code]['debit'] += $entry->amount;
           } else {
-            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
               $journal[$entry->account_code]['final'] += $entry->amount;
             } else {
               $journal[$entry->account_code]['final'] -= $entry->amount;
@@ -239,10 +254,10 @@
               <tr class="journal-entry-row">
                 <td>{{ $code }}</td>
                 <td>{{ $entry['name'] }}</td>
-                <td>{{ $entry['initial'] }}</td>
+                <td>{{ ($entry['initial'] < 0) ? '('.abs($entry['initial']).')' : $entry['initial'] }}</td>
                 <td>{{ $entry['debit'] }}</td>
                 <td>{{ $entry['credit'] }}</td>
-                <td>{{ $entry['final'] }}</td>
+                <td>{{ ($entry['final'] < 0) ? '('.abs($entry['final']).')' : $entry['final'] }}</td>
               </tr>
             @endif
             @php

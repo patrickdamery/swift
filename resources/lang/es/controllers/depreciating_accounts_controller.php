@@ -21,6 +21,7 @@ return [
     'asset_account_used' => 'La cuenta de activo especificada ya fue utilizada en un activo depreciable diferente!',
     'expense_account_used' => 'La cuenta de gasto especificada ya fue utilizada en un activo depreciable diferente!',
     'depreciation_account_used' => 'La cuenta de activo especificada ya fue utilizada en un activo depreciable diferente!',
-    'asset_depreciation_failed' => 'Failed to create Asset Depreciation, please try again! If the problem persists contact Swift Support.',
+    'asset_depreciation_failed' => 'Hubo un problema al crear el activo depreciable, por favor tratar otra vez! Si el problema persiste contactar a Soporte de Swift.',
     'asset_updated' => 'Activo actualizado exitosamente!',
+    'depreciation_asset_created' => 'Activo depreciable creado exitosamente!',
 ];

@@ -19,7 +19,7 @@ class CreateJournalEntriesBreakdown extends Migration
             $table->string('branch_identifier', 3);
             $table->boolean('debit')->default(true);
             $table->string('account_code', 20);
-            $table->string('description', 50);
+            $table->string('description', 255);
             $table->double('amount');
 
             $table->index('journal_entry_code');

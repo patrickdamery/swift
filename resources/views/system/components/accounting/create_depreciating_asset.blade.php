@@ -32,7 +32,7 @@
             <label for="create-depreciating-expense-account" class="control-label">@lang('accounting/create_depreciating_asset.expense_account')</label>
             <input type="text" class="form-control" id="create-depreciating-expense-account">
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <label for="create-depreciating-depreciation-account" class="control-label">@lang('accounting/create_depreciating_asset.depreciation_account')</label>
             <input type="text" class="form-control" id="create-depreciating-depreciation-account">
           </div>

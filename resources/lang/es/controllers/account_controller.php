@@ -31,4 +31,5 @@ return [
     'account_not_empty' => 'Cuenta debe estar vacia para poder eliminarla!',
     'account_deleted' => 'Cuenta eliminada exitosamente!',
     'account_code_unexistent' => 'No se encontro una cuenta con el codigo ',
+    'changed_data' => 'Cuenta actualizada exitosamente!',
 ];

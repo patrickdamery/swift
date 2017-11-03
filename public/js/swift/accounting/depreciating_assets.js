@@ -28,6 +28,7 @@ DepreciatingAssets.prototype = {
           data.asset.name,
           '</option>'].join("\n"));
       $('#depreciating-assets-code').append(option);
+      $('#create-depreciating-assets').modal('hide');
     });
     request.fail(function(ev) {
       swift_utils.free(e.target);

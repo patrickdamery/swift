@@ -244,7 +244,7 @@ Journal.prototype = {
           try{
             var json = JSON.parse(entry_parts[1]);
             if(json.hasOwnProperty('tipo')) {
-              var tipos = ['activo', 'gasto', 'costo', 'pasivo', 'patrimonio', 'ingresos'];
+              var tipos = ['activo', 'contra activo', 'gasto', 'costo', 'pasivo', 'patrimonio', 'ingresos'];
 
               if(!tipos.includes(json['tipo'])) {
                 swift_utils.display_error(swift_language.get_sentence('unrecognized_type')+json['tipo']);
@@ -270,15 +270,6 @@ Journal.prototype = {
       }
       count++;
     });
-
-    /*var group_by = cont.slice((content_end+2));
-    var group_parts = group_by.split(new RegExp('(?:\\(|\\)).*?', 'g'));
-    var group_options = ['resumen', 'dia', 'semana', 'mes', 'año'];
-
-    if(!group_options.includes(group_options[1])) {
-      swift_utils.display_error(swift_language.get_sentence('unrecognized_group'));
-      good = false;
-    }*/
 
     if(!good) {
       return;
@@ -479,6 +470,8 @@ Journal.prototype = {
         swift_utils.display_success(data.message);
         $('#journal-create-report').addClass('hide');
         $('.showable').removeClass('hide');
+        var row = '<option value="'+data.report.id+'">'+data.report.name+'</option>';
+        $('#journal-reports-report').append(row);
       });
       request.fail(function(ev) {
         swift_utils.free(e.target);

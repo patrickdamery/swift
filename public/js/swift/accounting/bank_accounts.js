@@ -275,7 +275,6 @@ BankAccount.prototype = {
   load_cheques: function(e) {
     swift_utils.busy(e.target);
     var date_range = $('#view-cheque-book-date-range').val();
-    cheque_book_code = $(e.target).attr('id').split('-')[2];
     var request = $.post('/swift/accounting/load_cheques', { code: cheque_book_code,
       date_range: date_range, offset: offset, _token: swift_utils.swift_token() });
     request.done(function(view) {

@@ -39,5 +39,8 @@ return [
     'graph_created' => 'Grafico creado exitosamente!',
     'graph_not_found' => 'Grafico no encontrado!',
     'graph_updated' => 'Grafico actualizado exitosamente!',
-
+    'closing_failed' => 'Hubo un problema al tratar de agregar las entradas de cierre al Libro Diario, por favor tratar otra vez! Si el problema persiste contactar a Soporte de Swift!',
+    'server_out_of_sync' => 'Al menos un servidor no esta syncronizado, todos los servidores de la empresa deben estar syncronizados para poder hacer este proceso!',
+    'account_not_equity' => 'La cuenta proporcionada no es una cuenta de patrimonio!',
+    'closing_entry_success' => 'La entrada de cierre fue realizado exitosamente!',
 ];

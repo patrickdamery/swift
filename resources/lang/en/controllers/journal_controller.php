@@ -40,4 +40,8 @@ return [
     'graph_not_found' => 'Graph not found!',
     'graph_updated' => 'Graph updated successfully!',
     'graphed_variables' => 'Variables To Graph',
+    'closing_failed' => 'There was a problem when adding the closing entries to the journal, please try again! If the problem persists contact Swift Support.',
+    'server_out_of_sync' => 'At least one server is not in sync, all the companies servers must be in sync in order to complete this process!',
+    'account_not_equity' => 'The selected account is not a revenue account!',
+    'closing_entry_success' => 'The closing entry was successfully completed!',
 ];

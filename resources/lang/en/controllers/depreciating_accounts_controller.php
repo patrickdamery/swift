@@ -23,4 +23,5 @@ return [
     'depreciation_account_used' => 'The depreciation account specified has already been used for a different depreciation asset!',
     'asset_depreciation_failed' => 'Failed to create Asset Depreciation, please try again! If the problem persists contact Swift Support.',
     'asset_updated' => 'Asset updated successfully!',
+    'depreciation_asset_created' => 'Depreciation Asset created successfully!',
 ];

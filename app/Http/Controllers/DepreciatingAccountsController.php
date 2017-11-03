@@ -129,7 +129,8 @@ class DepreciatingAccountsController extends Controller
               'description' => Input::get('description'),
               'asset_code' => Input::get('asset_account'),
               'expense_code' => Input::get('expense_account'),
-              'depreciation_code' => Input::get('depreciation_account')
+              'depreciation_code' => Input::get('depreciation_account'),
+              'state' => 1
             ]
           ]);
 
@@ -151,7 +152,8 @@ class DepreciatingAccountsController extends Controller
     $asset = Asset::where('code', $last_code)->first();
     $response = array(
       'state' => 'Success',
-      'asset' => $asset
+      'asset' => $asset,
+      'message' => \Lang::get('controllers/depreciating_accounts_controller.depreciation_asset_created'),
     );
     return response()->json($response);
   }

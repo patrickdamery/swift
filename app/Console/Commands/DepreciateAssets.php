@@ -50,7 +50,7 @@ class DepreciateAssets extends Command
         // Loop through assets and check if we should depreciate them.
         foreach($assets as $asset) {
           // Check if asset has been depreciated.
-          $assets_depreciation = DB::table('journal_entries')
+          $assets_depreciation = \DB::table('journal_entries')
           ->join('assets_depreciation', function($join){
               $join->on('journal_entries.code', 'assets_depreciation.journal_entry_code');
               $join->on('journal_entries.branch_identifier', 'assets_depreciation.branch_identifier');
@@ -73,18 +73,19 @@ class DepreciateAssets extends Command
             $complete = false;
             while($tries < 5 && !$complete) {
               try {
-                DB::beginTransaction();
+                \DB::beginTransaction();
                 // First lock any data we will be working with.
-                $last_entry = DB::table('journal_entries')
+                $last_entry = \DB::table('journal_entries')
                   ->where('branch_identifier', 'ai')
                   ->orderBy('id', 'desc')
                   ->lockForUpdate()
                   ->get();
 
-                $debit_account = DB::table('accounts')
+                $debit_account = \DB::table('accounts')
                   ->where('code', $asset->expense_code)
-                  ->first();
-                $credit_account = DB::table('accounts')
+                  ->lockForUpdate()
+                  ->get();
+                $credit_account = \DB::table('accounts')
                   ->where('code', $asset->depreciation_code)
                   ->lockForUpdate()
                   ->get();
@@ -92,18 +93,18 @@ class DepreciateAssets extends Command
                 // Now create the journal entry.
                 $entry_code = (count($last_entry) > 0) ? $last_entry[0]->code+1 : 1;
 
-                DB::table('journal_entries')->insert([
+                \DB::table('journal_entries')->insert([
                   ['code' => $entry_code, 'branch_identifier' => 'ai', 'state' => 1]
                 ]);
 
                 // Now update the accounts.
-                DB::table('accounts')->where('code', $asset->depreciation_code)
-                  ->increment('amount', $asset->depreciation;
-
-                DB::table('accounts')->where('code', $asset->expense_code)
+                \DB::table('accounts')->where('code', $asset->depreciation_code)
                   ->increment('amount', $asset->depreciation);
 
-                DB::table('journal_entries_breakdown')->insert([
+                \DB::table('accounts')->where('code', $asset->expense_code)
+                  ->increment('amount', $asset->depreciation);
+
+                \DB::table('journal_entries_breakdown')->insert([
                   [
                     'journal_entry_code' => $entry_code,
                     'branch_identifier' => 'ai',
@@ -114,7 +115,7 @@ class DepreciateAssets extends Command
                   ]
                 ]);
 
-                DB::table('journal_entries_breakdown')->insert([
+                \DB::table('journal_entries_breakdown')->insert([
                   [
                     'journal_entry_code' => $entry_code,
                     'branch_identifier' => 'ai',
@@ -124,7 +125,16 @@ class DepreciateAssets extends Command
                     'amount' => $asset->depreciation
                   ]
                 ]);
-                DB::commit();
+
+                $debits = \DB::table('accounts')
+                  ->where('code', $asset->expense_code)->first();
+                $credits = \DB::table('accounts')
+                  ->where('code', $asset->depreciation_code)->first();
+                if($debits->amount == $credits->amount) {
+                  $asset->state = 2;
+                  $asset->save();
+                }
+                \DB::commit();
                 $complete = true;
               } catch(\Exception $e) {
                 $tries++;

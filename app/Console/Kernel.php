@@ -13,8 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-      \App\Console\Commands\Test::class,
-      \App\Console\Commands\Test2::class,
+      //\App\Console\Commands\Test::class,
+      //\App\Console\Commands\Test2::class,
+      \App\Console\Commands\CheckServers::class,
+      \App\Console\Commands\DepreciateAssets::class,
     ];
 
     /**
@@ -25,8 +27,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('check_servers')
+                  ->everyFiveMinutes();
+        $schedule->command('depreciate_assets')
+                  ->dailyAt('01:00');
     }
 
     /**

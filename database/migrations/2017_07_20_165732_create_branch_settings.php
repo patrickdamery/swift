@@ -22,6 +22,7 @@ class CreateBranchSettings extends Migration
             $table->time('closing_time');
             $table->string('vehicle_group_code', 10);
             $table->string('worker_group_code', 10);
+            $table->timestamp('last_server_contact')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->index('branch_code');
             $table->foreign('branch_code')->references('code')->on('branches');

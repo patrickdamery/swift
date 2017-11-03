@@ -30,7 +30,7 @@ class CreateConfiguration extends Migration
             $table->float('current_version');
             $table->float('latest_version');
             $table->text('auth_key');
-            $table->timestamp('latest_key_change');
+            $table->timestamp('latest_key_change')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->smallInteger('key_change_counter');
             $table->string('base_url', 50);
 

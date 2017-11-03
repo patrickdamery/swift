@@ -4,6 +4,9 @@
       case 'activo':
         return 'as';
         break;
+      case 'contra activo':
+        return 'ca';
+        break;
       case 'gasto':
         return 'dr';
         break;
@@ -324,7 +327,7 @@
       }
 
       foreach($entries as $entry) {
-        switch($$group_by) {
+        switch($group_by) {
           case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {

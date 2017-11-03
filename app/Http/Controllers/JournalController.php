@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use DB;
+use Auth;
 use App\JournalEntry;
 use App\JournalEntryBreakdown;
 use App\Account;
 use App\Report;
 use App\Graph;
 use App\AccountingAccount;
+use App\BranchSetting;
+use App\Worker;
 class JournalController extends Controller
 {
   public function make_closing_entry() {
@@ -53,6 +56,18 @@ class JournalController extends Controller
       );
       return response()->json($response);
     }
+    // Make sure all servers are in sync.
+    $branch_settings = BranchSetting::all();
+    $min_time = date('Y-m-d H:i:s', strtotime('5 minutes ago'));
+    foreach($branch_settings as $branch) {
+      if($branch->last_server_contact < $min_time) {
+        $response = array(
+          'state' => 'Error',
+          'error' => \Lang::get('controllers/journal_controller.server_out_of_sync')
+        );
+        return response()->json($response);
+      }
+    }
 
     $tries = 0;
     $complete = false;
@@ -66,11 +81,13 @@ class JournalController extends Controller
           ->lockForUpdate()
           ->get();
 
-        $debit_account = DB::table('accounts')
-          ->where('code', $asset->expense_code)
-          ->first();
-        $credit_account = DB::table('accounts')
-          ->where('code', $asset->depreciation_code)
+        $locked_accounts = DB::table('accounts')
+          ->whereIn('code', $used_accounts)
+          ->lockForUpdate()
+          ->get();
+
+        $revenue_account = DB::table('accounts')
+          ->where('code', Input::get('closing_account'))
           ->lockForUpdate()
           ->get();
 
@@ -81,44 +98,178 @@ class JournalController extends Controller
           ['code' => $entry_code, 'branch_identifier' => 'ai', 'state' => 1]
         ]);
 
-        // Now update the accounts.
-        DB::table('accounts')->where('code', $asset->depreciation_code)
-          ->increment('amount', $asset->depreciation;
+        // Get accounts balance for period.
+        $accounts_balance = array();
+        foreach($locked_accounts as $account) {
+          $accounts_balance[$account->code]['balance'] = 0;
+          $accounts_balance[$account->code]['type'] = $account->type;
+        }
 
-        DB::table('accounts')->where('code', $asset->expense_code)
-          ->increment('amount', $asset->depreciation);
+        $initial_balance = DB::table('account_history_breakdown')
+          ->join('account_history', 'account_history_breakdown.account_history_code', 'account_history.code')
+          ->select('account_history.*', 'account_history_breakdown.*')
+          ->where('account_history.month', '<=', date('m', strtotime(Input::get('date'))))
+          ->where('account_history.year', '<=', date('Y', strtotime(Input::get('date'))))
+          ->where('account_history.year', '>', date('Y', strtotime(Input::get('date').' -1 year')))
+          ->get();
 
-        DB::table('journal_entries_breakdown')->insert([
-          [
-            'journal_entry_code' => $entry_code,
-            'branch_identifier' => 'ai',
-            'debit' => 0,
-            'account_code' => $asset->depreciation_code,
-            'description' => 'Depreciacion del mes '.date('Y-m').' de '.$asset->name,
-            'amount' => $asset->depreciation
-          ]
-        ]);
+        $month = '';
+        $year = '';
+        foreach($initial_balance as $balance) {
+          $accounts_balance[$balance->account_code]['balance'] = $balance->balance;
+          $month = $balance->month;
+          $year = $balance->year;
+        }
 
-        DB::table('journal_entries_breakdown')->insert([
-          [
-            'journal_entry_code' => $entry_code,
-            'branch_identifier' => 'ai',
-            'debit' => 1,
-            'account_code' => $asset->expense_code,
-            'description' => 'Depreciacion del mes '.date('Y-m').' de '.$asset->name,
-            'amount' => $asset->depreciation
-          ]
-        ]);
+        // Update balance to whatever the closing period is.
+        $entries = DB::table('journal_entries')
+          ->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          ->select('journal_entries_breakdown.*')
+          ->where('journal_entries.entry_date', '>=', date('Y-m-d H:i:s', strtotime($year.'-'.$month.'-01')))
+          ->where('journal_entries.state', 1)
+          ->whereIn('journal_entries_breakdown.account_code', $used_accounts)
+          ->get();
+
+        foreach($entries as $entry) {
+          // Check if it's a debit transaction and update account data based on
+          // Account type.
+          if($entry->debit) {
+            if(in_array($accounts_balance[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+              $accounts_balance[$entry->account_code]['initial'] -= $entry->amount;
+            } else {
+              $accounts_balance[$entry->account_code]['initial'] += $entry->amount;
+            }
+          } else {
+            if(in_array($accounts_balance[$entry->account_code]['type'], array('li', 'eq', 're'))) {
+              $accounts_balance[$entry->account_code]['initial'] += $entry->amount;
+            } else {
+              $accounts_balance[$entry->account_code]['initial'] -= $entry->amount;
+            }
+          }
+        }
+
+        // Now let's update the accounts.
+        $debits = 0;
+        $credits = 0;
+        foreach($accounts_balance as $code => $account) {
+          if($account['balance'] < 0) {
+            if(in_array($account['type'], array('li', 'eq', 're'))) {
+              $credits -= $accounts['balance'];
+              DB::table('accounts')->where('code', $code)
+                ->increment('amount', $account['balance']);
+
+              DB::table('journal_entries_breakdown')->insert([
+                [
+                  'journal_entry_code' => $entry_code,
+                  'branch_identifier' => 'ai',
+                  'debit' => 0,
+                  'account_code' => $code,
+                  'description' => 'Entrada de Cierre Contable',
+                  'amount' => $account['balance']
+                ]
+              ]);
+            } else {
+              $debits -= $accounts['balance'];
+              DB::table('accounts')->where('code', $code)
+                ->increment('amount', $account['balance']);
+
+              DB::table('journal_entries_breakdown')->insert([
+                [
+                  'journal_entry_code' => $entry_code,
+                  'branch_identifier' => 'ai',
+                  'debit' => 1,
+                  'account_code' => $code,
+                  'description' => 'Entrada de Cierre Contable',
+                  'amount' => $account['balance']
+                ]
+              ]);
+            }
+          } else if($account['balance'] > 0) {
+            if(in_array($account['type'], array('li', 'eq', 're'))) {
+              $credits += $accounts['balance'];
+              DB::table('accounts')->where('code', $code)
+                ->decrement('amount', $account['balance']);
+
+              DB::table('journal_entries_breakdown')->insert([
+                [
+                  'journal_entry_code' => $entry_code,
+                  'branch_identifier' => 'ai',
+                  'debit' => 1,
+                  'account_code' => $code,
+                  'description' => 'Entrada de Cierre Contable',
+                  'amount' => $account['balance']
+                ]
+              ]);
+            } else {
+              $debits += $accounts['balance'];
+              DB::table('accounts')->where('code', $code)
+                ->decrement('amount', $account['balance']);
+
+              DB::table('journal_entries_breakdown')->insert([
+                [
+                  'journal_entry_code' => $entry_code,
+                  'branch_identifier' => 'ai',
+                  'debit' => 0,
+                  'account_code' => $code,
+                  'description' => 'Entrada de Cierre Contable',
+                  'amount' => $account['balance']
+                ]
+              ]);
+            }
+          }
+        }
+
+        // Now complete the final entry.
+        $revenue = $credits-$debits;
+        if($revenue < 0) {
+          DB::table('accounts')->where('code', Input::get('closing_account'))
+            ->decrement('amount', $revenue);
+
+          DB::table('journal_entries_breakdown')->insert([
+            [
+              'journal_entry_code' => $entry_code,
+              'branch_identifier' => 'ai',
+              'debit' => 1,
+              'account_code' => Input::get('closing_account'),
+              'description' => 'Entrada de Cierre Contable',
+              'amount' => $revenue
+            ]
+          ]);
+        } else if($revenue > 0) {
+          DB::table('accounts')->where('code', Input::get('closing_account'))
+            ->increment('amount', $revenue);
+
+          DB::table('journal_entries_breakdown')->insert([
+            [
+              'journal_entry_code' => $entry_code,
+              'branch_identifier' => 'ai',
+              'debit' => 0,
+              'account_code' => Input::get('closing_account'),
+              'description' => 'Entrada de Cierre Contable',
+              'amount' => $revenue
+            ]
+          ]);
+        }
         DB::commit();
         $complete = true;
       } catch(\Exception $e) {
         $tries++;
         if($tries == 5) {
-          // TODO: Create Notification to Administrator.
+          $response = array(
+            'state' => 'Error',
+            'error' => \Lang::get('controllers/journal_controller.closing_failed')
+          );
+          return response()->json($response);
         }
       }
     }
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/journal_controller.closing_entry_success')
+    );
+    return response()->json($response);
   }
+
   public function save_configuration() {
     $validator = Validator::make(Input::all(),
       array(
@@ -235,6 +386,9 @@ class JournalController extends Controller
     switch($type) {
       case 'activo':
         return 'as';
+        break;
+      case 'contra activo':
+        return 'ca';
         break;
       case 'gasto':
         return 'dr';
@@ -1696,14 +1850,6 @@ class JournalController extends Controller
   }
 
   public function download_entries() {
-    /*
-    $validator = Validator::make(Input::all(),
-      array(
-        'type' => 'required',
-        'date_range' => 'required',
-      )
-    );
-    */
     $validator = Validator::make(Input::all(),
       array(
         'entries_data' => 'required'
@@ -1739,19 +1885,22 @@ class JournalController extends Controller
             $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
           })
           ->select('journal_entries.*', 'journal_entries_breakdown.*')
-          ->whereBetween('journal_entries.entry_date', $date_range)->get();
+          ->whereBetween('journal_entries.entry_date', $date_range)
+          ->orderBy('journal_entries.entry_date')
+          ->get();
         break;
       case 'summary':
         $accounts = \App\Account::where('code', '!=', 0)
           ->orderBy('code')
+          ->withTrashed()
           //->orderBy('type')
           ->get();
 
         foreach($accounts as $account) {
           $journal[$account->code] = array(
               'name' => $account->name,
-              'initial' => $account->amount,
-              'final' => $account->amount,
+              'initial' => 0,
+              'final' => 0,
               'credit' => 0,
               'debit' => 0,
               'added' => (!$account->has_children) ? true : false,
@@ -1759,7 +1908,60 @@ class JournalController extends Controller
               'type' => $account->type,
               'children' => $account->has_children,
               'parent' => $account->parent_account,
+              'deleted' => $account->deleted
             );
+        }
+
+        // Get Initial Balance
+        $initial_balance = DB::table('account_history_breakdown')
+          ->join('account_history', 'account_history_breakdown.account_history_code', 'account_history.code')
+          ->select('account_history.*', 'account_history_breakdown.*')
+          ->where('account_history.month', '<=', date('m', strtotime($date_range[0])))
+          ->where('account_history.year', '<=', date('Y', strtotime($date_range[0])))
+          ->where('account_history.year', '>', date('Y', strtotime($date_range[0].' -1 year')))
+          ->get();
+
+        $month = '';
+        $year = '';
+        foreach($initial_balance as $balance) {
+          $journal[$balance->account_code]['initial'] = $balance->balance;
+          $month = $balance->month;
+          $year = $balance->year;
+        }
+        //print_r($journal);
+
+        // Update intial balance to whatever the start period was.
+        $entries = DB::table('journal_entries')
+          //->join('journal_entries_breakdown', 'journal_entries.code', 'journal_entries_breakdown.journal_entry_code')
+          ->join('journal_entries_breakdown', function($join){
+            $join->on('journal_entries.code', 'journal_entries_breakdown.journal_entry_code');
+            $join->on('journal_entries.branch_identifier', 'journal_entries_breakdown.branch_identifier');
+          })
+          ->select('journal_entries_breakdown.*')
+          ->whereBetween('journal_entries.entry_date', array(date('Y-m-d H:i:s', strtotime($year.'-'.$month.'-01')), $date_range[0]))
+          ->get();
+        //print_r($entries);
+        foreach($entries as $entry) {
+          // Check if it's a debit transaction and update account data based on
+          // Account type.
+          if($entry->debit) {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+              $journal[$entry->account_code]['initial'] -= $entry->amount;
+            } else {
+              $journal[$entry->account_code]['initial'] += $entry->amount;
+            }
+          } else {
+            if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+              $journal[$entry->account_code]['initial'] += $entry->amount;
+            } else {
+              $journal[$entry->account_code]['initial'] -= $entry->amount;
+            }
+          }
+        }
+
+        // Now update final balance.
+        foreach($journal as $code => $entry) {
+          $journal[$code]['final'] = $journal[$code]['initial'];
         }
 
         $entries = DB::table('journal_entries')
@@ -1781,43 +1983,50 @@ class JournalController extends Controller
             // Check if it's a debit transaction and update account data based on
             // Account type.
             if($entry->debit) {
-              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-                $journal[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
+              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+                $journal[$entry->account_code]['final'] -= $entry->amount;
               } else {
-                $journal[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
+                $journal[$entry->account_code]['final'] += $entry->amount;
               }
               $journal[$entry->account_code]['debit'] += $entry->amount;
             } else {
-              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're'))) {
-                $journal[$entry->account_code]['initial'] = $entry->balance-$entry->amount;
+              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+                $journal[$entry->account_code]['final'] += $entry->amount;
               } else {
-                $journal[$entry->account_code]['initial'] = $entry->balance+$entry->amount;
+                $journal[$entry->account_code]['final'] -= $entry->amount;
               }
               $journal[$entry->account_code]['credit'] += $entry->amount;
             }
-            $journal[$entry->account_code]['final'] = $entry->balance;
           } else {
             if($entry->debit) {
+              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+                $journal[$entry->account_code]['final'] -= $entry->amount;
+              } else {
+                $journal[$entry->account_code]['final'] += $entry->amount;
+              }
               $journal[$entry->account_code]['debit'] += $entry->amount;
             } else {
+              if(in_array($journal[$entry->account_code]['type'], array('li', 'eq', 're', 'ca'))) {
+                $journal[$entry->account_code]['final'] += $entry->amount;
+              } else {
+                $journal[$entry->account_code]['final'] -= $entry->amount;
+              }
               $journal[$entry->account_code]['credit'] += $entry->amount;
             }
-            $journal[$entry->account_code]['final'] = $entry->balance;
           }
         }
 
         foreach($journal as $code => $entry) {
           if(!$journal[$code]['added']) {
             $sums = $this->sum_children($journal, $code);
-            $journal[$code]['initial'] += $sums['initial'];
-            $journal[$code]['final'] += $sums['final'];
-            $journal[$code]['credit'] += $sums['credit'];
-            $journal[$code]['debit'] += $sums['debit'];
+            $journal[$code]['initial'] = $sums['initial'];
+            $journal[$code]['final'] = $sums['final'];
+            $journal[$code]['credit'] = $sums['credit'];
+            $journal[$code]['debit'] = $sums['debit'];
           }
         }
         break;
     }
-
     // Prepare headers.
     $headers = array(
         "Content-type" => "text/csv",
@@ -1831,7 +2040,7 @@ class JournalController extends Controller
     if($type == 'detail') {
       $columns = array(\Lang::get('controllers/journal_controller.date'), \Lang::get('controllers/journal_controller.account_code'),
         \Lang::get('controllers/journal_controller.description'), \Lang::get('controllers/journal_controller.debit'),
-        \Lang::get('controllers/journal_controller.credit'), \Lang::get('controllers/journal_controller.balance')
+        \Lang::get('controllers/journal_controller.credit')
       );
     } else {
       $columns = array(\Lang::get('controllers/journal_controller.account_code'), \Lang::get('controllers/journal_controller.account_name'),
@@ -1846,7 +2055,7 @@ class JournalController extends Controller
         foreach($journal as $entry) {
           fputcsv($file, array($entry->entry_date, $entry->account_code,
             $entry->description, ($entry->debit) ? $entry->amount : '',
-            (!$entry->debit) ? $entry->amount : '', $entry->balance));
+            (!$entry->debit) ? $entry->amount : ''));
         }
       } else {
         foreach($journal as $code => $entry) {

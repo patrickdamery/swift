@@ -31,4 +31,5 @@ return [
     'account_not_empty' => 'Account must be empty in order to be deleted!',
     'account_deleted' => 'Account deleted successfully!',
     'account_code_unexistent' => 'Could not find an account with code ',
+    'changed_data' => 'Account updated successfully!',
 ];
