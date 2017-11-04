@@ -56,6 +56,9 @@
         <th>@lang('staff/staff.legal_id')</th>
         <th>@lang('staff/staff.phone')</th>
         <th>@lang('staff/staff.job_title')</th>
+        <th>@lang('staff/staff.address')</th>
+        <th>@lang('staff/staff.inss')</th>
+        <th>@lang('staff/staff.settings')</th>
         <th>@lang('staff/staff.state')</th>
         <th>@lang('staff/staff.user')</th>
       </tr>
@@ -67,6 +70,9 @@
           <td class="staff-id-edit">{{ $worker->legal_id }}</td>
           <td class="staff-phone-edit">{{ $worker->phone }}</td>
           <td class="staff-job-edit">{{ $worker->job_title }}</td>
+          <td class="staff-address-edit">{{ $worker->address }}</td>
+          <td class="staff-inss-edit">{{ $worker->inss }}</td>
+          <td class="staff-configuration-edit">{{ $worker->get_settings() }}</td>
           <td class="staff-state-edit">{{ get_state($worker->state) }}</td>
           <td>
             @php

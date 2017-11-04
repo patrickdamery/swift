@@ -802,7 +802,7 @@ Journal.prototype = {
           try{
             var json = JSON.parse(entry_parts[1]);
             if(json.hasOwnProperty('tipo')) {
-              var tipos = ['activo', 'gasto', 'costo', 'pasivo', 'patrimonio', 'ingresos'];
+              var tipos = ['activo', 'contra activo', 'gasto', 'costo', 'pasivo', 'patrimonio', 'ingresos'];
 
               if(!tipos.includes(json['tipo'])) {
                 swift_utils.display_error(swift_language.get_sentence('unrecognized_type')+json['tipo']);
@@ -985,6 +985,8 @@ Journal.prototype = {
         swift_utils.display_success(data.message);
         $('#journal-create-graph').addClass('hide');
         $('.showable').removeClass('hide');
+        var option = '<option value="'+data.graph.id+'">'+data.graph.name+'</option>';
+        $('#journal-graphs-graph').append(option);
       });
       request.fail(function(ev) {
         swift_utils.free(e.target);
@@ -1712,8 +1714,7 @@ $(document).on('focus', '#journal-configuration-advanced-it', function(e) {
     })
   }
 });
-
-$(function() {
+$(document).ready(function() {
   $.contextMenu({
     selector: '.create-entry-row',
     callback: function(key, options) {
@@ -1723,18 +1724,9 @@ $(function() {
       }
     },
     items: {
-      'delete': {name: swift_language.get_sentence('delete'), icon: 'fa-trash'},
+      'delete': {name: swift_language.get_sentence('delete'), icon: 'entry-trash fa-trash'},
     }
   });
-});
-
-swift_event_tracker.register_swift_event(
-  '.create-entry-row',
-  'context_option',
-  journal_js,
-  'remove_entry');
-
-$(function() {
   $.contextMenu({
     selector: '.w-i',
     callback: function(key, options) {
@@ -1763,10 +1755,16 @@ $(function() {
       }
     },
     items: {
-      'add': {name: swift_language.get_sentence('add_row'), icon: 'fa-plus'},
+      'add': {name: swift_language.get_sentence('add_row'), icon: 'fa-plus', className: 'report-add-row'},
     }
   });
 });
+
+swift_event_tracker.register_swift_event(
+  '.create-entry-row',
+  'context_option',
+  journal_js,
+  'remove_entry');
 
 swift_event_tracker.register_swift_event(
   '.add-row',

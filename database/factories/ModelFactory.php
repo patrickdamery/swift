@@ -36,6 +36,9 @@ $factory->define(App\Worker::class, function (Faker\Generator $faker) {
         'legal_id' => $faker->creditCardNumber,
         'job_title' => 'Vendedor',
         'phone' => $faker->phoneNumber,
+        'address' => $faker->address,
+        'inss' => '456489165',
+        'configuration_code' => 1,
         'state' => 1,
         'current_branch_code' => '1',
     ];
@@ -44,7 +47,8 @@ $factory->define(App\Worker::class, function (Faker\Generator $faker) {
 $factory->define(App\WorkerSetting::class, function (Faker\Generator $faker) {
 
     return [
-        'worker_code' => 0,
+        'name' => '',
+        'monthly_wage' => 0,
         'hourly_rate' => 0,
         'vehicle_code' => 0,
         'schedule_code' => 0,

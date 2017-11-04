@@ -22,7 +22,7 @@ class Worker extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'name', 'legal_id', 'job_title', 'phone', 'state', 'current_branch_code'
+      'code', 'name', 'legal_id', 'job_title', 'address', 'inss', 'phone', 'configuration_code', 'state', 'current_branch_code'
   ];
 
   /**
@@ -35,5 +35,12 @@ class Worker extends Model
    */
   public function branch_identifier() {
     return \App\BranchSetting::where('branch_code', $this->current_branch_code)->first()->identifier;
+  }
+
+  /**
+   * Function to get workers settings.
+   */
+  public function get_settings() {
+    return \App\WorkerSetting::where('id', $this->configuration_code)->first()->name;
   }
 }

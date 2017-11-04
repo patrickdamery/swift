@@ -34,4 +34,7 @@ return [
         'staff_list' => 'Staff List',
         'staff_branch' => 'Branch',
         'date' => 'Date',
+        'inss' => 'INSS',
+        'address' => 'Address',
+        'settings' => 'Settings',
 ];

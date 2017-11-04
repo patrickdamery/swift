@@ -33,6 +33,9 @@ abstract class DuskTestCase extends BaseTestCase
 
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
+            //'--enable-logging',
+            //'--auto-open-devtools-for-tabs',
+            //'--remote-debugging-port=9222',
             '--headless'
         ]);
 

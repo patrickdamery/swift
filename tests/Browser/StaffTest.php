@@ -41,6 +41,8 @@ class StaffTest extends DuskTestCase
                 ->type('#create-worker-id', '12345')
                 ->type('#create-worker-job-title', 'Job Title')
                 ->type('#create-worker-phone', '88884444')
+                ->type('#create-worker-address', 'asfdashdasfjda')
+                ->type('#create-worker-inss', '888asfdas')
                 ->click('#create-worker-create')
                 ->waitForText('Trabajador creado exitosamente!')
                 ->assertSee('Trabajador creado exitosamente!')

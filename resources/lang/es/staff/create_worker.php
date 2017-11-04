@@ -21,4 +21,7 @@ return [
     'branch' => 'Sucursal',
     'close' => 'Cerrar',
     'create' => 'Crear',
+    'inss' => 'INSS',
+    'address' => 'Direccion',
+    'settings' => 'Configuracion',
 ];

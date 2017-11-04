@@ -51,13 +51,14 @@ class test_seed extends Seeder
 
       // Create some workers.
       $u = 1;
+      $settings = factory(App\WorkerSetting::class)->create([
+        'name' => 'Default'
+      ]);
       for($i = 0; $i<5; $i++) {
+
         $worker = factory(App\Worker::class)->create([
           'code' => $i,
-        ]);
-
-        $settings = factory(App\WorkerSetting::class)->create([
-          'worker_code' => $worker->code
+          'configuration_code' => 1
         ]);
 
         $accounts = factory(App\WorkerAccount::class)->create([
@@ -77,10 +78,7 @@ class test_seed extends Seeder
       // Now make static workers and users for unit tests.
       $worker = factory(App\Worker::class)->create([
         'code' => 6,
-      ]);
-
-      $settings = factory(App\WorkerSetting::class)->create([
-        'worker_code' => $worker->code
+        'configuration_code' => 1
       ]);
 
       $accounts = factory(App\WorkerAccount::class)->create([
@@ -98,13 +96,11 @@ class test_seed extends Seeder
 
       $worker = factory(App\Worker::class)->create([
         'code' => 7,
+        'configuration_code' => 1,
         'state' => 2,
         'deleted_at' => date('Y-m-d')
       ]);
 
-      $settings = factory(App\WorkerSetting::class)->create([
-        'worker_code' => $worker->code
-      ]);
 
       $accounts = factory(App\WorkerAccount::class)->create([
         'worker_code' => $worker->code

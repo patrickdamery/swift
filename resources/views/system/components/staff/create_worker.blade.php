@@ -28,11 +28,29 @@
           </div>
         </div>
         <div class="row form-inline lg-top-space md-top-space sm-top-space">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-worker-address" class="control-label">@lang('staff/create_worker.address')</label>
+            <textarea class="form-control" id="create-worker-address"></textarea>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-worker-inss" class="control-label">@lang('staff/create_worker.inss')</label>
+            <input type="text" class="form-control" id="create-worker-inss">
+          </div>
+        </div>
+        <div class="row form-inline lg-top-space md-top-space sm-top-space">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
             <label for="create-worker-branch" class="control-label">@lang('staff/create_worker.branch')</label>
             <select class="form-control" id="create-worker-branch">
               @foreach(\App\Branch::all()  as $branch)
                 <option value="{{ $branch->code }}">{{ $branch->name }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <label for="create-worker-branch" class="control-label">@lang('staff/create_worker.settings')</label>
+            <select class="form-control" id="create-worker-branch">
+              @foreach(\App\WorkerSetting::all()  as $setting)
+                <option value="{{ $setting->id }}">{{ $setting->name }}</option>
               @endforeach
             </select>
           </div>

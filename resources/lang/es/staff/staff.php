@@ -34,4 +34,7 @@ return [
         'staff_list' => 'Lista de Trabajadores',
         'staff_branch' => 'Sucursal',
         'date' => 'Date',
+        'inss' => 'INSS',
+        'address' => 'Direccion',
+        'settings' => 'Configuracion',
 ];

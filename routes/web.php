@@ -69,6 +69,10 @@ Route::prefix('swift')->group(function() {
     Route::post('change_id', 'StaffController@change_id');
     Route::post('change_phone', 'StaffController@change_phone');
     Route::post('change_job', 'StaffController@change_job');
+    Route::post('change_address', 'StaffController@change_address');
+    Route::post('change_inss', 'StaffController@change_inss');
+    Route::post('change_configuration', 'StaffController@change_configuration');
+    Route::post('load_configurations', 'StaffController@load_configurations');
     Route::post('change_state', 'StaffController@change_state');
     Route::post('get_user', 'StaffController@get_user');
     Route::post('create_user', 'StaffController@create_user');

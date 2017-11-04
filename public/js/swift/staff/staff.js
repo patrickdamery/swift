@@ -172,6 +172,74 @@ Staff.prototype = {
       swift_utils.ajax_fail(ev);
     });
   },
+  edit_address: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+
+    cell.replaceWith('<td><input type="text" class="staff-change-address" value="'+edit_value+'"></td>')
+    $('.staff-change-address').focus();
+  },
+  change_address: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-address-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_address', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-address-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  edit_inss: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+
+    cell.replaceWith('<td><input type="text" class="staff-change-inss" value="'+edit_value+'"></td>')
+    $('.staff-change-inss').focus();
+  },
+  change_inss: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-inss-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_inss', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-inss-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
   edit_state: function(e) {
     var cell = $(e.target);
     var row = $(e.target).parent('tr');
@@ -210,16 +278,75 @@ Staff.prototype = {
       swift_utils.ajax_fail(ev);
     });
   },
+  edit_configuration: function(e) {
+    var cell = $(e.target);
+    var row = $(e.target).parent('tr');
+
+    edit_code = row.attr('id').split('-')[1];
+    edit_value = cell.text();
+
+    var request = $.post('/swift/staff/load_configurations', { _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      var select = '<td><select class="form-control staff-change-configuration">';
+      $.each(data.configs, function(key, info) {
+          if(info.name == edit_value) {
+            select += '<option value="'+info.id+'" selected>'+info.name+'</option>';
+          } else {
+            select += '<option value="'+info.id+'">'+info.name+'</option>';
+          }
+      });
+      select += '</td>';
+      cell.replaceWith(select);
+      $('.staff-change-state').focus();
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  change_configuration: function(e) {
+    // Get new value.
+    var value = $(e.target).val();
+    if(value == edit_value) {
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-configuration-edit">'+edit_value+'</td>');
+      return;
+    }
+    var staff_ref = this;
+    var request = $.post('/swift/staff/change_configuration', { code: edit_code, value: value, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      $(e.target).parent('td')
+        .replaceWith('<td class="staff-configuration-edit">'+value+'</td>');
+      swift_utils.display_success(data.message);
+      staff_ref.search(e);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
   create: function(e) {
     swift_utils.busy(e.target);
     var name = $('#create-worker-name').val();
     var id = $('#create-worker-id').val();
     var job_title = $('#create-worker-job-title').val();
     var phone = $('#create-worker-phone').val();
+    var address = $('#create-worker-address').val();
+    var inss = $('#create-worker-inss').val();
+    var config = $('#create-worker-configuration').val();
     var branch = $('#create-worker-branch').val();
     var staff_ref = this;
     var request = $.post('/swift/staff/create', { name: name, id: id,
-      job_title: job_title, phone: phone, branch: branch, _token: swift_utils.swift_token() });
+      job_title: job_title, phone: phone, address: address, inss: inss,
+      config: config, branch: branch, _token: swift_utils.swift_token() });
     request.done(function(data) {
       if(data.state != 'Success') {
         swift_utils.free(e.target);
@@ -323,6 +450,66 @@ Staff.prototype = {
 var staff_js = new Staff();
 
 // Define Event Listeners.
+swift_event_tracker.register_swift_event(
+  '.staff-address-edit',
+  'click',
+  staff_js,
+  'edit_address');
+
+$(document).on('click', '.staff-address-edit', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-address-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.staff-change-address',
+  'focusout',
+  staff_js,
+  'change_address');
+
+$(document).on('focusout', '.staff-change-address', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-change-address');
+});
+
+swift_event_tracker.register_swift_event(
+  '.staff-inss-edit',
+  'click',
+  staff_js,
+  'edit_inss');
+
+$(document).on('click', '.staff-inss-edit', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-inss-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.staff-change-inss',
+  'focusout',
+  staff_js,
+  'change_inss');
+
+$(document).on('focusout', '.staff-change-inss', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-change-inss');
+});
+
+swift_event_tracker.register_swift_event(
+  '.staff-configuration-edit',
+  'click',
+  staff_js,
+  'edit_configuration');
+
+$(document).on('click', '.staff-configuration-edit', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-configuration-edit');
+});
+
+swift_event_tracker.register_swift_event(
+  '.staff-change-configuration',
+  'focusout',
+  staff_js,
+  'change_configuration');
+
+$(document).on('focusout', '.staff-change-configuration', function(e) {
+  swift_event_tracker.fire_event(e, '.staff-change-configuration');
+});
+
 swift_event_tracker.register_swift_event(
   '#staff-print',
   'click',

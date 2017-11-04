@@ -15,8 +15,9 @@ class CreateWorkerSettings extends Migration
     {
         Schema::create('worker_settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('worker_code', 10);
+            $table->string('name', 20);
             $table->double('hourly_rate');
+            $table->double('monthly_wage');
             $table->string('vehicle_code', 10);
             $table->string('schedule_code', 10);
             $table->string('notification_group', 10);
@@ -27,8 +28,6 @@ class CreateWorkerSettings extends Migration
             $table->string('branches_group', 10);
             $table->string('pos_group', 10);
 
-            $table->index('worker_code');
-            $table->foreign('worker_code')->references('code')->on('workers');
             $table->foreign('vehicle_code')->references('code')->on('vehicles');
             $table->foreign('notification_group')->references('code')->on('groups');
             $table->foreign('print_group')->references('code')->on('groups');

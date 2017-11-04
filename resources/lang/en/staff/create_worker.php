@@ -21,4 +21,7 @@ return [
     'branch' => 'Branch',
     'close' => 'Close',
     'create' => 'Create',
+    'inss' => 'INSS',
+    'address' => 'Address',
+    'settings' => 'Settings',
 ];

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
 use \App\Worker;
+use \App\WorkerSetting;
 use \App\User;
 class StaffController extends Controller
 {
@@ -258,6 +259,104 @@ class StaffController extends Controller
     $response = array(
       'state' => 'Success',
       'message' => \Lang::get('controllers/staff_controller.changed')
+    );
+    return response()->json($response);
+  }
+
+  public function change_inss() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'value' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $worker = Worker::where('code', Input::get('code'))->first();
+    $worker->inss = Input::get('value');
+    $worker->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_controller.changed')
+    );
+    return response()->json($response);
+  }
+
+  public function change_address() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'value' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $worker = Worker::where('code', Input::get('code'))->first();
+    $worker->address = Input::get('value');
+    $worker->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_controller.changed')
+    );
+    return response()->json($response);
+  }
+
+  public function change_configuration() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'value' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.data_required')
+      );
+      return response()->json($response);
+    }
+
+    $config_test = WorkerSetting::where('id', Input::get('value'))->first();
+    if(!$config_test) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_controller.unexistent_configuration_code')
+      );
+      return response()->json($response);
+    }
+
+    $worker = Worker::where('code', Input::get('code'))->first();
+    $worker->configuration_code = Input::get('value');
+    $worker->save();
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_controller.changed')
+    );
+    return response()->json($response);
+  }
+
+  public function load_configurations() {
+
+    $configurations = WorkerSetting::all();
+
+    $response = array(
+      'state' => 'Success',
+      'configs' => $configurations
     );
     return response()->json($response);
   }

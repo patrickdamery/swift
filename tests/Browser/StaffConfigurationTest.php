@@ -13,7 +13,7 @@ class StaffConfigurationTest extends DuskTestCase
      *
      * @return void
      */
-    public function testStaffConfigurationPage()
+/*    public function testStaffConfigurationPage()
     {
       $this->browse(function (Browser $browser) {
           $browser->visit('/login')
@@ -48,5 +48,5 @@ class StaffConfigurationTest extends DuskTestCase
                   ->waitForText('Configuracion guardada exitosamente!')
                   ->assertSee('Configuracion guardada exitosamente!');
       });
-    }
+    }*/
 }
