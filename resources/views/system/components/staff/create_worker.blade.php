@@ -47,8 +47,8 @@
             </select>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
-            <label for="create-worker-branch" class="control-label">@lang('staff/create_worker.settings')</label>
-            <select class="form-control" id="create-worker-branch">
+            <label for="create-worker-configuration" class="control-label">@lang('staff/create_worker.settings')</label>
+            <select class="form-control" id="create-worker-configuration">
               @foreach(\App\WorkerSetting::all()  as $setting)
                 <option value="{{ $setting->id }}">{{ $setting->name }}</option>
               @endforeach

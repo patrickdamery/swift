@@ -63,6 +63,8 @@
         <th>@lang('staff/staff.legal_id')</th>
         <th>@lang('staff/staff.phone')</th>
         <th>@lang('staff/staff.job_title')</th>
+        <th>@lang('staff/staff.address')</th>
+        <th>@lang('staff/staff.inss')</th>
         <th>@lang('staff/staff.state')</th>
         <th>@lang('staff/staff.user')</th>
       </tr>
@@ -73,6 +75,8 @@
             <td>{{ $worker->legal_id }}</td>
             <td>{{ $worker->phone }}</td>
             <td>{{ $worker->job_title }}</td>
+            <td>{{ $worker->address }}</td>
+            <td>{{ $worker->inss }}</td>
             <td>{{ get_state($worker->state) }}</td>
             <td>{{ get_user($worker->code) }}</td>
           </tr>

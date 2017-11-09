@@ -31,6 +31,21 @@ StaffConfiguration.prototype = {
         $('#staff-configuration-pos').val(data.settings.pos_group);
         $('#staff-configuration-access').val(data.access);
       }
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  search_accounts: function(e) {
+    var code = $('#staff-accounting-code').val()
+    var request = $.post('/swift/staff/search_accounts', { code: code, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        swift_utils.free(e.target);
+        return;
+      }
       if(data.accounts != '') {
         $('#staff-configuration-cashbox').val(data.accounts.cashbox_account);
         $('#staff-configuration-stock').val(data.accounts.stock_account);
@@ -97,6 +112,30 @@ StaffConfiguration.prototype = {
         return;
       }
     }
+
+    swift_utils.busy(e.target);
+    var request = $.post('/swift/staff/save_config', { code: code, settings: settings,
+        access: access, _token: swift_utils.swift_token() });
+    request.done(function(data) {
+      swift_utils.free(e.target);
+      if(data.state != 'Success') {
+        swift_utils.display_error(data.error);
+        return;
+      }
+      swift_utils.display_success(data.message);
+    });
+    request.fail(function(ev) {
+      swift_utils.free(e.target);
+      swift_utils.ajax_fail(ev);
+    });
+  },
+  save_accounts: function(e) {
+    console.log('moo')
+    var code = $('#staff-accounting-code').val();
+    if(code == '') {
+      swift_utils.display_error(swift_language.get_sentence('save_config_error'));
+      return;
+    }
     // TODO: There's probably a way to send empty JSON objects.
     var accounts = {'ignore': ''};
     if($('#staff-configuration-cashbox').length) {
@@ -125,15 +164,13 @@ StaffConfiguration.prototype = {
     }
 
     swift_utils.busy(e.target);
-    var request = $.post('/swift/staff/save_config', { code: code, settings: settings,
-        access: access, accounts: accounts, _token: swift_utils.swift_token() });
+    var request = $.post('/swift/staff/save_accounts', { code: code, accounts: accounts, _token: swift_utils.swift_token() });
     request.done(function(data) {
       swift_utils.free(e.target);
       if(data.state != 'Success') {
         swift_utils.display_error(data.error);
         return;
       }
-      console.log('moo')
       swift_utils.display_success(data.message);
     });
     request.fail(function(ev) {
@@ -325,13 +362,23 @@ var staff_configuration_js = new StaffConfiguration();
 
 // Define Event Listeners.
 swift_event_tracker.register_swift_event(
-  '#staff-configuration-code',
-  'change',
+  '#staff-accounting-search',
+  'click',
+  staff_configuration_js,
+  'search_accounts');
+
+$(document).on('click', '#staff-accounting-search', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-accounting-search');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-configuration-search',
+  'click',
   staff_configuration_js,
   'search_config');
 
-$(document).on('change', '#staff-configuration-code', function(e) {
-  swift_event_tracker.fire_event(e, '#staff-configuration-code');
+$(document).on('click', '#staff-configuration-search', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-configuration-search');
 });
 
 swift_event_tracker.register_swift_event(
@@ -342,6 +389,16 @@ swift_event_tracker.register_swift_event(
 
 $(document).on('click', '#staff-configuration-save', function(e) {
   swift_event_tracker.fire_event(e, '#staff-configuration-save');
+});
+
+swift_event_tracker.register_swift_event(
+  '#staff-accounting-save',
+  'click',
+  staff_configuration_js,
+  'save_accounts');
+
+$(document).on('click', '#staff-accounting-save', function(e) {
+  swift_event_tracker.fire_event(e, '#staff-accounting-save');
 });
 
 swift_event_tracker.register_swift_event(

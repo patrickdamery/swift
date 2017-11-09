@@ -92,6 +92,7 @@
       @if($access->staff->staff_config->view_config->has)
         <li class="active"><a href="#staff-configuration" id="staff-configuration-tab" data-toggle="tab" aria-expanded="true">@lang('staff/staff_configuration.view_config')</a></li>
       @endif
+        <li><a href="#staff-accounting-configuration" id="staff-accounting-configuration-tab" data-toggle="tab" aria-expanded="true">@lang('staff/staff_configuration.accounting')</a></li>
       @if($access->staff->staff_config->access_config->has)
         <li><a href="#staff-configuration-view-access" id="staff-configuration-view-access-tab" data-toggle="tab" aria-expanded="true">@lang('staff/staff_configuration.view_access')</a></li>
       @endif
@@ -103,16 +104,22 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
                 <label for="staff-configuration-code" class="control-label">@lang('staff/staff_configuration.code')</label>
-                <input type="text" class="form-control" id="staff-configuration-code">
+                <select class="form-control" id="staff-configuration-code">
+                  @foreach(\App\WorkerSetting::all() as $setting)
+                    <option value="{{ $setting->id }}">{{ $setting->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="staff-configuration-search">
+                  <i class="fa fa-search"></i> @lang('staff/staff_configuration.search')
+                </button>
               </div>
             </div>
           </div>
           @if($access->staff->staff_config->view_config->general_config)
-            <div class="row lg-top-space md-top-space sm-top-space xs-top-space">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
-                <h3>@lang('staff/staff_configuration.general')</h3>
-              </div>
-            </div>
             <div class="row lg-top-space md-top-space sm-top-space">
               <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="form-group">
@@ -196,130 +203,158 @@
             </div>
           @endif
           @if($access->staff->staff_config->view_config->accounting_config)
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
-                <h3>@lang('staff/staff_configuration.accounting')</h3>
+
+          @endif
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="staff-configuration-save">
+                  <i class="fa fa-save"></i> @lang('staff/staff_configuration.save')
+                </button>
               </div>
             </div>
-            <div class="row lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-cashbox" class="control-label">@lang('staff/staff_configuration.cashbox')</label>
-                  <input type="text" class="form-control" id="staff-configuration-cashbox">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-stock" class="control-label">@lang('staff/staff_configuration.stock')</label>
-                  <input type="text" class="form-control" id="staff-configuration-stock">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
-                <div class="form-group">
-                  <label for="staff-configuration-loan" class="control-label">@lang('staff/staff_configuration.loan')</label>
-                  <input type="text" class="form-control" id="staff-configuration-loan">
-                </div>
+          </div>
+        </div>
+      @endif
+        <div class="tab-pane" id="staff-accounting-configuration">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-accounting-code" class="control-label">@lang('staff/staff_configuration.code')</label>
+                <select class="form-control" id="staff-accounting-code">
+                  @foreach(\App\WorkerAccount::all() as $account)
+                    <option value="{{ $account->id }}">{{ $account->name }}</option>
+                  @endforeach
+                </select>
               </div>
             </div>
-            <div class="row lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-long-loan" class="control-label">@lang('staff/staff_configuration.long_loan')</label>
-                  <input type="text" class="form-control" id="staff-configuration-long-loan">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-salary" class="control-label">@lang('staff/staff_configuration.salary')</label>
-                  <input type="text" class="form-control" id="staff-configuration-salary">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
-                <div class="form-group">
-                  <label for="staff-configuration-commission-account" class="control-label">@lang('staff/staff_configuration.commission_account')</label>
-                  <input type="text" class="form-control" id="staff-configuration-commission-account">
-                </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="staff-accounting-search">
+                  <i class="fa fa-search"></i> @lang('staff/staff_configuration.search')
+                </button>
               </div>
             </div>
-            <div class="row lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-bonus" class="control-label">@lang('staff/staff_configuration.bonus')</label>
-                  <input type="text" class="form-control" id="staff-configuration-bonus">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-antiquity" class="control-label">@lang('staff/staff_configuration.antiquity')</label>
-                  <input type="text" class="form-control" id="staff-configuration-antiquity">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
-                <div class="form-group">
-                  <label for="staff-configuration-holidays" class="control-label">@lang('staff/staff_configuration.holidays')</label>
-                  <input type="text" class="form-control" id="staff-configuration-holidays">
-                </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-cashbox" class="control-label">@lang('staff/staff_configuration.cashbox')</label>
+                <input type="text" class="form-control" id="staff-configuration-cashbox">
               </div>
             </div>
-            <div class="row lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-savings" class="control-label">@lang('staff/staff_configuration.savings')</label>
-                  <input type="text" class="form-control" id="staff-configuration-savings">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-insurance" class="control-label">@lang('staff/staff_configuration.insurance')</label>
-                  <input type="text" class="form-control" id="staff-configuration-insurance">
-                </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-stock" class="control-label">@lang('staff/staff_configuration.stock')</label>
+                <input type="text" class="form-control" id="staff-configuration-stock">
               </div>
             </div>
-            <div class="row form-inline lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-reimbursement-code" class="control-label">@lang('staff/staff_configuration.code')</label>
-                  <input type="text" class="form-control" id="staff-configuration-reimbursement-code">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-reimbursement" class="control-label">@lang('staff/staff_configuration.reimbursement')</label>
-                  <select class="form-control" id="staff-configuration-reimbursement" multiple disabled>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="staff-configuration-reimbursement-clear">
-                    <i class="fa fa-clear"></i> @lang('staff/staff_configuration.clear')
-                  </button>
-                </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <label for="staff-configuration-loan" class="control-label">@lang('staff/staff_configuration.loan')</label>
+                <input type="text" class="form-control" id="staff-configuration-loan">
               </div>
             </div>
-            <div class="row form-inline lg-top-space md-top-space sm-top-space">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-draw-code" class="control-label">@lang('staff/staff_configuration.code')</label>
-                  <input type="text" class="form-control" id="staff-configuration-draw-code">
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <label for="staff-configuration-draw" class="control-label">@lang('staff/staff_configuration.draw')</label>
-                  <select class="form-control" id="staff-configuration-draw" multiple disabled>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success" id="staff-configuration-draw-clear">
-                    <i class="fa fa-clear"></i> @lang('staff/staff_configuration.clear')
-                  </button>
-                </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-long-loan" class="control-label">@lang('staff/staff_configuration.long_loan')</label>
+                <input type="text" class="form-control" id="staff-configuration-long-loan">
               </div>
             </div>
-            <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-salary" class="control-label">@lang('staff/staff_configuration.salary')</label>
+                <input type="text" class="form-control" id="staff-configuration-salary">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <label for="staff-configuration-commission-account" class="control-label">@lang('staff/staff_configuration.commission_account')</label>
+                <input type="text" class="form-control" id="staff-configuration-commission-account">
+              </div>
+            </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-bonus" class="control-label">@lang('staff/staff_configuration.bonus')</label>
+                <input type="text" class="form-control" id="staff-configuration-bonus">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-antiquity" class="control-label">@lang('staff/staff_configuration.antiquity')</label>
+                <input type="text" class="form-control" id="staff-configuration-antiquity">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 sm-top-space">
+              <div class="form-group">
+                <label for="staff-configuration-holidays" class="control-label">@lang('staff/staff_configuration.holidays')</label>
+                <input type="text" class="form-control" id="staff-configuration-holidays">
+              </div>
+            </div>
+          </div>
+          <div class="row lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-savings" class="control-label">@lang('staff/staff_configuration.savings')</label>
+                <input type="text" class="form-control" id="staff-configuration-savings">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-insurance" class="control-label">@lang('staff/staff_configuration.insurance')</label>
+                <input type="text" class="form-control" id="staff-configuration-insurance">
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-reimbursement-code" class="control-label">@lang('staff/staff_configuration.code')</label>
+                <input type="text" class="form-control" id="staff-configuration-reimbursement-code">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-reimbursement" class="control-label">@lang('staff/staff_configuration.reimbursement')</label>
+                <select class="form-control" id="staff-configuration-reimbursement" multiple disabled>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="staff-configuration-reimbursement-clear">
+                  <i class="fa fa-clear"></i> @lang('staff/staff_configuration.clear')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-draw-code" class="control-label">@lang('staff/staff_configuration.code')</label>
+                <input type="text" class="form-control" id="staff-configuration-draw-code">
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="staff-configuration-draw" class="control-label">@lang('staff/staff_configuration.draw')</label>
+                <select class="form-control" id="staff-configuration-draw" multiple disabled>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="form-group">
+                <button type="button" class="btn btn-success" id="staff-configuration-draw-clear">
+                  <i class="fa fa-clear"></i> @lang('staff/staff_configuration.clear')
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="form-group">
                 <label for="staff-configuration-bank-code" class="control-label">@lang('staff/staff_configuration.code')</label>
@@ -341,18 +376,16 @@
               </div>
             </div>
           </div>
-          @endif
           <div class="row form-inline lg-top-space md-top-space sm-top-space">
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sm-top-space">
               <div class="form-group">
-                <button type="button" class="btn btn-success" id="staff-configuration-save">
+                <button type="button" class="btn btn-success" id="staff-accounting-save">
                   <i class="fa fa-save"></i> @lang('staff/staff_configuration.save')
                 </button>
               </div>
             </div>
           </div>
         </div>
-      @endif
       @if($access->staff->staff_config->access_config->has)
         <div class="tab-pane" id="staff-configuration-view-access">
           <div class="row form-inline">

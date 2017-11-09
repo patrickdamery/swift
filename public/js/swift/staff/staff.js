@@ -357,7 +357,8 @@ Staff.prototype = {
       $('#create-worker-id').val('');
       $('#create-worker-job-title').val('');
       $('#create-worker-phone').val('');
-      $('#create-worker-phone').val('');
+      $('#create-worker-address').val('');
+      $('#create-worker-inss').val('');
       $('#create-worker').modal('hide');
       swift_utils.display_success(data.message);
       staff_ref.search(e);

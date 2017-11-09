@@ -1724,7 +1724,7 @@ $(document).ready(function() {
       }
     },
     items: {
-      'delete': {name: swift_language.get_sentence('delete'), icon: 'entry-trash fa-trash'},
+      'delete': {name: swift_language.get_sentence('delete'), icon: 'fa-trash', className: 'entry-trash'},
     }
   });
   $.contextMenu({

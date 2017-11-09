@@ -22,7 +22,7 @@ class WorkerSetting extends Model
   protected $fillable = [
       'name', 'full_shift_hours', 'hourly_rate', 'monthly_wage', 'schedule_code',
       'notification_group', 'self_print', 'print_group', 'commission_group',
-      'discount_group', 'branches_group', 'pos_group'
+      'discount_group', 'branches_group', 'pos_group', 'accounting_code'
   ];
 
   /**

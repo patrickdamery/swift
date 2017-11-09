@@ -20,7 +20,7 @@ class WorkerAccount extends Model
    * @var array
    */
   protected $fillable = [
-      'code', 'worker_code', 'cashbox_account', 'stock_account', 'loan_account',
+      'name', 'cashbox_account', 'stock_account', 'loan_account',
       'long_loan_account', 'salary_account', 'commission_account', 'bonus_account',
       'antiquity_account', 'holidays_account', 'savings_account', 'insurance_account',
       'reimbursement_accounts', 'draw_accounts', 'bank_accounts'

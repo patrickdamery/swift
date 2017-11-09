@@ -15,7 +15,7 @@ class CreateWorkerAccounts extends Migration
     {
       Schema::create('worker_accounts', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('worker_code', 10);
+          $table->string('name', 25);
           $table->string('cashbox_account', 20);
           $table->string('stock_account', 20);
           $table->string('loan_account', 20);
@@ -31,7 +31,6 @@ class CreateWorkerAccounts extends Migration
           $table->json('draw_accounts');
           $table->json('bank_accounts');
 
-          $table->foreign('worker_code')->references('code')->on('workers');
           $table->foreign('cashbox_account')->references('code')->on('accounts');
           $table->foreign('stock_account')->references('code')->on('accounts');
           $table->foreign('loan_account')->references('code')->on('accounts');

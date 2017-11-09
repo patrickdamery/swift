@@ -19,14 +19,15 @@
     font-weight: bolder;
     font-size: 16px;
   }
-  .printable-document, .printable-header,
-  .printable-body {
+  .printable-document, .printable-body {
     width: 100vw;
-    height: 100vw;
+    /*height: 100vh;*/
   }
 
   .printable-header {
     margin-bottom: 0.5vh;
+    width: 80vw;
+    margin: auto;
   }
 
   /* Ledger CSS */
@@ -47,7 +48,7 @@
 
   /* Staff List CSS */
   .staff-list {
-    width: 19cm;
+    width: 80vw;
     margin: auto;
   }
   .staff-list > td, .staff-list > th {

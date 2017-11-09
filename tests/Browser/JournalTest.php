@@ -31,7 +31,7 @@ class JournalTest extends DuskTestCase
      *
      * @return void
      */
-    /*public function testNavigateJournal()
+    public function testNavigateJournal()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/swift/system/main')
@@ -41,7 +41,7 @@ class JournalTest extends DuskTestCase
                     ->waitForText('Ver Entradas')
                     ->assertSee('Ver Entradas');
         });
-    }*/
+    }
 
     /**
      * Journal Test.
@@ -62,7 +62,7 @@ class JournalTest extends DuskTestCase
                     ->click('#journal-search')
                     ->waitForText('444.1.1')
                     ->assertSeeIn('#entry-1','50000')
-                    ->driver->executeScript('window.scrollTo(140, 895);');
+                    ->driver->executeScript('window.scrollTo(0, 895);');
 
             $browser->click('#journal-create-entry')
                     ->waitForText('Crear Entrada')
@@ -87,7 +87,7 @@ class JournalTest extends DuskTestCase
                     ->waitForText('Entradas creadas exitosamente!')
                     ->assertSee('Entradas creadas exitosamente!')
                     ->pause(7)
-                    ->driver->executeScript('window.scrollTo(226, -275);');
+                    ->driver->executeScript('window.scrollTo(0, -275);');
         });
     }
 
@@ -116,7 +116,7 @@ class JournalTest extends DuskTestCase
                   ->type('#journal-create-report-content', 'calc(variacion({"tipo":"patrimonio"}))')
                   ->click('#journal-create-report-add')
                   ->type('#journal-create-report-title', 'Hoja de Balance')
-                  ->driver->executeScript('window.scrollTo(100, 600);');
+                  ->driver->executeScript('window.scrollTo(0, 600);');
 
           $browser->rightClick('#report-layout')
                   //->waitFor('.context-menu-visible')
@@ -190,7 +190,7 @@ class JournalTest extends DuskTestCase
                   ->value('#variable-pasivo > div > input', '#0aff00')
                   ->select('#journal-create-graph-graphed-variables', 'activo')
                   ->select('#journal-create-graph-graphed-variables', 'pasivo')
-                  ->driver->executeScript('window.scrollTo(100, 600);');
+                  ->driver->executeScript('window.scrollTo(0, 600);');
 
           $browser->click('#journal-create-graph-create')
                   ->waitForText('Grafico creado exitosamente!')
@@ -210,14 +210,18 @@ class JournalTest extends DuskTestCase
       $this->browse(function (Browser $browser) {
           $browser->click('#journal-configuration-tab')
                   ->waitForText('Tipo de Entidad')
-                  ->click('#journal-configuration-save')
+                  ->driver->executeScript('window.scrollTo(0, 797);');
+
+          $browser->click('#journal-configuration-save')
                   ->waitForText('Cuenta debe ser pasivo: 0')
                   ->assertSee('Cuenta debe ser pasivo: 0')
                   ->type('#journal-configuration-retained-vat', '465.2')
                   ->type('#journal-configuration-advanced-vat', '165.2')
                   ->type('#journal-configuration-retained-it', '465.1')
                   ->type('#journal-configuration-advanced-it', '165.1')
-                  ->click('#journal-configuration-save')
+                  ->driver->executeScript('window.scrollTo(0, 740);');
+
+          $browser->click('#journal-configuration-save')
                   ->waitForText('Configuracion actualizado exitosamente!')
                   ->assertSee('Configuracion actualizado exitosamente!');
 

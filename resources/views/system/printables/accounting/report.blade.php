@@ -22,16 +22,13 @@
       case 'ingresos':
         return 're';
         break;
-      case 'contra activo':
-        return 'ca';
-        break;
     }
   }
 
   function get_results_period($period, $group_by) {
     $results = array();
     switch($group_by) {
-      case 'resumen':
+      case 'summary':
         array_push($results, array(
           'total' => 0
         ));
@@ -120,7 +117,7 @@
 
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -217,7 +214,7 @@
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               $debits = array('as', 'dr', 'ex');
               if(in_array($type, $debits)) {
@@ -328,7 +325,7 @@
 
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
@@ -370,7 +367,7 @@
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if($entry->debit) {
                 $results[0]['total'] += $entry->amount;
@@ -426,7 +423,7 @@
 
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
@@ -468,7 +465,7 @@
       $type = get_account_type($data['codigo']);
       foreach($entries as $entry) {
         switch($group_by) {
-          case 'resumen':
+          case 'summary':
             if(in_array($entry->account_code, $accounts)) {
               if(!$entry->debit) {
                 $results[0]['total'] += $entry->amount;
@@ -670,7 +667,7 @@
                         }
                       } else {
                         @endphp
-                          <p>{!! $sub_column !!}</p>
+                          <p>{!! (isset($sub_column)) ? $sub_column : '' !!}</p>
                         @php
                       }
                     @endphp
@@ -723,7 +720,7 @@
                     }
                   } else {
                     @endphp
-                      {!! $column !!}
+                      {!! (isset($column)) ? $column : '' !!}
                     @php
                   }
                 @endphp

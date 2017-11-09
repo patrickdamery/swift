@@ -58,14 +58,15 @@ $factory->define(App\WorkerSetting::class, function (Faker\Generator $faker) {
         'commission_group' => 0,
         'discount_group' => 0,
         'branches_group' => 0,
-        'pos_group' => 0
+        'pos_group' => 0,
+        'accounting_code' => 0,
     ];
 });
 
 $factory->define(App\WorkerAccount::class, function (Faker\Generator $faker) {
 
     return [
-        'worker_code' => 0,
+        'name' => '',
         'cashbox_account' => 0,
         'stock_account' => 0,
         'loan_account' => 0,

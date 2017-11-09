@@ -81,7 +81,9 @@ Route::prefix('swift')->group(function() {
 
     // Staff Configuration Routes.
     Route::post('search_config', 'StaffConfigurationController@search_config');
+    Route::post('search_accounts', 'StaffConfigurationController@search_accounts');
     Route::post('save_config', 'StaffConfigurationController@save_config');
+    Route::post('save_accounts', 'StaffConfigurationController@save_accounts');
     Route::post('search_access', 'StaffConfigurationController@search_access');
     Route::post('change_access', 'StaffConfigurationController@change_access');
     Route::post('create_access', 'StaffConfigurationController@create_access');

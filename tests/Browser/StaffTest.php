@@ -10,6 +10,42 @@ class StaffTest extends DuskTestCase
 {
   // TODO: Still need to test login with created user, and still need to
   // test changes on user after creating it.
+
+  /**
+   * Staff Login.
+   *
+   * @return void
+   */
+  public function testStaffLogin()
+  {
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/login')
+                ->type('username', 'test_user')
+                ->type('password', 'secret')
+                ->press('#login-button')
+                ->waitForLocation('/swift/system/main')
+                ->assertPathIs('/swift/system/main');
+    });
+  }
+
+
+  /**
+   * Staff Navigation.
+   *
+   * @return void
+   */
+  public function testStaffNavigation()
+  {
+    $this->browse(function (Browser $browser) {
+        $browser->click('.sidebar-toggle')
+                ->click('#menu_staff')
+                ->pause(500)
+                ->click('#staff')
+                ->waitForText('Ver Personal')
+                ->assertSee('Ver Personal');
+      });
+  }
+
   /**
    * Staff Configuration Test.
    *
@@ -18,19 +54,7 @@ class StaffTest extends DuskTestCase
   public function testStaffConfigurationPage()
   {
     $this->browse(function (Browser $browser) {
-        $browser->visit('/login')
-                ->type('username', 'test_user')
-                ->type('password', 'secret')
-                ->press('#login-button')
-                ->waitForLocation('/swift/system/main')
-                ->assertPathIs('/swift/system/main')
-                ->click('.sidebar-toggle')
-                ->click('#menu_staff')
-                ->pause(500)
-                ->click('#staff')
-                ->waitForText('Ver Personal')
-                ->assertSee('Ver Personal')
-                ->mouseover('#view-staff-tab')
+        $browser->mouseover('#view-staff-tab')
                 ->click('[data-target="#create-worker"]')
                 ->waitForText('Crear Trabajador')
                 ->assertSee('Crear Trabajador')
@@ -88,6 +112,44 @@ class StaffTest extends DuskTestCase
                 ->click('#worker-user-update')
                 ->waitForText('Usuario creado exitosamente!')
                 ->assertSee('Usuario creado exitosamente!')
+                ->pause(6000)
+                ->click('.user-menu')
+                ->click('.user-footer > .pull-right > a');
+    });
+  }
+
+  /**
+   * Staff Login with created User.
+   *
+   * @return void
+   */
+  public function testStaffNewLogin()
+  {
+    $this->browse(function (Browser $browser) {
+        $browser->visit('/login')
+                ->type('username', 'new_user')
+                ->type('password', 'secret')
+                ->press('#login-button')
+                ->waitForLocation('/swift/system/main')
+                ->assertPathIs('/swift/system/main')
+                ->visit('/logout')
+                ->waitForLocation('/login')
+                ->type('username', 'test_user')
+                ->type('password', 'secret')
+                ->press('#login-button')
+                ->waitForLocation('/swift/system/main')
+                ->assertPathIs('/swift/system/main')
+                ->click('.sidebar-toggle')
+                ->click('#menu_staff')
+                ->pause(500)
+                ->click('#staff')
+                ->waitForText('Ver Personal')
+                ->assertSee('Ver Personal')
+                ->type('#staff-view-code', 'Changed Name')
+                ->pause(500)
+                ->keys('#staff-view-code', ['{arrow_down}'])
+                ->keys('#staff-view-code', ['{enter}'])
+                ->click('#view-staff-tab')
                 ->click('.staff-state-edit')
                 ->select('.staff-change-state', 2)
                 ->click('#view-staff-tab')

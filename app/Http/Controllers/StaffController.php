@@ -435,6 +435,9 @@ class StaffController extends Controller
         'legal_id' => Input::get('id'),
         'job_title' => Input::get('job_title'),
         'phone' => Input::get('phone'),
+        'address' => Input::get('address'),
+        'inss' => Input::get('inss'),
+        'configuration_code' => Input::get('config'),
         'state' => 1,
         'current_branch_code' => Input::get('branch')
        ));

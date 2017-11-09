@@ -26,6 +26,7 @@ class CreateWorkerSettings extends Migration
             $table->string('commission_group', 10);
             $table->string('discount_group', 10);
             $table->string('branches_group', 10);
+            $table->unsignedInteger('accounting_code');
             $table->string('pos_group', 10);
 
             $table->foreign('vehicle_code')->references('code')->on('vehicles');

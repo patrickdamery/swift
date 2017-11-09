@@ -51,18 +51,20 @@ class test_seed extends Seeder
 
       // Create some workers.
       $u = 1;
-      $settings = factory(App\WorkerSetting::class)->create([
+      $accounts = factory(App\WorkerAccount::class)->create([
         'name' => 'Default'
       ]);
+
+      $settings = factory(App\WorkerSetting::class)->create([
+        'name' => 'Default',
+        'accounting_code' => $accounts->id
+      ]);
+
       for($i = 0; $i<5; $i++) {
 
         $worker = factory(App\Worker::class)->create([
           'code' => $i,
           'configuration_code' => 1
-        ]);
-
-        $accounts = factory(App\WorkerAccount::class)->create([
-          'worker_code' => $worker->code
         ]);
         // Randomly decide if we should create user for worker.
         if(rand(0, 1) == 1) {
@@ -81,10 +83,6 @@ class test_seed extends Seeder
         'configuration_code' => 1
       ]);
 
-      $accounts = factory(App\WorkerAccount::class)->create([
-        'worker_code' => $worker->code
-      ]);
-
       $u++;
       $user = factory(App\User::class)->create([
         'code' => $u,
@@ -99,11 +97,6 @@ class test_seed extends Seeder
         'configuration_code' => 1,
         'state' => 2,
         'deleted_at' => date('Y-m-d')
-      ]);
-
-
-      $accounts = factory(App\WorkerAccount::class)->create([
-        'worker_code' => $worker->code
       ]);
 
       $u++;

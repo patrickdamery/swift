@@ -140,10 +140,40 @@ class StaffConfigurationController extends Controller
     $access = UserAccess::where('code', Auth::user()->user_access_code)->first()->access;
     $access = json_decode($access);
     $settings = '';
+
+    if($access->staff->staff_config->view_config->general_config) {
+      $settings = WorkerSetting::where('id', Input::get('code'))->first();
+    }
+    $response = array(
+      'state' => 'Success',
+      'settings' => $settings,
+      'access' => Auth::user()->user_access_code
+    );
+
+    return response()->json($response);
+  }
+
+  public function search_accounts() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required'
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.code_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get current user's access.
+    $access = UserAccess::where('code', Auth::user()->user_access_code)->first()->access;
+    $access = json_decode($access);
     $accounts = '';
 
     if($access->staff->staff_config->view_config->accounting_config) {
-      $accounts = WorkerAccount::where('worker_code', Input::get('code'))->first();
+      $accounts = WorkerAccount::where('id', Input::get('code'))->first();
 
       if(!$accounts) {
         $response = array(
@@ -156,12 +186,9 @@ class StaffConfigurationController extends Controller
       $accounts->draw_accounts = json_decode($accounts->draw_accounts);
       $accounts->bank_accounts = json_decode($accounts->bank_accounts);
     }
-    if($access->staff->staff_config->view_config->general_config) {
-      $settings = WorkerSetting::where('worker_code', Input::get('code'))->first();
-    }
+
     $response = array(
       'state' => 'Success',
-      'settings' => $settings,
       'accounts' => $accounts,
       'access' => Auth::user()->user_access_code
     );
@@ -173,7 +200,6 @@ class StaffConfigurationController extends Controller
     $validator = Validator::make(Input::all(),
       array(
         'code' => 'required',
-        'accounts' => 'required',
         'settings' => 'required'
       )
     );
@@ -192,7 +218,7 @@ class StaffConfigurationController extends Controller
     // TODO: Make sure groups exist.
     if($access->staff->staff_config->view_config->general_config) {
       // Get settings and save them.
-      $settings = WorkerSetting::where('worker_code', Input::get('code'))->first();
+      $settings = WorkerSetting::where('id', Input::get('code'))->first();
       $settings->hourly_rate = Input::get('settings')['hourly_rate'];
       $settings->vehicle_code = Input::get('settings')['vehicle_code'];
       $settings->schedule_code = Input::get('settings')['schedule_code'];
@@ -227,8 +253,35 @@ class StaffConfigurationController extends Controller
       $user->user_access_code = Input::get('access');
       $user->save();
     }
+
+    $response = array(
+      'state' => 'Success',
+      'message' => \Lang::get('controllers/staff_configuration_controller.configuration_saved')
+    );
+    return response()->json($response);
+  }
+
+  public function save_accounts() {
+    $validator = Validator::make(Input::all(),
+      array(
+        'code' => 'required',
+        'accounts' => 'required',
+      )
+    );
+    if($validator->fails()) {
+      $response = array(
+        'state' => 'Error',
+        'error' => \Lang::get('controllers/staff_configuration_controller.configuration_required')
+      );
+      return response()->json($response);
+    }
+
+    // Get user's access.
+    $access = UserAccess::where('code', Auth::user()->user_access_code)->first()->access;
+    $access = json_decode($access);
+
     if($access->staff->staff_config->view_config->accounting_config) {
-      $accounts = WorkerAccount::where('worker_code', Input::get('code'))->first();
+      $accounts = WorkerAccount::where('id', Input::get('code'))->first();
       $accounts->cashbox_account = Input::get('accounts')['cashbox_account'];
       $accounts->stock_account = Input::get('accounts')['stock_account'];
       $accounts->loan_account = Input::get('accounts')['loan_account'];
